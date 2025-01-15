@@ -42,7 +42,8 @@ defmodule Dutchpay.Umbrella.MixProject do
   defp aliases do
     [
       # run `mix setup` in all child apps
-      setup: ["cmd mix setup"]
+      setup: ["cmd mix setup"],
+      interactiveStart: ["cmd iex -S mix phx.server"]
     ]
   end
 end
