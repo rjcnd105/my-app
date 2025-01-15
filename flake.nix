@@ -97,6 +97,7 @@
                   "--locale=ko_KR.UTF-8"
                   "--encoding=UTF8"
                 ];
+                port = 5432;
                 package = pkgs.postgresql_17;
               };
 
