@@ -1,0 +1,11 @@
+{application,dutchpay,
+             [{modules,['Elixir.Dutchpay','Elixir.Dutchpay.Application',
+                        'Elixir.Dutchpay.Mailer','Elixir.Dutchpay.Repo']},
+              {optional_applications,[]},
+              {applications,[kernel,stdlib,elixir,logger,runtime_tools,
+                             dns_cluster,phoenix_pubsub,ecto_sql,postgrex,
+                             jason,swoosh,finch]},
+              {description,"dutchpay"},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.Dutchpay.Application',[]}}]}.
