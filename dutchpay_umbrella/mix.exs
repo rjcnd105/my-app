@@ -43,7 +43,7 @@ defmodule Dutchpay.Umbrella.MixProject do
     [
       # run `mix setup` in all child apps
       setup: ["cmd mix setup"],
-      interactiveStart: ["cmd iex -S mix phx.server"]
+      istart: ["cmd iex -S mix phx.server"]
     ]
   end
 end
