@@ -1,6 +1,7 @@
 {application,dutchpay,
              [{modules,['Elixir.Dutchpay','Elixir.Dutchpay.Application',
-                        'Elixir.Dutchpay.Mailer','Elixir.Dutchpay.Repo']},
+                        'Elixir.Dutchpay.Chat.Room','Elixir.Dutchpay.Mailer',
+                        'Elixir.Dutchpay.Repo']},
               {optional_applications,[]},
               {applications,[kernel,stdlib,elixir,logger,runtime_tools,
                              dns_cluster,phoenix_pubsub,ecto_sql,postgrex,

@@ -20,6 +20,7 @@ defmodule DutchpayWeb.Router do
 
     get("/home", PageController, :home)
     live("/", ChatRoomLive)
+    live("/rooms/:id", ChatRoomLive)
   end
 
   # Other scopes may use custom stacks.
