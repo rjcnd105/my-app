@@ -1,13 +1,12 @@
 defmodule DutchpayWeb.ChatRoomLive do
+  @moduledoc false
   use DutchpayWeb, :live_view
-  alias Dutchpay.Chat.Room
-  alias Dutchpay.Repo
 
-  # 컴파일러에게 알려주기 위한 용도
-  attr :active, :boolean, required: true
-  attr :room, Room, required: true
+  alias Dutchpay.Chat
 
   # 3 - render
+  #
+
   def render(assigns) do
     ~H"""
     <div class="flex flex-col shrink-0 w-64 bg-slate-100">
@@ -52,6 +51,10 @@ defmodule DutchpayWeb.ChatRoomLive do
     """
   end
 
+  # 컴파일러에게 알려주기 위한 용도
+  attr :active, :boolean, required: true
+  attr :room, Chat.Room.Schema, required: true
+
   defp room_link(assigns) do
     ~H"""
     <%!-- ~p를 사용하여 검증된 애플리케이션의 경로를 나타내는 문자열을 생성한다. 라우터에 대한 경로를 확인하여 실제로 존재하는지 확인하고, 존재하지 않으면 경고를 표시한다. --%>
@@ -83,7 +86,7 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   # 1 - mount
   def mount(_params, _session, socket) do
-    rooms = Repo.all(Room)
+    rooms = Chat.list_rooms()
 
     if connected?(socket) do
       IO.puts("mounting (connected)")
@@ -106,7 +109,7 @@ defmodule DutchpayWeb.ChatRoomLive do
     room =
       case Map.fetch(params, "id") do
         {:ok, id} ->
-          %Dutchpay.Chat.Room{} = Enum.find(rooms, &(to_string(&1.id) == id))
+          %Dutchpay.Chat.Room.Schema{} = Enum.find(rooms, &(to_string(&1.id) == id))
 
         :error ->
           List.first(rooms)

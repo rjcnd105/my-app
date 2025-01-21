@@ -1,5 +1,7 @@
-defmodule Dutchpay.Chat.Room do
+defmodule Dutchpay.Chat.Room.Schema do
+  @moduledoc false
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "rooms" do

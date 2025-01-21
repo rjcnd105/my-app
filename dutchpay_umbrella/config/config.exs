@@ -9,10 +9,6 @@
 # move said applications out of the umbrella.
 import Config
 
-# Configure Mix tasks and generators
-config :dutchpay,
-  ecto_repos: [Dutchpay.Repo]
-
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
@@ -22,9 +18,9 @@ config :dutchpay,
 # at the `config/runtime.exs`.
 config :dutchpay, Dutchpay.Mailer, adapter: Swoosh.Adapters.Local
 
-config :dutchpay_web,
-  ecto_repos: [Dutchpay.Repo],
-  generators: [context_app: :dutchpay]
+# Configure Mix tasks and generators
+config :dutchpay,
+  ecto_repos: [Dutchpay.Repo]
 
 # Configures the endpoint
 config :dutchpay_web, DutchpayWeb.Endpoint,
@@ -37,26 +33,17 @@ config :dutchpay_web, DutchpayWeb.Endpoint,
   pubsub_server: Dutchpay.PubSub,
   live_view: [signing_salt: "g9CW4eyU"]
 
+config :dutchpay_web,
+  ecto_repos: [Dutchpay.Repo],
+  generators: [context_app: :dutchpay]
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
   dutchpay_web: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    args: ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/dutchpay_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
-
-# Configure tailwind (the version is required)
-config :tailwind,
-  version: "3.4.3",
-  dutchpay_web: [
-    args: ~w(
-      --config=tailwind.config.js
-      --input=css/app.css
-      --output=../priv/static/assets/app.css
-    ),
-    cd: Path.expand("../apps/dutchpay_web/assets", __DIR__)
   ]
 
 # Configures Elixir's Logger
@@ -67,6 +54,18 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.4.3",
+  dutchpay_web: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    # Import environment specific config. This must remain at the bottom
+    # of this file so it overrides the configuration defined above.
+    cd: Path.expand("../apps/dutchpay_web/assets", __DIR__)
+  ]
+
 import_config "#{config_env()}.exs"
