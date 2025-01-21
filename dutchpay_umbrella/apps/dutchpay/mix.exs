@@ -38,6 +38,7 @@ defmodule Dutchpay.MixProject do
     [
       {:dns_cluster, "~> 0.1.1"},
       {:phoenix_pubsub, "~> 2.1"},
+      {:ecto, "~> 3.10"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.2"},
