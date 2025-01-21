@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title default="Dutchpay" suffix=" · Phoenix Framework">
+    <.live_title default="Dutchpay" suffix=" · dutchpay">
+      <%!-- @page_title는 없을시 에러가 나는데에 비해 이렇게 하면 없는 경우 nil이 반환되어 default 값이 지정된다.  --%>
       {assigns[:page_title]}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />

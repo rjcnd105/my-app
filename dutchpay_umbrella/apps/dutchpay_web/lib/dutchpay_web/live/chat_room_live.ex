@@ -123,7 +123,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       IO.puts("mounting (not connected)")
     end
 
-    {:noreply, assign(socket, hide_topic?: false, rooms: rooms, room: room)}
+    {:noreply, assign(socket, hide_topic?: false, rooms: rooms, room: room, page_title: "#" <> room.name)}
   end
 
   def handle_event("toggle_topic", _params, socket) do
