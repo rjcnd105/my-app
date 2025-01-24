@@ -2,6 +2,7 @@
     [{modules,
          ['Elixir.DutchpayWeb','Elixir.DutchpayWeb.Application',
           'Elixir.DutchpayWeb.ChatRoomLive',
+          'Elixir.DutchpayWeb.ChatRoomLive.Edit',
           'Elixir.DutchpayWeb.CoreComponents','Elixir.DutchpayWeb.Endpoint',
           'Elixir.DutchpayWeb.ErrorHTML','Elixir.DutchpayWeb.ErrorJSON',
           'Elixir.DutchpayWeb.Gettext','Elixir.DutchpayWeb.Layouts',

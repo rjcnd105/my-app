@@ -1,7 +1,8 @@
 defmodule DutchpayWeb.Router do
-  # 라우터 모듈임을 알려줌.
   use DutchpayWeb, :router
 
+  alias DutchpayWeb.ChatRoomLive
+  # 라우터 모듈임을 알려줌.
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
@@ -21,6 +22,7 @@ defmodule DutchpayWeb.Router do
     get("/home", PageController, :home)
     live("/", ChatRoomLive)
     live("/rooms/:id", ChatRoomLive)
+    live("/rooms/:id/edit", ChatRoomLive.Edit)
   end
 
   # Other scopes may use custom stacks.

@@ -10,6 +10,10 @@ defmodule Dutchpay.Chat do
     Repo.all(from(Room.Schema, order_by: [desc: :updated_at]))
   end
 
+  def get_room!(id) do
+    Repo.get!(Room, id)
+  end
+
   def create_room(attrs) do
     %Room.Schema{}
     # 제약 조건 검사

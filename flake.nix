@@ -3,16 +3,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
-    mise = {
-      url = "github:jdx/mise/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     inputs@{
       flake-parts,
       nixpkgs,
-      mise,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -36,11 +31,6 @@
         let
           overlayedPkgs = import nixpkgs {
             system = system;
-            overlays = [
-              (final: prev: {
-                mise = prev.callPackage (mise + "/default.nix") { };
-              })
-            ];
             config = {
               allowUnfreePredicate =
                 pkg:
@@ -78,8 +68,13 @@
                 enable = true;
                 filename = [
                   ".env.root"
+                  ".env.secret"
                 ];
               };
+
+              cachix.enable = true;
+              cachix.pull = [ "pre-commit-hooks" ];
+              # cachix.push = config.env.CACHEIX_AUTH_TOKEN;
 
               env.MISE_GLOBAL_CONFIG = false;
 
@@ -111,7 +106,7 @@
               # services.opentelemetry-collector = {
               #   enable = true;
               #   package = pkgs.opentelemetry-collector-contrib;
-              # };
+              # };";
 
               processes.phoenix.exec = "cd ${umbrellaProjectName} && mix phx.server";
 
@@ -194,6 +189,12 @@
                 echo hello
               '';
 
+              containers.processes.name = "my-backend";
+              containers.processes.registry = "docker://registry.fly.io/";
+              containers.processes.defaultCopyArgs = [
+                "--dest-creds"
+                "x:\"$(${pkgs.flyctl}/bin/flyctl auth token)\""
+              ];
             };
         };
     };
