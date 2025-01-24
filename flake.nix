@@ -74,7 +74,7 @@
 
               cachix.enable = true;
               cachix.pull = [ "pre-commit-hooks" ];
-              # cachix.push = config.env.CACHEIX_AUTH_TOKEN;
+              # cachix.push = config.env.CACHIX_AUTH_TOKEN;
 
               env.MISE_GLOBAL_CONFIG = false;
 
