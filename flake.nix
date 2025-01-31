@@ -2,17 +2,28 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devenv.url = "github:cachix/devenv";
+    process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
+    services-flake.url = "github:juspay/services-flake";
   };
   outputs =
     inputs@{
-      flake-parts,
+      self,
       nixpkgs,
+      flake-parts,
       ...
     }:
+    let
+      PGPORT = builtins.getEnv "PGPORT";
+      POSTGRES_USER = builtins.getEnv "POSTGRES_USER";
+      POSTGRES_PASSWORD = builtins.getEnv "POSTGRES_PASSWORD";
+      POSTGRES_DB = builtins.getEnv "POSTGRES_DB";
+      LISTEN_ADDRESSES = builtins.getEnv "LISTEN_ADDRESSES";
+    in
+
     flake-parts.lib.mkFlake { inherit inputs; } {
+
       imports = [
-        inputs.devenv.flakeModule
+        inputs.process-compose-flake.flakeModule
       ];
       systems = [
         "aarch64-darwin"
@@ -23,13 +34,14 @@
 
       perSystem =
         {
+          self',
           system,
           lib,
           config,
           ...
         }:
         let
-          overlayedPkgs = import nixpkgs {
+          pkgs = import nixpkgs {
             system = system;
             config = {
               allowUnfreePredicate =
@@ -39,163 +51,57 @@
                 ];
             };
           };
+
         in
+        # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
         {
-          _module.args.pkgs = overlayedPkgs;
+          packages.default = pkgs.mise;
+          _module.args.pkgs = pkgs;
 
-          devenv.shells.default =
+          process-compose."app-services" =
+            { config, ... }:
             {
-              config,
-              lib,
-              pkgs,
-              ...
-            }:
-            let
-              envJson = builtins.toJSON {
-                inherit (config.env)
-                  DEVENV_ROOT
-                  PGHOST
-                  PGDATA
-                  PGPORT
-                  PROJECT_NAME
-                  ;
-              };
-              umbrellaProjectName = "${config.env.PROJECT_NAME}_umbrella";
-            in
-            {
-
-              dotenv = {
-                enable = true;
-                filename = [
-                  ".env.root"
-                  ".env.secret"
-                ];
-              };
-
-              cachix.enable = true;
-              cachix.pull = [ "pre-commit-hooks" ];
-              # cachix.push = config.env.CACHIX_AUTH_TOKEN;
-
-              env.MISE_GLOBAL_CONFIG = false;
-
-              # services
-              services.postgres = {
-                enable = true;
-                initialScript = ''
-                  CREATE ROLE postgres WITH LOGIN PASSWORD 'postgres' SUPERUSER;
-                '';
-                extensions = extensions: [
-                  extensions.pg_cron
-                  extensions.postgis
-                  extensions.timescaledb
-                ];
-                initdbArgs = [
-                  "--locale=ko_KR.UTF-8"
-                  "--encoding=UTF8"
-                ];
-                listen_addresses = "*";
-                port = 5432;
-                package = pkgs.postgresql_17;
-              };
-
-              services.caddy = {
-                enable = true;
-                package = pkgs.caddy;
-              };
-
-              # services.opentelemetry-collector = {
-              #   enable = true;
-              #   package = pkgs.opentelemetry-collector-contrib;
-              # };";
-
-              processes.phoenix.exec = "cd ${umbrellaProjectName} && mix phx.server";
-
-              tasks."myapp:hello" = {
-                exec = ''echo "Hello, world!"'';
-                before = [
-                  "devenv:enterShell"
-                  "devenv:enterTest"
-                ];
-              };
-
-              packages =
-                [
-                  # https://devenv.sh/reference/options/
-                  pkgs.mise
-                ]
-                ++ lib.optionals pkgs.stdenv.isLinux [
-                  pkgs.inotify-tools
-                ]
-                ++ lib.optionals (!config.container.isBuilding) [
-                ];
-
-              scripts = {
-                "mise-init" = {
-                  exec = ''
-                    mise trust ./.
-                    mise install
-                    mise activate -q
-                  '';
-                };
-                "env-info" = {
-                  exec = ''
-                    echo your system: ${system}
-                    echo env
-                    echo ${envJson} | tr " " "\n"
-                  '';
-                };
-                "update-env" = {
-                  exec = ''
-                    # .env.root 파일 처리
-                    ENV_FILE=".env.root"
-                    NEW_PROJECT_NAME=$1
-
-                    if [ -f $ENV_FILE ]; then
-                      # PROJECT_NAME이 있는지 확인
-                      if awk -F= '/^PROJECT_NAME=/ {found=1; exit} END{exit !found}' $ENV_FILE; then
-                        # PROJECT_NAME이 있으면 교체
-                        awk -i inplace '/^PROJECT_NAME=/{print "PROJECT_NAME='$NEW_PROJECT_NAME'";next}{print}' .env.root
-                        echo "Updated PROJECT_NAME in $ENV_FILE"
-                      else
-                        # PROJECT_NAME이 없으면 추가
-                        echo "PROJECT_NAME=NEW_PROJECT_NAME" >> $ENV_FILE
-                        echo "Added PROJECT_NAME to $ENV_FILE"
-                      fi
-                    else
-                      echo "PROJECT_NAME=$NEW_PROJECT_NAME" > $ENV_FILE
-                      echo "Created .env.root with PROJECT_NAME"
-                    fi
-                  '';
-                };
-                # mix archive.install hex phx_new
-                "app-init" = {
-                  exec = ''
-                    PROJECT_NAME=$1
-                    APP_NAME=$2
-
-                    if [ -z "$PROJECT_NAME" ] && [ -z "$APP_NAME" ]; then
-                        echo "Error: ProjectName and AppName is required"
-                        exit 1
-                    fi
-
-                    update-env $PROJECT_NAME
-                    mix phx.new --umbrella --database=postgres --app=$APP_NAME $PROJECT_NAME
-
-                  '';
-                };
-              };
-
-              enterShell = ''
-                echo hello
-              '';
-
-              containers.processes.name = "my-backend";
-              containers.processes.registry = "docker://registry.fly.io/";
-              containers.processes.defaultCopyArgs = [
-                "--dest-creds"
-                "x:\"$(${pkgs.flyctl}/bin/flyctl auth token)\""
+              imports = [
+                inputs.services-flake.processComposeModules.default
               ];
+              services = {
+                postgres.pg = {
+                  enable = true;
+                  package = pkgs.postgresql_17;
+                  listen_addresses = "*";
+                  port = PGPORT;
+                  initialScript = {
+                    before = ''
+                      CREATE ROLE ${POSTGRES_USER} WITH LOGIN PASSWORD '${POSTGRES_PASSWORD}' SUPERUSER;
+                    '';
+                  };
+                };
+              };
             };
+
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [
+              config.process-compose."app-services".services.outputs.devShell
+            ];
+            buildInputs =
+              with pkgs;
+              [
+                postgresql_17
+                caddy
+              ]
+              ++ lib.optional stdenv.isLinux inotify-tools
+              ++ (lib.optionals stdenv.isDarwin (
+                with darwin.apple_sdk.frameworks;
+                [
+                  CoreFoundation
+                  CoreServices
+                ]
+              ));
+
+            shellHook = ''
+              echo "hello ${PGPORT}"
+            '';
+          };
         };
     };
 }
