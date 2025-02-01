@@ -112,6 +112,25 @@ generated user module:
          if valid_password?(changeset.data, password) do
     ```
 
+## 1.0.3 (2025-01-28)
+
+### Bug fixes
+* Fix regression where browser back/forward buttons used `patch` instead of `navigate`, failing to update the page ([#3529](https://github.com/phoenixframework/phoenix_live_view/issues/3529))
+* Fix client hooks inside streams that contain nested LiveViews ([#3530](https://github.com/phoenixframework/phoenix_live_view/issues/3530))
+* Fix LiveComponents in nested LiveViews not updating under certain conditions ([#3626](https://github.com/phoenixframework/phoenix_live_view/issues/3626))
+* Fix client-side hooks not being cleared properly ([#3628](https://github.com/phoenixframework/phoenix_live_view/issues/3628))
+* Fix LiveUpload from client hook not auto uploading when immediately followed by form event ([#3647](https://github.com/phoenixframework/phoenix_live_view/issues/3647))
+* Fix inputs being cleared in some cases when patching locked trees ([#3647](https://github.com/phoenixframework/phoenix_live_view/issues/3647))
+* Fix client hooks with dynamic IDs not being destroyed properly when parts of the DOM are locked ([#3651](https://github.com/phoenixframework/phoenix_live_view/issues/3651))
+
+### Enhancements
+* Allow to configure if duplicate IDs / other detected errors should warn or raise by passing `on_error` to `Phoenix.LiveViewTest.live/3` / `Phoenix.LiveViewTest.live_isolated/3` ([#3653](https://github.com/phoenixframework/phoenix_live_view/pull/3653))
+* Also detect duplicate LiveComponents that are added dynamically to the page in LiveViewTest ([#3653](https://github.com/phoenixframework/phoenix_live_view/pull/3653))
+* Log an error in the JavaScript console when detecting a stream container with missing `phx-update="stream"` attribute ([#3645](https://github.com/phoenixframework/phoenix_live_view/pull/3645))
+* Update documentation to mention `:fun` and `{:fun, arity}` as valid attribute types for `Phoenix.Component.attr/3` ([#3635](https://github.com/phoenixframework/phoenix_live_view/pull/3635))
+* Update documentation to mention ways for [dynamically rendering function components](https://hexdocs.pm/phoenix_live_view/1.0.3/Phoenix.Component.html#module-dynamic-component-rendering) ([#3632](https://github.com/phoenixframework/phoenix_live_view/pull/3632))
+* Update documentation to mention `{:inner, selector}` and `{:closest, selector}` as [valid options for `to`](https://hexdocs.pm/phoenix_live_view/1.0.3/Phoenix.LiveView.JS.html#module-dom-selectors) in JS commands ([#3638](https://github.com/phoenixframework/phoenix_live_view/pull/3638))
+
 ## 1.0.2 (2025-01-09)
 
 ### Bug fixes
@@ -133,6 +152,7 @@ generated user module:
 ### Bug fixes
 * Raise when duplicate DOM IDs are found when rendering a LiveView during tests to avoid undefined behaviour
 * Fix live session verification causing logged errors, push_patch failures, and failed mounts when a cold deploy occurs
+* Fix a bug where the `live_session`'s `on_mount` hooks would be called for sticky live views on connected mount. Now a `sticky` live view is consistently marked as `:not_mounted_at_router`
 
 ## 1.0.0 (2024-12-03) 🚀
 

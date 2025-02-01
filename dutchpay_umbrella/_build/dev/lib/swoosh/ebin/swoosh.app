@@ -1,7 +1,6 @@
 {application,swoosh,
              [{modules,['Elixir.Mix.Tasks.Swoosh.Mailbox.Server',
-                        'Elixir.Plug.Swoosh.MailboxPreview','Elixir.Swoosh',
-                        'Elixir.Swoosh.Adapter',
+                        'Elixir.Swoosh','Elixir.Swoosh.Adapter',
                         'Elixir.Swoosh.Adapters.AmazonSES',
                         'Elixir.Swoosh.Adapters.Brevo',
                         'Elixir.Swoosh.Adapters.CustomerIO',
@@ -59,7 +58,7 @@
                              cowboy,plug,plug_cowboy,bandit,multipart,ex_aws]},
               {description,"Compose, deliver and test your emails easily in Elixir. Supports SMTP,\nSendgrid, Mandrill, Postmark, Mailgun and many more out of the box.\nPreview your emails in the browser. Test your email sending code.\n"},
               {registered,[]},
-              {vsn,"1.17.6"},
+              {vsn,"1.17.7"},
               {mod,{'Elixir.Swoosh.Application',[]}},
               {env,[{json_library,'Elixir.Jason'},
                     {api_client,'Elixir.Swoosh.ApiClient.Hackney'}]}]}.

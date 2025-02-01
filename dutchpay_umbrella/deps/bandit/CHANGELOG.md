@@ -1,3 +1,32 @@
+## 1.6.7 (30 Jan 2025)
+
+### Changes
+
+* Consider timeouts when reading HTTP/1 headers as a connection error and not an HTTP error
+* Enhance logging for WebSocket deflation errors
+
+## 1.6.6 (25 Jan 2025)
+
+### Fixes
+
+* Consider closures during HTTP/1 header reading as a socket error to silence them by default via `log_client_closures` config flag
+* Send `connection: close` when closing connection on error per RFC9112§9.6
+
+### Enhancements
+
+* Add experimental opt-in trace logging to help diagnose hard to reproduce errors
+* Move CI to 1.18 & improve tests (#459, #461, thanks @grzuy!)
+
+## 1.6.5 (15 Jan 2025)
+
+### Fixes
+
+* Fix regression introduced in 1.6.1 where we would not send headers set by the Plug during WebSocket upgrades (#458)
+
+### Enhancements
+
+* Properly normalize Erlang errors before emitting telemetry and logged crash_reason (#455, thanks @grzuy!)
+
 ## 1.6.4 (11 Jan 2025)
 
 ### Fixes

@@ -284,8 +284,7 @@ defmodule Bandit.HTTP1.Socket do
     defp read_available_for_header!(socket) do
       case ThousandIsland.Socket.recv(socket, 0) do
         {:ok, chunk} -> chunk
-        {:error, :timeout} -> request_error!("Header read timeout", :request_timeout)
-        {:error, reason} -> request_error!("Header read socket error: #{inspect(reason)}")
+        {:error, reason} -> socket_error!(reason)
       end
     end
 
@@ -423,7 +422,7 @@ defmodule Bandit.HTTP1.Socket do
           status = error |> Plug.Exception.status() |> Plug.Conn.Status.code()
 
           try do
-            send_headers(socket, status, [], :no_body)
+            send_headers(socket, status, [{"connection", "close"}], :no_body)
           rescue
             _e in [Bandit.TransportError, Bandit.HTTPError] -> :ok
           end

@@ -2,7 +2,7 @@ defmodule Swoosh.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/swoosh/swoosh"
-  @version "1.17.6"
+  @version "1.17.7"
 
   def project do
     [
@@ -14,7 +14,6 @@ defmodule Swoosh.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases(),
 
       # Hex
       description: description(),
@@ -84,7 +83,8 @@ defmodule Swoosh.Mixfile do
       {:multipart, "~> 0.4", optional: true},
       {:ex_aws, "~> 2.1", optional: true},
       {:bypass, "~> 2.1", only: :test},
-      {:ex_doc, "~> 0.26", only: :docs, runtime: false}
+      {:ex_doc, "~> 0.26", only: :docs, runtime: false},
+      {:tailwind, "~> 0.2.4", only: [:docs, :dev], runtime: false}
     ]
   end
 
@@ -134,31 +134,6 @@ defmodule Swoosh.Mixfile do
       module |> String.split(".") |> Module.concat()
     end)
     |> Kernel.--(@deprecated_adapters)
-  end
-
-  defp aliases do
-    ["test.ci": &test_ci/1]
-  end
-
-  defp test_ci(args) do
-    args = if IO.ANSI.enabled?(), do: ["--color" | args], else: ["--no-color" | args]
-
-    args =
-      if System.get_env("TRAVIS_SECURE_ENV_VARS") == "true",
-        do: ["--include=integration" | args],
-        else: args
-
-    {_, res} =
-      System.cmd(
-        "mix",
-        ["test" | args],
-        into: IO.binstream(:stdio, :line),
-        env: [{"MIX_ENV", "test"}]
-      )
-
-    if res > 0 do
-      System.at_exit(fn _ -> exit({:shutdown, 1}) end)
-    end
   end
 
   defp description do

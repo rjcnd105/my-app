@@ -38,3 +38,5 @@ tmp/
 .zed
 .lexical
 .env.secret
+
+data/pg

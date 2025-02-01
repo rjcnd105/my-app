@@ -13,15 +13,18 @@
       ...
     }:
     let
-      PGPORT = builtins.getEnv "PGPORT";
-      POSTGRES_USER = builtins.getEnv "POSTGRES_USER";
-      POSTGRES_PASSWORD = builtins.getEnv "POSTGRES_PASSWORD";
-      POSTGRES_DB = builtins.getEnv "POSTGRES_DB";
-      LISTEN_ADDRESSES = builtins.getEnv "LISTEN_ADDRESSES";
-    in
+
+      devEnv = {
+          PGPORT = builtins.getEnv "PGPORT";
+          POSTGRES_USER = builtins.getEnv "POSTGRES_USER";
+          POSTGRES_DB = builtins.getEnv "POSTGRES_DB";
+          POSTGRES_PASSWORD = builtins.getEnv "POSTGRES_PASSWORD";
+          LISTEN_ADDRESSES = builtins.getEnv "LISTEN_ADDRESSES";
+      }; 
+ 
+    in 
 
     flake-parts.lib.mkFlake { inherit inputs; } {
-
       imports = [
         inputs.process-compose-flake.flakeModule
       ];
@@ -35,8 +38,8 @@
       perSystem =
         {
           self',
-          system,
-          lib,
+          system, 
+          lib, 
           config,
           ...
         }:
@@ -51,57 +54,45 @@
                 ];
             };
           };
-
+    
         in
         # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
         {
-          packages.default = pkgs.mise;
           _module.args.pkgs = pkgs;
+          packages.default = pkgs.mise;
 
           process-compose."app-services" =
-            { config, ... }:
+          let 
+          in 
+          { config, lib, ... }:
             {
               imports = [
                 inputs.services-flake.processComposeModules.default
               ];
               services = {
-                postgres.pg = {
-                  enable = true;
+                postgres."pg" = {
+                  enable = true; 
                   package = pkgs.postgresql_17;
-                  listen_addresses = "*";
-                  port = PGPORT;
+                  listen_addresses = devEnv.LISTEN_ADDRESSES;
+                  port= lib.strings.toIntBase10 devEnv.PGPORT;
                   initialScript = {
                     before = ''
-                      CREATE ROLE ${POSTGRES_USER} WITH LOGIN PASSWORD '${POSTGRES_PASSWORD}' SUPERUSER;
+                      CREATE ROLE ${devEnv.POSTGRES_USER} WITH LOGIN PASSWORD '${devEnv.POSTGRES_PASSWORD}' SUPERUSER
                     '';
                   };
                 };
+                # environment = devEnv;
+                
+              };
+              settings.processes.pgweb = {
+                command = pkgs.pgweb;
+                depends_on."pg".condition = "process_healthy";
+                environment.PGWEB_DATABASE_URL = config.services.postgres.pg.connectionURI { dbName = devEnv.POSTGRES_DB; };
               };
             };
 
-          devShells.default = pkgs.mkShell {
-            inputsFrom = [
-              config.process-compose."app-services".services.outputs.devShell
-            ];
-            buildInputs =
-              with pkgs;
-              [
-                postgresql_17
-                caddy
-              ]
-              ++ lib.optional stdenv.isLinux inotify-tools
-              ++ (lib.optionals stdenv.isDarwin (
-                with darwin.apple_sdk.frameworks;
-                [
-                  CoreFoundation
-                  CoreServices
-                ]
-              ));
-
-            shellHook = ''
-              echo "hello ${PGPORT}"
-            '';
-          };
+          devShells.default = config.process-compose."app-services".services.outputs.devShell;
+          
         };
     };
 }
