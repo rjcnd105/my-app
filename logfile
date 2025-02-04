@@ -1,0 +1,2 @@
+2025-02-04 03:33:22.775 GMT [91249] FATAL:  lock file "postmaster.pid" already exists
+2025-02-04 03:33:22.775 GMT [91249] HINT:  Is another postmaster (PID 87605) running in data directory "/Users/hj/study_ex/my-backend/data/pg"?

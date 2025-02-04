@@ -17,3 +17,5 @@
 @start: (_umbrella-run "mix phx.server")
 
 @istart: (_umbrella-run "iex -S mix phx.server")
+
+@psql: (_shell-run "psql -U postgres -h localhost")

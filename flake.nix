@@ -14,15 +14,17 @@
     }:
     let
 
+      unquote = s: builtins.replaceStrings [ "\"" ] [ "" ] s;
       devEnv = {
-          PGPORT = builtins.getEnv "PGPORT";
-          POSTGRES_USER = builtins.getEnv "POSTGRES_USER";
-          POSTGRES_DB = builtins.getEnv "POSTGRES_DB";
-          POSTGRES_PASSWORD = builtins.getEnv "POSTGRES_PASSWORD";
-          LISTEN_ADDRESSES = builtins.getEnv "LISTEN_ADDRESSES";
-      }; 
- 
-    in 
+        DB_HOST = builtins.getEnv "DB_HOST";
+        DB_PORT = builtins.getEnv "DB_PORT";
+        DB_LISTEN_ADDRESSES = builtins.getEnv "DB_LISTEN_ADDRESSES";
+        DB_NAME = builtins.getEnv "DB_NAME";
+        DB_USER = builtins.getEnv "DB_USER";
+        DB_PASSWORD = builtins.getEnv "DB_PASSWORD";
+      };
+
+    in
 
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
@@ -38,8 +40,8 @@
       perSystem =
         {
           self',
-          system, 
-          lib, 
+          system,
+          lib,
           config,
           ...
         }:
@@ -54,7 +56,7 @@
                 ];
             };
           };
-    
+
         in
         # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
         {
@@ -62,37 +64,55 @@
           packages.default = pkgs.mise;
 
           process-compose."app-services" =
-          let 
-          in 
-          { config, lib, ... }:
+            let
+              _DB_HOST = unquote devEnv.DB_HOST;
+              DB_PORT = lib.strings.toIntBase10 (unquote devEnv.DB_PORT);
+              DB_LISTEN_ADDRESSES = unquote devEnv.DB_LISTEN_ADDRESSES;
+              DB_NAME = unquote devEnv.DB_NAME;
+              DB_USER = unquote devEnv.DB_USER;
+              DB_PASSWORD = unquote devEnv.DB_PASSWORD;
+            in
+            { config, lib, ... }:
             {
               imports = [
                 inputs.services-flake.processComposeModules.default
               ];
               services = {
                 postgres."pg" = {
-                  enable = true; 
+                  enable = true;
                   package = pkgs.postgresql_17;
-                  listen_addresses = devEnv.LISTEN_ADDRESSES;
-                  port= lib.strings.toIntBase10 devEnv.PGPORT;
+                  listen_addresses = DB_LISTEN_ADDRESSES;
+                  dataDir = "./data/pg";
+                  port = DB_PORT;
                   initialScript = {
                     before = ''
-                      CREATE ROLE ${devEnv.POSTGRES_USER} WITH LOGIN PASSWORD '${devEnv.POSTGRES_PASSWORD}' SUPERUSER
+                      CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;
+                     CREATE DATABASE ${DB_NAME};
                     '';
                   };
                 };
-                # environment = devEnv;
-                
+
               };
-              settings.processes.pgweb = {
-                command = pkgs.pgweb;
-                depends_on."pg".condition = "process_healthy";
-                environment.PGWEB_DATABASE_URL = config.services.postgres.pg.connectionURI { dbName = devEnv.POSTGRES_DB; };
-              };
+              settings.processes.pgweb =
+                let
+                  pgcfg = config.services.postgres.pg;
+                in
+                {
+                  command = pkgs.pgweb;
+                  depends_on."pg".condition = "process_healthy";
+                  environment.PGWEB_DATABASE_URL = pgcfg.connectionURI {
+                    dbName = DB_NAME;
+                  };
+                  is_foreground = true;
+                };
             };
 
-          devShells.default = config.process-compose."app-services".services.outputs.devShell;
-          
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [
+              config.process-compose."app-services".services.outputs.devShell
+            ];
+          };
+
         };
     };
 }

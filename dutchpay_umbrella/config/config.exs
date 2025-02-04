@@ -1,3 +1,4 @@
+
 # This file is responsible for configuring your umbrella
 # and **all applications** and their dependencies with the
 # help of the Config module.
@@ -41,8 +42,7 @@ config :dutchpay_web,
 config :esbuild,
   version: "0.24.2",
   dutchpay_web: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    args: ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/dutchpay_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
@@ -57,7 +57,7 @@ config :phoenix, :json_library, Jason
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.0.0",
+  version: "4.0.3",
   dutchpay_web: [
     args: ~w(
       --input=css/app.css
