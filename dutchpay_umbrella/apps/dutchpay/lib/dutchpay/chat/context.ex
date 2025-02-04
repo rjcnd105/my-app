@@ -11,7 +11,7 @@ defmodule Dutchpay.Chat do
   end
 
   def get_room!(id) do
-    Repo.get!(Room, id)
+    Repo.get!(Room.Schema, id)
   end
 
   def create_room(attrs) do
@@ -20,5 +20,15 @@ defmodule Dutchpay.Chat do
     # 패턴 매칭을 통해 { :ok, ... } 일때는 insert되고 { :error, ... } 일때는 insert되지 않는다.
     |> Room.Schema.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def change_room(room, attrs \\ %{}) do
+    Room.Schema.changeset(room, attrs)
+  end
+
+  def update_room(%Room.Schema{} = room, attrs) do
+    room
+    |> Room.Schema.changeset(attrs)
+    |> Repo.update()
   end
 end

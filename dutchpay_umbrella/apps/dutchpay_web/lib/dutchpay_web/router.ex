@@ -1,7 +1,6 @@
 defmodule DutchpayWeb.Router do
   use DutchpayWeb, :router
 
-  alias DutchpayWeb.ChatRoomLive
   # 라우터 모듈임을 알려줌.
   pipeline :browser do
     plug(:accepts, ["html"])

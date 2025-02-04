@@ -33,12 +33,18 @@ defmodule DutchpayWeb.ChatRoomLive do
             <%!-- #{assigns.room.name} --%>
             <%!-- heex내에서 assigns를 생략할 수 있는 sugar가 제공된다. --%>
             #{@room.name}
+            <%!-- 다른 LiveView 모듈이기 때문에 patch가 아닌 navigate로 해야한다. --%>
+            <.link
+              class="font-normal text-xs text-blue-600 hover:text-blue-700"
+              navigate={~p"/rooms/#{@room}/edit"}
+            >
+              edit
+            </.link>
           </h1>
           <div
             class={["text-xs leading-none h-3.5", !@hide_topic? && ["text-slate-500", "text-[10px]"]]}
             phx-click="toggle_topic"
           >
-            <%!-- #{assigns.room.topic} --%>
             <%= if @hide_topic? do %>
               #{@room.topic}
             <% else %>
@@ -52,8 +58,8 @@ defmodule DutchpayWeb.ChatRoomLive do
   end
 
   # 컴파일러에게 알려주기 위한 용도
-  attr :active, :boolean, required: true
-  attr :room, Chat.Room.Schema, required: true
+  attr(:active, :boolean, required: true)
+  attr(:room, Chat.Room.Schema, required: true)
 
   defp room_link(assigns) do
     ~H"""
@@ -106,6 +112,7 @@ defmodule DutchpayWeb.ChatRoomLive do
     IO.puts("handle_params #{inspect(params)} (connected: #{connected?(socket)})")
     rooms = socket.assigns.rooms
 
+    # 찾은 room의 id를 넣음, 없을 경우 리스트의 첫번째를 넣음
     room =
       case Map.fetch(params, "id") do
         {:ok, id} ->
@@ -123,12 +130,14 @@ defmodule DutchpayWeb.ChatRoomLive do
       IO.puts("mounting (not connected)")
     end
 
-    {:noreply, assign(socket, hide_topic?: false, rooms: rooms, room: room, page_title: "#" <> room.name)}
+    {:noreply,
+     assign(socket, hide_topic?: false, rooms: rooms, room: room, page_title: "#" <> room.name)}
   end
 
   def handle_event("toggle_topic", _params, socket) do
-    # {:noreply, assign(socket, hide_topic?: !socket.assigns.hide_topic?)}
-    # 위의 코드 동작이랑 같음
-    {:noreply, assign(socket, :hide_topic?, &(!&1))}
+    {:noreply, assign(socket, hide_topic?: !socket.assigns.hide_topic?)}
+
+    # 아래 코드는 assign의 3번째 인자 함수가 처리된 값이 한번 평가되고 재평가되지 않는다.
+    # {:noreply, assign(socket, :hide_topic?, &(!&1))}
   end
 end

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" source("../../lib");
 
 @layer base {
   button:not(:disabled),
