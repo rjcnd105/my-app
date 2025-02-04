@@ -48,7 +48,7 @@
                         'Elixir.Bandit.PhoenixAdapter',
                         'Elixir.Bandit.Pipeline',
                         'Elixir.Bandit.PrimitiveOps.WebSocket',
-                        'Elixir.Bandit.Telemetry',
+                        'Elixir.Bandit.Telemetry','Elixir.Bandit.Trace',
                         'Elixir.Bandit.TransportError',
                         'Elixir.Bandit.TransportInfo',
                         'Elixir.Bandit.WebSocket.Connection',
@@ -77,5 +77,5 @@
                              websock,hpax,telemetry]},
               {description,"A pure-Elixir HTTP server built for Plug & WebSock apps"},
               {registered,[]},
-              {vsn,"1.6.4"},
+              {vsn,"1.6.7"},
               {mod,{'Elixir.Bandit.Application',[]}}]}.

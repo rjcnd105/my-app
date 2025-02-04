@@ -86,7 +86,7 @@
                              phoenix_view,castore,plug_cowboy,jason]},
               {description,"Peace of mind from prototype to production"},
               {registered,[]},
-              {vsn,"1.7.18"},
+              {vsn,"1.7.19"},
               {mod,{'Elixir.Phoenix',[]}},
               {env,[{logger,true},
                     {stacktrace_depth,nil},
