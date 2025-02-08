@@ -1,4 +1,3 @@
-
 # This file is responsible for configuring your umbrella
 # and **all applications** and their dependencies with the
 # help of the Config module.
@@ -57,7 +56,7 @@ config :phoenix, :json_library, Jason
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.0.3",
+  version: "4.0.4",
   dutchpay_web: [
     args: ~w(
       --input=css/app.css

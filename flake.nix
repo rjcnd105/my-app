@@ -61,7 +61,6 @@
         # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
         {
           _module.args.pkgs = pkgs;
-          packages.default = pkgs.mise;
 
           process-compose."app-services" =
             let
