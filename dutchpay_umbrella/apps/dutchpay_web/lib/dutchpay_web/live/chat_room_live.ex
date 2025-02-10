@@ -26,7 +26,6 @@ defmodule DutchpayWeb.ChatRoomLive do
             <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
           </div>
         </div>
-
       </div>
       <div class="flex flex-col grow shadow-lg">
         <div class="flex justify-between items-center shrink-0 h-16 bg-white border-b border-slate-300 px-4">
@@ -44,7 +43,10 @@ defmodule DutchpayWeb.ChatRoomLive do
               </.link>
             </h2>
             <div
-              class={["text-xs leading-none h-3.5", !@hide_topic? && ["text-slate-500", "text-[10px]"]]}
+              class={[
+                "text-xs leading-none h-3.5",
+                !@hide_topic? && ["text-slate-500", "text-[10px]"]
+              ]}
               phx-click="toggle_topic"
             >
               <%= if @hide_topic? do %>
@@ -53,30 +55,32 @@ defmodule DutchpayWeb.ChatRoomLive do
                 [자세히 보기]
               <% end %>
             </div>
-
           </div>
           <ul class="relative z-10 flex items-center gap-4 pl-4 sm:pl-6 lg:pl-8 justify-end">
-              <li class="text-[0.8125rem] leading-6 text-zinc-900">
-                {@current_user.email}
-              </li>
-              <li>
-                <.link
-                  href={~p"/users/settings"}
-                  class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                >
-                  Settings
-                </.link>
-              </li>
-              <li>
-                <.link
-                  href={~p"/users/log_out"}
-                  method="delete"
-                  class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-                >
-                  Log out
-                </.link>
-              </li>
+            <li class="text-[0.8125rem] leading-6 text-zinc-900">
+              {@current_user.email}
+            </li>
+            <li>
+              <.link
+                href={~p"/users/settings"}
+                class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+              >
+                Settings
+              </.link>
+            </li>
+            <li>
+              <.link
+                href={~p"/users/log_out"}
+                method="delete"
+                class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+              >
+                Log out
+              </.link>
+            </li>
           </ul>
+        </div>
+        <div class="flex flex-col grow overflow-auto">
+          <.message :for={message <- @messages} message={message} />
         </div>
       </div>
     </div>
@@ -148,6 +152,8 @@ defmodule DutchpayWeb.ChatRoomLive do
           List.first(rooms)
       end
 
+    messages = Dutchpay.Chat.list_messages_in_room(room)
+
     IO.puts("mounting")
 
     if connected?(socket) do
@@ -157,7 +163,13 @@ defmodule DutchpayWeb.ChatRoomLive do
     end
 
     {:noreply,
-     assign(socket, hide_topic?: false, rooms: rooms, room: room, page_title: "#" <> room.name)}
+     assign(socket,
+       hide_topic?: false,
+       rooms: rooms,
+       room: room,
+       messages: messages,
+       page_title: "#" <> room.name
+     )}
   end
 
   def handle_event("toggle_topic", _params, socket) do
@@ -165,5 +177,23 @@ defmodule DutchpayWeb.ChatRoomLive do
 
     # 아래 코드는 assign의 3번째 인자 함수가 처리된 값이 한번 평가되고 재평가되지 않는다.
     # {:noreply, assign(socket, :hide_topic?, &(!&1))}
+  end
+
+  attr :message, Dutchpay.Chat.Message.Schema, required: true
+
+  defp message(assigns) do
+    ~H"""
+    <div class="relative flex px-4 py-3">
+      <div class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
+      <div class="ml-2">
+        <div class="-mt-1">
+          <.link class="text-sm font-semibold hover:underline">
+            <span>User</span>
+          </.link>
+          <p class="text-sm">{@message.body}</p>
+        </div>
+      </div>
+    </div>
+    """
   end
 end
