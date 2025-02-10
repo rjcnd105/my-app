@@ -1,6 +1,8 @@
 defmodule DutchpayWeb.Router do
   use DutchpayWeb, :router
 
+  import DutchpayWeb.UserAuth
+
   # 라우터 모듈임을 알려줌.
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -9,6 +11,7 @@ defmodule DutchpayWeb.Router do
     plug(:put_root_layout, html: {DutchpayWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(:fetch_current_user)  # 이 부분이 있는지 확인
   end
 
   pipeline :api do
@@ -16,12 +19,17 @@ defmodule DutchpayWeb.Router do
   end
 
   scope "/", DutchpayWeb do
-    pipe_through(:browser)
+    pipe_through([:browser, :require_authenticated_user])
 
-    get("/home", PageController, :home)
-    live("/", ChatRoomLive)
-    live("/rooms/:id", ChatRoomLive)
-    live("/rooms/:id/edit", ChatRoomLive.Edit)
+    live_session :require_authenticated_user,
+      on_mount: [{DutchpayWeb.UserAuth, :ensure_authenticated}] do
+      live "/", ChatRoomLive
+      live "/rooms", ChatRoomLive
+      live "/rooms/:id", ChatRoomLive
+      live "/rooms/:id/edit", ChatRoomLive.Edit
+      live "/users/settings", UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -43,6 +51,36 @@ defmodule DutchpayWeb.Router do
 
       live_dashboard("/dashboard", metrics: DutchpayWeb.Telemetry)
       forward("/mailbox", Plug.Swoosh.MailboxPreview)
+    end
+  end
+
+  ## Authentication routes
+
+  scope "/", DutchpayWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    live_session :redirect_if_user_is_authenticated,
+      on_mount: [{DutchpayWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/users/register", UserRegistrationLive, :new
+      live "/users/log_in", UserLoginLive, :new
+      live "/users/reset_password", UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+    end
+
+    post "/users/log_in", UserSessionController, :create
+  end
+
+
+
+  scope "/", DutchpayWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+
+    live_session :current_user,
+      on_mount: [{DutchpayWeb.UserAuth, :mount_current_user}] do
+      live "/users/confirm/:token", UserConfirmationLive, :edit
+      live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
 end

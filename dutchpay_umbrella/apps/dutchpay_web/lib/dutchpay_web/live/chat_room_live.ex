@@ -9,48 +9,74 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col shrink-0 w-64 bg-slate-100">
-      <div class="flex justify-between items-center shrink-0 h-16 border-b border-slate-300 px-4">
-        <div class="flex flex-col gap-1.5">
-          <h1 class="text-lg font-bold text-gray-800">
-            Dutchpay Chat Rooms
-          </h1>
-        </div>
-      </div>
-      <div class="mt-4 overflow-auto">
-        <div class="flex items-center h-8 px-3">
-          <span class="ml-2 leading-none font-medium text-sm">Rooms</span>
-        </div>
-        <div id="rooms-list">
-          <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
-        </div>
-      </div>
-    </div>
-    <div class="flex flex-col grow shadow-lg">
-      <div class="flex justify-between items-center shrink-0 h-16 bg-white border-b border-slate-300 px-4">
-        <div class="flex flex-col gap-1.5">
-          <h1 class="text-sm font-bold leading-none">
-            <%!-- #{assigns.room.name} --%>
-            <%!-- heex내에서 assigns를 생략할 수 있는 sugar가 제공된다. --%>
-            #{@room.name}
-            <%!-- 다른 LiveView 모듈이기 때문에 patch가 아닌 navigate로 해야한다. --%>
-            <.link
-              class="font-normal text-xs text-blue-600 hover:text-blue-700"
-              navigate={~p"/rooms/#{@room}/edit"}
-            >
-              edit
-            </.link>
-          </h1>
-          <div
-            class={["text-xs leading-none h-3.5", !@hide_topic? && ["text-slate-500", "text-[10px]"]]}
-            phx-click="toggle_topic"
-          >
-            <%= if @hide_topic? do %>
-              #{@room.topic}
-            <% else %>
-              [자세히 보기]
-            <% end %>
+    <div class="flex flex-1">
+      <div class="flex flex-col shrink-0 w-64 bg-slate-100">
+        <div class="flex justify-between items-center shrink-0 h-16 border-b border-slate-300 px-4">
+          <div class="flex flex-col gap-1.5">
+            <h1 class="text-lg font-bold text-gray-800">
+              Dutchpay Chat Rooms
+            </h1>
           </div>
+        </div>
+        <div class="mt-4 overflow-auto">
+          <div class="flex items-center h-8 px-3">
+            <span class="ml-2 leading-none font-medium text-sm">Rooms</span>
+          </div>
+          <div id="rooms-list">
+            <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
+          </div>
+        </div>
+
+      </div>
+      <div class="flex flex-col grow shadow-lg">
+        <div class="flex justify-between items-center shrink-0 h-16 bg-white border-b border-slate-300 px-4">
+          <div class="flex flex-col gap-1.5">
+            <h2 class="text-sm font-bold leading-none">
+              <%!-- #{assigns.room.name} --%>
+              <%!-- heex내에서 assigns를 생략할 수 있는 sugar가 제공된다. --%>
+              #{@room.name}
+              <%!-- 다른 LiveView 모듈이기 때문에 patch가 아닌 navigate로 해야한다. --%>
+              <.link
+                class="font-normal text-xs text-blue-600 hover:text-blue-700"
+                navigate={~p"/rooms/#{@room}/edit"}
+              >
+                edit
+              </.link>
+            </h2>
+            <div
+              class={["text-xs leading-none h-3.5", !@hide_topic? && ["text-slate-500", "text-[10px]"]]}
+              phx-click="toggle_topic"
+            >
+              <%= if @hide_topic? do %>
+                #{@room.topic}
+              <% else %>
+                [자세히 보기]
+              <% end %>
+            </div>
+
+          </div>
+          <ul class="relative z-10 flex items-center gap-4 pl-4 sm:pl-6 lg:pl-8 justify-end">
+              <li class="text-[0.8125rem] leading-6 text-zinc-900">
+                {@current_user.email}
+              </li>
+              <li>
+                <.link
+                  href={~p"/users/settings"}
+                  class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+                >
+                  Settings
+                </.link>
+              </li>
+              <li>
+                <.link
+                  href={~p"/users/log_out"}
+                  method="delete"
+                  class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+                >
+                  Log out
+                </.link>
+              </li>
+          </ul>
         </div>
       </div>
     </div>
