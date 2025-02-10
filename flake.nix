@@ -56,6 +56,9 @@
                 ];
             };
           };
+          commonPackages = [] ++ lib.optionals pkgs.stdenv.isLinux [ 
+            pkgs.inotify-tools
+          ];
 
         in
         # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
@@ -106,6 +109,7 @@
             };
 
           devShells.default = pkgs.mkShell {
+            packages = [] ++ commonPackages;
             inputsFrom = [
               config.process-compose."app-services".services.outputs.devShell
             ];
