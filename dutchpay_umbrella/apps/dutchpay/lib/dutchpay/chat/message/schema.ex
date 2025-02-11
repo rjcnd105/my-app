@@ -3,9 +3,12 @@ defmodule Dutchpay.Chat.Message.Schema do
   import Ecto.Changeset
 
   schema "messages" do
-    field :user_id, :id
-    field :room_id, :id
     field :body, :string
+
+    # 다른 스키마 연결
+    # forign_key를 통해서 이름을 변경할 수 있다.
+    belongs_to :room, Dutchpay.Chat.Room.Schema, foreign_key: :room_id
+    belongs_to :user, Dutchpay.Accounts.User, foreign_key: :user_id
 
     timestamps(type: :utc_datetime)
   end

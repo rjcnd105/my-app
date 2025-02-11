@@ -8,6 +8,9 @@ defmodule Dutchpay.Chat.Room.Schema do
     field :name, :string
     field :topic, :string
 
+    # 일대다인 경우에 연결된 다수를 가져옴
+    has_many :messages, Dutchpay.Chat.Message.Schema
+
     timestamps()
   end
 

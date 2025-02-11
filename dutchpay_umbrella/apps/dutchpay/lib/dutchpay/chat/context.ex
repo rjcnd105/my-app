@@ -45,6 +45,10 @@ defmodule Dutchpay.Chat do
     # ^를 붙힌다면 전달되는 값을 구분하기 떄문에 이름이 같아도 된다.
     # where([m], m.room_id == ^m)
     |> where([m], m.room_id == ^room_id)
+    # preload를 시켜야 belongs_to 등으로 연결된 스키마를 가져올 수 있다.
+    # @see Dutchpay.Chat.Message.Schema
+    |> preload(:user)
+    # |> preload(:room)
     |> order_by([m], asc: :inserted_at, asc: :id)
     |> Repo.all()
 

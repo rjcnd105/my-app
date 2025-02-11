@@ -153,6 +153,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       end
 
     messages = Dutchpay.Chat.list_messages_in_room(room)
+    messages |> IO.inspect(label: "messages")
 
     IO.puts("mounting")
 
@@ -188,12 +189,16 @@ defmodule DutchpayWeb.ChatRoomLive do
       <div class="ml-2">
         <div class="-mt-1">
           <.link class="text-sm font-semibold hover:underline">
-            <span>User</span>
+            <span>{get_user_name_from_email(@message.user)}</span>
           </.link>
           <p class="text-sm">{@message.body}</p>
         </div>
       </div>
     </div>
     """
+  end
+
+  defp get_user_name_from_email(%Dutchpay.Accounts.User{} = user) do
+    user.email |> String.split("@") |> List.first() |> String.capitalize()
   end
 end
