@@ -62,4 +62,10 @@ defmodule Dutchpay.Chat do
   def change_message(message, attrs \\ %{}) do
     Message.Schema.changeset(message, attrs)
   end
+
+  def create_message(room, attrs, user) do
+    %Message.Schema{room: room, user: user}
+    |> change_message(attrs)
+    |> Repo.insert()
+  end
 end

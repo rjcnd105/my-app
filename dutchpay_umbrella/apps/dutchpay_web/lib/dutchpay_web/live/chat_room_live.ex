@@ -1,5 +1,6 @@
 defmodule DutchpayWeb.ChatRoomLive do
   @moduledoc false
+  alias Dutchpay.Chat.Message
   use DutchpayWeb, :live_view
 
   alias Dutchpay.Chat
@@ -82,6 +83,28 @@ defmodule DutchpayWeb.ChatRoomLive do
         <div class="flex flex-col grow overflow-auto">
           <.message :for={message <- @messages} message={message} />
         </div>
+
+        <div class="h-12 bg-white px-4 pb-4">
+          <.form
+            id="new-message-form"
+            for={@new_message_form}
+            class="flex item-center border-2 border-slate-300 rounded-sm p-1"
+            phx-change="validate-message"
+            phx-submit="submit-message"
+          >
+            <textarea
+              class="grow text-sm px-1 outline-0 border-slate-300 overflow-hidden resize-none"
+              id="chat-message-textarea"
+              name={@new_message_form[:body].name}
+              placeholder={"Message ##{@room.name}"}
+              phx-debounce={500}
+              rows="1"
+            >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
+            <button class="shrink flex items-center justify-center size-6 rounded-md hover:bg-slate-200">
+              <.icon name="hero-paper-airplane" class="size-4" />
+            </button>
+          </.form>
+        </div>
       </div>
     </div>
     """
@@ -153,7 +176,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       end
 
     messages = Dutchpay.Chat.list_messages_in_room(room)
-    messages |> IO.inspect(label: "messages")
+    IO.inspect(messages, label: "messages")
 
     IO.puts("mounting")
 
@@ -163,21 +186,72 @@ defmodule DutchpayWeb.ChatRoomLive do
       IO.puts("mounting (not connected)")
     end
 
-    {:noreply,
-     assign(socket,
-       hide_topic?: false,
-       rooms: rooms,
-       room: room,
-       messages: messages,
-       page_title: "#" <> room.name
-     )}
+    socket =
+      socket
+      |> assign(
+        hide_topic?: false,
+        room: room,
+        messages: messages,
+        page_title: "#" <> room.name
+      )
+      # message form 초기화
+      |> assign_message_form(Chat.change_message(%Message.Schema{}))
+
+    {:noreply, socket}
+    # {:noreply,
+    #  assign(socket,
+    #    hide_topic?: false,
+    #    rooms: rooms,
+    #    room: room,
+    #    messages: messages,
+    #    page_title: "#" <> room.name
+    #  )}
+  end
+
+  def handle_event("validate-message", %{"message" => message_params}, socket) do
+    changeset =
+      %Chat.Message.Schema{}
+      |> Chat.change_message(message_params)
+
+    socket =
+      socket
+      |> assign_message_form(changeset)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("submit-message", %{"message" => message_params}, socket) do
+    %{current_user: current_user, room: room} = socket.assigns
+
+    socket =
+      case Chat.create_message(room, message_params, current_user) do
+        {:ok, message} ->
+          socket
+          # |> IO.inspect(label: "msg")
+          |> update(:messages, &(&1 ++ [message]))
+          |> assign_message_form(Chat.change_message(%Chat.Message.Schema{}))
+
+        {:error, changeset} ->
+          assign_message_form(socket, changeset)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("toggle_topic", _params, socket) do
+    socket =
+      socket
+      |> update(:hide_topic?, &(!&1))
+
     {:noreply, assign(socket, hide_topic?: !socket.assigns.hide_topic?)}
 
     # 아래 코드는 assign의 3번째 인자 함수가 처리된 값이 한번 평가되고 재평가되지 않는다.
     # {:noreply, assign(socket, :hide_topic?, &(!&1))}
+  end
+
+  defp assign_message_form(socket, changeset) do
+    socket
+    |> assign(:new_message_form, to_form(changeset, as: "message"))
   end
 
   attr :message, Dutchpay.Chat.Message.Schema, required: true
