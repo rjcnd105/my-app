@@ -58,4 +58,8 @@ defmodule Dutchpay.Chat do
     #   order_by: [asc: :inserted_at, asc: :id]
     # )
   end
+
+  def change_message(message, attrs \\ %{}) do
+    Message.Schema.changeset(message, attrs)
+  end
 end

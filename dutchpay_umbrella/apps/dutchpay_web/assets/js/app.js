@@ -49,7 +49,7 @@ window.addEventListener("phx:live_reload:attached", ({ detail: reloader }) => {
   window.addEventListener(
     "click",
     (e) => {
-      if (keyDown === "c") {
+      if (keyDown === "e") {
         e.preventDefault();
         e.stopImmediatePropagation();
         reloader.openEditorAtCaller(e.target);
