@@ -81,7 +81,8 @@ defmodule DutchpayWeb.ChatRoomLive do
           </ul>
         </div>
         <div class="flex flex-col grow overflow-auto">
-          <.message :for={message <- @messages} message={message} />
+          <%!-- <.message :for={message <- @messages} message={message} /> --%>
+          <.message :for={{dom_id, message} <- @streams.messages} dom_id={dom_id} message={message} />
         </div>
 
         <div class="h-12 bg-white px-4 pb-4">
@@ -99,7 +100,7 @@ defmodule DutchpayWeb.ChatRoomLive do
               placeholder={"Message ##{@room.name}"}
               phx-debounce={500}
               rows="1"
-            >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
+            ><%= Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value) %></textarea>
             <button class="shrink flex items-center justify-center size-6 rounded-md hover:bg-slate-200">
               <.icon name="hero-paper-airplane" class="size-4" />
             </button>
@@ -194,6 +195,10 @@ defmodule DutchpayWeb.ChatRoomLive do
         messages: messages,
         page_title: "#" <> room.name
       )
+      # stream으로 하면 socket.assign에 저장하지 않고 한번 렌더링하고 지운다.
+      # 그로 인해 서버 부하를 줄일 수 있다.
+      # 큰 리스트같은 경우에 유용하다.
+      |> stream(:messages, messages, reset: true)
       # message form 초기화
       |> assign_message_form(Chat.change_message(%Message.Schema{}))
 
@@ -213,11 +218,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       %Chat.Message.Schema{}
       |> Chat.change_message(message_params)
 
-    socket =
-      socket
-      |> assign_message_form(changeset)
-
-    {:noreply, socket}
+    {:noreply, assign_message_form(socket, changeset)}
   end
 
   def handle_event("submit-message", %{"message" => message_params}, socket) do
@@ -228,7 +229,12 @@ defmodule DutchpayWeb.ChatRoomLive do
         {:ok, message} ->
           socket
           # |> IO.inspect(label: "msg")
-          |> update(:messages, &(&1 ++ [message]))
+          ## none stream 방식일 경우
+          # |> update(:messages, &(&1 ++ [message]))
+
+          # stream 할당인 경우 @message는 존재하지 않으므로 업데이트할 수 없다.
+          # 기본적으로 stream_insert/3 은 컬렉션 끝에 새 항목을 삽입합니다.
+          |> stream_insert(:messages, message)
           |> assign_message_form(Chat.change_message(%Chat.Message.Schema{}))
 
         {:error, changeset} ->
@@ -254,17 +260,19 @@ defmodule DutchpayWeb.ChatRoomLive do
     |> assign(:new_message_form, to_form(changeset, as: "message"))
   end
 
+  attr :dom_id, :string, required: true
   attr :message, Dutchpay.Chat.Message.Schema, required: true
 
   defp message(assigns) do
     ~H"""
     <div class="relative flex px-4 py-3">
-      <div class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
+      <div id={@dom_id} class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
       <div class="ml-2">
         <div class="-mt-1">
           <.link class="text-sm font-semibold hover:underline">
             <span>{get_user_name_from_email(@message.user)}</span>
           </.link>
+          <span class="ml-1 text-xs text-gray-500">{message_timestamp(@message)}</span>
           <p class="text-sm">{@message.body}</p>
         </div>
       </div>
@@ -274,5 +282,10 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   defp get_user_name_from_email(%Dutchpay.Accounts.User{} = user) do
     user.email |> String.split("@") |> List.first() |> String.capitalize()
+  end
+
+  defp message_timestamp(message) do
+    message.inserted_at
+    |> Timex.format!("%-l:%M %p", :strftime)
   end
 end

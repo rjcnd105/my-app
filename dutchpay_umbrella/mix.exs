@@ -26,7 +26,7 @@ defmodule Dutchpay.Umbrella.MixProject do
   defp deps do
     [
       # Required to run "mix format" on ~H/.heex files from the umbrella root
-      {:phoenix_live_view, ">= 0.0.0"},
+      {:phoenix_live_view, ">= 1.0.0"},
       {:mix_test_watch, "~> 1.0", only: [:test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]

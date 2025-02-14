@@ -36,14 +36,14 @@ defmodule DutchpayWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.18"},
-      {:phoenix_ecto, "~> 4.5"},
-      {:phoenix_html, "~> 4.1"},
+      {:phoenix, "~> 1.7"},
+      {:phoenix_ecto, "~> 4.6"},
+      {:phoenix_html, "~> 4.2"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:phoenix_live_view, "~> 1.0"},
+      {:floki, ">= 0.37.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
@@ -56,8 +56,10 @@ defmodule DutchpayWeb.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
       {:dutchpay, in_umbrella: true},
-      {:jason, "~> 1.2"},
-      {:bandit, "~> 1.5"}
+      {:jason, "~> 1.4"},
+      {:bandit, "~> 1.5"},
+      {:timex, "~> 3.7"},
+      {:ex_cldr_numbers, "~> 2.33"}
     ]
   end
 

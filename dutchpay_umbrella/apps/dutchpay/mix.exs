@@ -39,12 +39,12 @@ defmodule Dutchpay.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:dns_cluster, "~> 0.1.1"},
       {:phoenix_pubsub, "~> 2.1"},
-      {:ecto, "~> 3.10"},
-      {:ecto_sql, "~> 3.10"},
+      {:ecto, "~> 3.12"},
+      {:ecto_sql, "~> 3.12"},
       {:postgrex, ">= 0.0.0"},
-      {:jason, "~> 1.2"},
-      {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"},
+      {:jason, "~> 1.4"},
+      {:swoosh, "~> 1.17"},
+      {:finch, "~> 0.19"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end

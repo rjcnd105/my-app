@@ -11,7 +11,8 @@ defmodule DutchpayWeb.Router do
     plug(:put_root_layout, html: {DutchpayWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
-    plug(:fetch_current_user)  # 이 부분이 있는지 확인
+    # 이 부분이 있는지 확인
+    plug(:fetch_current_user)
   end
 
   pipeline :api do
@@ -69,8 +70,6 @@ defmodule DutchpayWeb.Router do
 
     post "/users/log_in", UserSessionController, :create
   end
-
-
 
   scope "/", DutchpayWeb do
     pipe_through [:browser]
