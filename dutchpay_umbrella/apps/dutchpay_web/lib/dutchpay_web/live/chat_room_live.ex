@@ -80,9 +80,15 @@ defmodule DutchpayWeb.ChatRoomLive do
             </li>
           </ul>
         </div>
-        <div class="flex flex-col grow overflow-auto">
+        <div id="room-messages" class="flex flex-col grow overflow-auto" phx-update="stream">
           <%!-- <.message :for={message <- @messages} message={message} /> --%>
-          <.message :for={{dom_id, message} <- @streams.messages} dom_id={dom_id} message={message} />
+          <.message
+            :for={{dom_id, message} <- @streams.messages}
+            dom_id={dom_id}
+            message={message}
+            current_user={@current_user}
+            timezone={@timezone}
+          />
         </div>
 
         <div class="h-12 bg-white px-4 pb-4">
@@ -100,7 +106,7 @@ defmodule DutchpayWeb.ChatRoomLive do
               placeholder={"Message ##{@room.name}"}
               phx-debounce={500}
               rows="1"
-            ><%= Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value) %></textarea>
+            >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
             <button class="shrink flex items-center justify-center size-6 rounded-md hover:bg-slate-200">
               <.icon name="hero-paper-airplane" class="size-4" />
             </button>
@@ -154,15 +160,16 @@ defmodule DutchpayWeb.ChatRoomLive do
       IO.puts("mounting (not connected)")
     end
 
+    timezone = get_connect_params(socket)["timezone"]
     # socket.assigns에 :room이라는 키로 room값이 할당된다.
     # socket.assigns는 elixir 데이터를 저장할 수 있는 간단한 map이다.
     # 이는 render로 전달된다.
-    {:ok, assign(socket, rooms: rooms)}
+    {:ok, assign(socket, rooms: rooms, timezone: timezone)}
   end
 
   # 2 - handle_params
   # params가 업데이트 될때만 실행
-  def handle_params(params, _uri, socket) do
+  def handle_params(params, _session, socket) do
     IO.puts("handle_params #{inspect(params)} (connected: #{connected?(socket)})")
     rooms = socket.assigns.rooms
 
@@ -170,7 +177,7 @@ defmodule DutchpayWeb.ChatRoomLive do
     room =
       case Map.fetch(params, "id") do
         {:ok, id} ->
-          %Dutchpay.Chat.Room.Schema{} = Enum.find(rooms, &(to_string(&1.id) == id))
+          Dutchpay.Chat.get_room!(id)
 
         :error ->
           List.first(rooms)
@@ -192,7 +199,6 @@ defmodule DutchpayWeb.ChatRoomLive do
       |> assign(
         hide_topic?: false,
         room: room,
-        messages: messages,
         page_title: "#" <> room.name
       )
       # stream으로 하면 socket.assign에 저장하지 않고 한번 렌더링하고 지운다.
@@ -213,6 +219,7 @@ defmodule DutchpayWeb.ChatRoomLive do
     #  )}
   end
 
+  # 웹 요청에서 받는 form은 atom이 아닌 문자열 키를 가지고 있으므로 이렇게 패턴 매칭해야함.
   def handle_event("validate-message", %{"message" => message_params}, socket) do
     changeset =
       %Chat.Message.Schema{}
@@ -255,37 +262,58 @@ defmodule DutchpayWeb.ChatRoomLive do
     # {:noreply, assign(socket, :hide_topic?, &(!&1))}
   end
 
-  defp assign_message_form(socket, changeset) do
-    socket
-    |> assign(:new_message_form, to_form(changeset, as: "message"))
+  def handle_event("delete-message", %{"id" => message_id}, socket) do
+    {:ok, message} = Chat.delete_message_by_id(message_id, socket.assigns.current_user)
+
+    socket = stream_delete(socket, :messages, message)
+    {:noreply, socket}
   end
 
-  attr :dom_id, :string, required: true
-  attr :message, Dutchpay.Chat.Message.Schema, required: true
+  attr(:dom_id, :string, required: true)
+  attr(:current_user, Dutchpay.Accounts.User, required: true)
+  attr(:message, Dutchpay.Chat.Message.Schema, required: true)
+  attr(:timezone, :string, required: true)
 
   defp message(assigns) do
     ~H"""
-    <div class="relative flex px-4 py-3">
-      <div id={@dom_id} class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
+    <div id={@dom_id} class="relative flex px-4 py-3">
+      <div class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
       <div class="ml-2">
         <div class="-mt-1">
           <.link class="text-sm font-semibold hover:underline">
             <span>{get_user_name_from_email(@message.user)}</span>
           </.link>
-          <span class="ml-1 text-xs text-gray-500">{message_timestamp(@message)}</span>
+          <span :if={@timezone} class="ml-1 text-xs text-gray-500">
+            {message_timestamp(@message, @timezone)}
+          </span>
           <p class="text-sm">{@message.body}</p>
         </div>
       </div>
+      <button
+        :if={@current_user.id == @message.user.id}
+        class="absolute top-4 right-4 text-red-500 hover:text-red-800 cursor-pointer"
+        data-confirm="정말 메시지를 삭제하시겠습니까?"
+        phx-click="delete-message"
+        phx-value-id={@message.id}
+      >
+        <.icon  name="hero-trash" class="h-4 w-4" />
+      </button>
     </div>
     """
+  end
+
+  defp assign_message_form(socket, changeset) do
+    socket
+    |> assign(:new_message_form, to_form(changeset, as: "message"))
   end
 
   defp get_user_name_from_email(%Dutchpay.Accounts.User{} = user) do
     user.email |> String.split("@") |> List.first() |> String.capitalize()
   end
 
-  defp message_timestamp(message) do
+  defp message_timestamp(message, timezone) do
     message.inserted_at
+    |> Timex.Timezone.convert(timezone)
     |> Timex.format!("%-l:%M %p", :strftime)
   end
 end

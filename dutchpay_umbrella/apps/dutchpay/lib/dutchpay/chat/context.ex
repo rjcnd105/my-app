@@ -68,4 +68,14 @@ defmodule Dutchpay.Chat do
     |> change_message(attrs)
     |> Repo.insert()
   end
+
+  def delete_message_by_id(message_id, %Dutchpay.Accounts.User{id: user_id}) do
+    # Message.Schema 패턴 매칭을 거침으로서 검증이 들어감
+    # ^user_id 처럼 한 것은
+    # user_id를 패턴 매칭하며 새로 할당하는게 아닌
+    # 패턴 매칭으로 user_id 값이 같은지 검증을 하려고 하기 때문
+    message = %Message.Schema{user_id: ^user_id} = Dutchpay.Repo.get(Message.Schema, message_id)
+
+    Repo.delete(message)
+  end
 end

@@ -25,8 +25,8 @@ defmodule Dutchpay.Umbrella.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
     [
+      {:phoenix_live_view, "~> 1.0"},
       # Required to run "mix format" on ~H/.heex files from the umbrella root
-      {:phoenix_live_view, ">= 1.0.0"},
       {:mix_test_watch, "~> 1.0", only: [:test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]

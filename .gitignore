@@ -41,3 +41,4 @@ erl_crash.dump
 .secret.env
 
 data/pg
+dutchpay_umbrella/deps

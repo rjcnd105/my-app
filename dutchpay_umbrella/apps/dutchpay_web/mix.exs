@@ -9,7 +9,7 @@ defmodule DutchpayWeb.MixProject do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.14",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -43,11 +43,11 @@ defmodule DutchpayWeb.MixProject do
       {:phoenix_live_view, "~> 1.0"},
       {:floki, ">= 0.37.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
+       tag: "v2.2.0",
        sparse: "optimized",
        app: false,
        compile: false,
@@ -55,11 +55,11 @@ defmodule DutchpayWeb.MixProject do
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
-      {:dutchpay, in_umbrella: true},
       {:jason, "~> 1.4"},
       {:bandit, "~> 1.5"},
       {:timex, "~> 3.7"},
-      {:ex_cldr_numbers, "~> 2.33"}
+      {:ex_cldr_numbers, "~> 2.33"},
+      {:dutchpay, in_umbrella: true}
     ]
   end
 
