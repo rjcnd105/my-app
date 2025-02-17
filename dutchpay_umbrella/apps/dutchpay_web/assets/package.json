@@ -16,13 +16,13 @@
     "typescript": "^5.8.1-rc"
   },
   "scripts": {
-    "js": "bun build ./js/app.ts --outdir ../priv/static/assets  --sourcemap=linked",
+    "js": "bun build ./js/app.ts --outdir ../priv/static/assets --sourcemap=linked",
     "js:dev": "bun run js --external /fonts/* --external /images/* --watch",
-    "js:build": "bun run js --splitting",
+    "js:prod": "bun run js --splitting --minify",
     "lint:dev": "bunx biome lint --watch",
     "tailwind": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css",
     "tailwind:dev": "bun run tailwind --watch",
-    "tailwind:build": "bun run tailwind"
+    "tailwind:prod": "bun run tailwind --minify"
   },
   "dependencies": {
     "phoenix": "workspace:*",

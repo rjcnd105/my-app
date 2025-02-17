@@ -7,16 +7,13 @@ const path = require("path");
 
 module.exports = {
   content: [
+    "./css/**/*.{css,html,heex}",
     "./js/**/*.js",
     "../lib/dutchpay_web.ex",
     "../lib/dutchpay_web/**/*.*ex",
   ],
   theme: {
-    extend: {
-      colors: {
-        brand: "#FD4F00",
-      },
-    },
+    extend: {},
   },
   plugins: [
     require("@tailwindcss/forms"),

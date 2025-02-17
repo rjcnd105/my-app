@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = function ({ matchComponents, theme }) {
-  let iconsDir = path.join(process.cwd(), "../../../deps/heroicons/optimized");
-  // let iconsDir =
-  // "/Users/hj/study_ex/my-backend/dutchpay_umbrella/deps/heroicons/optimized";
-  console.log("iconsDir: ", iconsDir);
+  // let iconsDir = path.join(process.cwd(), "../../../deps/heroicons/optimized");
+  let iconsDir =
+    "/Users/hj/study_ex/my-backend/dutchpay_umbrella/deps/heroicons/optimized";
+  // console.log("iconsDir: ", iconsDir);
   let values = {};
   let icons = [
     ["", "/24/outline"],

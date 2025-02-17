@@ -71,7 +71,7 @@ config :phoenix, :json_library, Jason
 config :bun,
   version: "1.2.2",
   dutchpay_web@js: [
-    args: ~w(build ./js/app.ts --outdir ../priv/static/assets --sourcemap=linked),
+    args: ~w(run js),
     cd: Path.expand("../apps/dutchpay_web/assets", __DIR__),
     env: %{}
   ],
