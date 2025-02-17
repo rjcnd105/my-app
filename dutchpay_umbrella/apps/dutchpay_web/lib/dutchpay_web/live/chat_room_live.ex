@@ -276,7 +276,7 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   defp message(assigns) do
     ~H"""
-    <div id={@dom_id} class="relative flex px-4 py-3">
+    <div id={@dom_id} class="group/message relative flex px-4 py-3">
       <div class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
       <div class="ml-2">
         <div class="-mt-1">
@@ -291,7 +291,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       </div>
       <button
         :if={@current_user.id == @message.user.id}
-        class="absolute top-4 right-4 text-red-500 hover:text-red-800 cursor-pointer"
+        class="absolute invisible group-hover/message:visible top-4 right-4 text-red-500 hover:text-red-800 cursor-pointer"
         data-confirm="정말 메시지를 삭제하시겠습니까?"
         phx-click="delete-message"
         phx-value-id={@message.id}

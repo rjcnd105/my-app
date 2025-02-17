@@ -22,9 +22,9 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 
-let csrfToken = document
-  .querySelector("meta[name='csrf-token']")
-  .getAttribute("content");
+let csrfToken = (
+  document.querySelector("meta[name='csrf-token']") as HTMLElement
+).getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
 
@@ -47,7 +47,7 @@ window.addEventListener("phx:live_reload:attached", ({ detail: reloader }) => {
   //
   //   * click with "c" key pressed to open at caller location
   //   * click with "d" key pressed to open at function component definition location
-  let keyDown;
+  let keyDown: string | null = null;
   window.addEventListener("keydown", (e) => (keyDown = e.key));
   window.addEventListener("keyup", (e) => (keyDown = null));
   window.addEventListener(

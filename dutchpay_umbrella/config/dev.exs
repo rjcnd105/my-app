@@ -20,8 +20,10 @@ config :dutchpay_web, DutchpayWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "yj1H3eE84FHzktJVOhM57GaD7aXDkQ4/ojdXlUmCqEoXSyFOc9fKGsmc8EDI4bEM",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:dutchpay_web, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:dutchpay_web, ~w(--watch)]}
+    # esbuild: {Esbuild, :install_and_run, [:dutchpay_web, ~w(--sourcemap=inline --watch)]},
+    # tailwind: {Tailwind, :install_and_run, [:dutchpay_web, ~w(--watch)]}
+    bun_js: {Bun, :install_and_run, [:dutchpay_web@js, ~w(--watch)]},
+    bun_tailwind: {Bun, :install_and_run, [:dutchpay_web@tailwind, ~w(--watch)]}
   ]
 
 # Watch static and templates for browser reloading.

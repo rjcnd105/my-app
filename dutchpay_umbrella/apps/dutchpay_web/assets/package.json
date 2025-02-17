@@ -1,0 +1,32 @@
+{
+  "name": "dutchpay_web",
+  "type": "module",
+  "workspaces": [
+    "../../../deps/*"
+  ],
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "@types/bun": "latest",
+    "@types/phoenix": "^1.6.6",
+    "@types/phoenix_live_view": "^1.0.0",
+    "tailwindcss": "^4.0.6",
+    "typescript": "^5.8.1-rc"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.1-rc"
+  },
+  "scripts": {
+    "js": "bun build ./js/app.ts --outdir ../priv/static/assets  --sourcemap=linked",
+    "js:dev": "bun run js --external /fonts/* --external /images/* --watch",
+    "js:build": "bun run js --splitting",
+    "lint:dev": "bunx biome lint --watch",
+    "tailwind": "tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css",
+    "tailwind:dev": "bun run tailwind --watch",
+    "tailwind:build": "bun run tailwind"
+  },
+  "dependencies": {
+    "phoenix": "workspace:*",
+    "phoenix_html": "workspace:*",
+    "phoenix_live_view": "workspace:*"
+  }
+}

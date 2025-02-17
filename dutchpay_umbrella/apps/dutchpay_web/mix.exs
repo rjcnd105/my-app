@@ -37,14 +37,13 @@ defmodule DutchpayWeb.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.7"},
+      {:bun, "~> 1.4", runtime: Mix.env() == :dev},
       {:phoenix_ecto, "~> 4.6"},
       {:phoenix_html, "~> 4.2"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
       {:phoenix_live_view, "~> 1.0"},
       {:floki, ">= 0.37.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.2.0",
@@ -52,6 +51,7 @@ defmodule DutchpayWeb.MixProject do
        app: false,
        compile: false,
        depth: 1},
+      {:bun, "~> 1.4", only: :dev},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
@@ -70,11 +70,11 @@ defmodule DutchpayWeb.MixProject do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind dutchpay_web", "esbuild dutchpay_web"],
+      "assets.setup": ["bun.install --if-missing"],
+      "assets.build": ["bun dutchpay_web@js", "bun dutchpay_web@tailwind"],
       "assets.deploy": [
-        "tailwind dutchpay_web --minify",
-        "esbuild dutchpay_web --minify",
+        "bun dutchpay_web@js --minify",
+        "bun dutchpay_web@tailwind --minify",
         "phx.digest"
       ]
     ]
