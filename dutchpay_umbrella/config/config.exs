@@ -80,7 +80,7 @@ config :bun,
   #   cd: Path.expand("../apps/dutchpay_web/assets", __DIR__)
   # ],
   dutchpay_web@tailwind: [
-    args: ~w(run tailwindcss),
+    args: ~w(run tailwind),
     cd: Path.expand("../apps/dutchpay_web/assets", __DIR__),
     env: %{}
   ]
