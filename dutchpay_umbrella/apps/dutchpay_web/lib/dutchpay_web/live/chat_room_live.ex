@@ -170,6 +170,9 @@ defmodule DutchpayWeb.ChatRoomLive do
   # 2 - handle_params
   # params가 업데이트 될때만 실행
   def handle_params(params, _session, socket) do
+    # 기존 room이 있으면 구독 취소
+    if socket.assigns[:room], do: Chat.unsubscribe_to_room(socket.assigns.room)
+
     IO.puts("handle_params #{inspect(params)} (connected: #{connected?(socket)})")
     rooms = socket.assigns.rooms
 
@@ -208,6 +211,9 @@ defmodule DutchpayWeb.ChatRoomLive do
       # message form 초기화
       |> assign_message_form(Chat.change_message(%Message.Schema{}))
 
+    # 새 room 구독
+    Chat.subscribe_to_room(room)
+
     {:noreply, socket}
     # {:noreply,
     #  assign(socket,
@@ -238,10 +244,6 @@ defmodule DutchpayWeb.ChatRoomLive do
           # |> IO.inspect(label: "msg")
           ## none stream 방식일 경우
           # |> update(:messages, &(&1 ++ [message]))
-
-          # stream 할당인 경우 @message는 존재하지 않으므로 업데이트할 수 없다.
-          # 기본적으로 stream_insert/3 은 컬렉션 끝에 새 항목을 삽입합니다.
-          |> stream_insert(:messages, message)
           |> assign_message_form(Chat.change_message(%Chat.Message.Schema{}))
 
         {:error, changeset} ->
@@ -263,9 +265,8 @@ defmodule DutchpayWeb.ChatRoomLive do
   end
 
   def handle_event("delete-message", %{"id" => message_id}, socket) do
-    {:ok, message} = Chat.delete_message_by_id(message_id, socket.assigns.current_user)
+    Chat.delete_message_by_id(message_id, socket.assigns.current_user)
 
-    socket = stream_delete(socket, :messages, message)
     {:noreply, socket}
   end
 
@@ -276,7 +277,7 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   defp message(assigns) do
     ~H"""
-    <div id={@dom_id} class="group/message relative flex px-4 py-3 hover:bg-gray-100">
+    <div id={@dom_id} class="group/message relative flex px-4 py-3 hover:bg-gray-50">
       <div class="h-10 w-10 rounded shrink-0 bg-slate-300"></div>
       <div class="ml-2">
         <div class="-mt-1">
@@ -291,7 +292,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       </div>
       <button
         :if={@current_user.id == @message.user.id}
-        class="absolute invisible group-hover/message:visible top-50p right-4 text-red-500 hover:text-red-800 cursor-pointer"
+        class="absolute invisible group-hover/message:visible h-full px-4 top-0 right-0 text-red-500 hover:text-red-600 cursor-pointer"
         data-confirm="정말 메시지를 삭제하시겠습니까?"
         phx-click="delete-message"
         phx-value-id={@message.id}
@@ -315,5 +316,21 @@ defmodule DutchpayWeb.ChatRoomLive do
     message.inserted_at
     |> Timex.Timezone.convert(timezone)
     |> Timex.format!("%-l:%M %p", :strftime)
+  end
+
+  # LiveView 이벤트와 관련이없는 일반적인 프로세스 메시지의 경우
+  # LiveView는 handle_info/2 콜백을 receive/1 의 편리한 대안으로 제공한다
+  def handle_info(:shout, socket) do
+    {:noreply, update(socket, :room, &%{&1 | name: &1.name <> "!"})}
+  end
+
+  def handle_info({:new_message, message}, socket) do
+    # stream 할당인 경우 @message는 존재하지 않으므로 업데이트할 수 없다.
+    # 기본적으로 stream_insert/3 은 컬렉션 끝에 새 항목을 삽입합니다.
+    {:noreply, stream_insert(socket, :messages, message)}
+  end
+
+  def handle_info({:message_deleted, message}, socket) do
+    {:noreply, stream_delete(socket, :messages, message)}
   end
 end

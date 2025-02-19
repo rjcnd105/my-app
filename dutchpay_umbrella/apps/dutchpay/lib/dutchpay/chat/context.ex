@@ -5,6 +5,8 @@ defmodule Dutchpay.Chat do
   alias Dutchpay.Chat.{Message, Room}
   alias Dutchpay.Repo
 
+  @pubsub Dutchpay.PubSub
+
   @doc false
   def list_rooms do
     Repo.all(from(Room.Schema, order_by: [desc: :updated_at]))
@@ -64,9 +66,15 @@ defmodule Dutchpay.Chat do
   end
 
   def create_message(room, attrs, user) do
-    %Message.Schema{room: room, user: user}
-    |> change_message(attrs)
-    |> Repo.insert()
+    created_message =
+      %Message.Schema{room: room, user: user}
+      |> change_message(attrs)
+      |> Repo.insert()
+
+    with {:ok, message} <- created_message do
+      Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:new_message, message})
+      {:ok, message}
+    end
   end
 
   def delete_message_by_id(message_id, %Dutchpay.Accounts.User{id: user_id}) do
@@ -76,6 +84,18 @@ defmodule Dutchpay.Chat do
     # 패턴 매칭으로 user_id 값이 같은지 검증을 하려고 하기 때문
     message = %Message.Schema{user_id: ^user_id} = Dutchpay.Repo.get(Message.Schema, message_id)
 
+    Phoenix.PubSub.broadcast!(@pubsub, topic(message.room_id), {:message_deleted, message})
+
     Repo.delete(message)
   end
+
+  def subscribe_to_room(room) do
+    Phoenix.PubSub.subscribe(@pubsub, topic(room.id))
+  end
+
+  def unsubscribe_to_room(room) do
+    Phoenix.PubSub.unsubscribe(@pubsub, topic(room.id))
+  end
+
+  defp topic(room_id), do: "chat_room:#{room_id}"
 end
