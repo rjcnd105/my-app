@@ -80,7 +80,10 @@ defmodule DutchpayWeb.ChatRoomLive do
             </li>
           </ul>
         </div>
-        <div id="room-messages" class="flex flex-col grow overflow-auto" phx-update="stream">
+        <div id="room-messages"
+        class="flex flex-col grow overflow-auto"
+        phx-hook="RoomMessages"
+        phx-update="stream">
           <%!-- <.message :for={message <- @messages} message={message} /> --%>
           <.message
             :for={{dom_id, message} <- @streams.messages}

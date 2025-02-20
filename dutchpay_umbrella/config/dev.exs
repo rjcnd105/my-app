@@ -26,6 +26,19 @@ config :dutchpay_web, DutchpayWeb.Endpoint,
     bun_tailwind: {Bun, :install_and_run, [:dutchpay_web@tailwind, ~w(--watch)]}
   ]
 
+config :live_debugger,
+  browser_features?: true,
+  # IP on which LiveDebugger will be hosted
+  ip: {127, 0, 0, 1},
+  # Port on which LiveDebugger will be hosted
+  port: 4007,
+  # Secret key used for LiveDebugger.Endpoint
+  # secret_key_base: "yj1H3eE84FHzktJVOhM57GaD7aXDkQ4/ojdXlUmCqEoXSyFOc9fKGsmc4EDI4bME",
+  # Signing salt used for LiveDebugger.Endpoint
+  # signing_salt: "your_signing_salt",
+  # Adapter used in LiveDebugger.Endpoint
+  adapter: Bandit.PhoenixAdapter
+
 # Watch static and templates for browser reloading.
 config :dutchpay_web, DutchpayWeb.Endpoint,
   live_reload: [
