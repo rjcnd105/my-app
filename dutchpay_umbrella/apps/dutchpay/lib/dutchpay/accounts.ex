@@ -350,4 +350,8 @@ defmodule Dutchpay.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def list_user() do
+    Repo.all(from(u in User, order_by: [asc: u.inserted_at]))
+  end
 end

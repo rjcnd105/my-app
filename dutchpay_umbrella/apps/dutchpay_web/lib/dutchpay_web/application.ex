@@ -12,8 +12,10 @@ defmodule DutchpayWeb.Application do
       # Start a worker by calling: DutchpayWeb.Worker.start_link(arg)
       # {DutchpayWeb.Worker, arg},
       # Start to serve requests, typically the last entry
+      DutchpayWeb.Presence,
       DutchpayWeb.Endpoint
     ]
+
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

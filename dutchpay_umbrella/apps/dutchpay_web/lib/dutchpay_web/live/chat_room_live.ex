@@ -1,5 +1,6 @@
 defmodule DutchpayWeb.ChatRoomLive do
   @moduledoc false
+  alias Dutchpay.Accounts
   alias Dutchpay.Chat.Message
   use DutchpayWeb, :live_view
 
@@ -25,6 +26,14 @@ defmodule DutchpayWeb.ChatRoomLive do
           </div>
           <div id="rooms-list">
             <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
+          </div>
+          <div class="mt-auto">
+            <div class="flex items-center h-8 px-3">
+              <span class="font-medium text-sm">Users</span>
+            </div>
+            <div id="users-list">
+              <.user :for={user <- @users} user={user} online={DutchpayWeb.OnlineUsers.online?(@online_users, user.id)} />
+            </div>
           </div>
         </div>
       </div>
@@ -151,20 +160,48 @@ defmodule DutchpayWeb.ChatRoomLive do
     """
   end
 
+  attr(:user, Dutchpay.Accounts.User, required: true)
+  attr(:online, :boolean, default: false)
+
+  defp user(assigns) do
+    ~H"""
+    <.link class="flex items-center h-8 hover:bg-gray-300 text-sm pl-8 pr-3" href="#">
+      <div class="flex items-center w-4">
+        <%= if @online do %>
+          <span class="block shrink-0 w-2 h-2 rounded-full bg-blue-500"></span>
+        <% else %>
+          <span class="block shrink-0 w-2 h-2 rounded-full border-2 border-gray-500"></span>
+        <% end %>
+        <span class="block shrink-0 ml-2 leading-none">{get_user_name_from_email(@user)}</span>
+      </div>
+    </.link>
+    """
+  end
+
   # 생명주기
   # mount -> handle_params -> render
 
   # 1 - mount
   def mount(_params, _session, socket) do
-    rooms = Chat.list_rooms()
-
+    # Presence는 키/토픽 조합당 동일한 프로세스를 한 번만 추적할 수 있다.
+    # 그래서 connected로 감싸주어야한다.
     if connected?(socket) do
-      IO.puts("mounting (connected)")
-    else
-      IO.puts("mounting (not connected)")
+      DutchpayWeb.OnlineUsers.track(self(), socket.assigns.current_user)
     end
 
+    DutchpayWeb.OnlineUsers.subscribe()
+
+    online_users = DutchpayWeb.OnlineUsers.list()
+
+    rooms = Chat.list_rooms()
+    users = Accounts.list_user()
     timezone = get_connect_params(socket)["timezone"]
+
+    socket =
+      socket
+      |> assign(rooms: rooms, timezone: timezone, users: users)
+      |> assign(online_users: online_users)
+
     # socket.assigns에 :room이라는 키로 room값이 할당된다.
     # socket.assigns는 elixir 데이터를 저장할 수 있는 간단한 map이다.
     # 이는 render로 전달된다.
@@ -191,15 +228,9 @@ defmodule DutchpayWeb.ChatRoomLive do
       end
 
     messages = Dutchpay.Chat.list_messages_in_room(room)
-    IO.inspect(messages, label: "messages")
+    # IO.inspect(messages, label: "messages")
 
     IO.puts("mounting")
-
-    if connected?(socket) do
-      IO.puts("mounting (connected)")
-    else
-      IO.puts("mounting (not connected)")
-    end
 
     socket =
       socket
@@ -342,5 +373,19 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   def handle_info({:message_deleted, message}, socket) do
     {:noreply, stream_delete(socket, :messages, message)}
+  end
+
+  def handle_info(%{event: "presence_diff", payload: diff}, socket) do
+    # IO.inspect(socket.assigns.online_users, label: "handle_info - presence_diff")
+
+    IO.inspect(socket.assigns.online_users, label: "presence_diff")
+
+    online_users = DutchpayWeb.OnlineUsers.update(socket.assigns.online_users, diff)
+
+    socket =
+      socket
+      |> assign(online_users: online_users)
+
+    {:noreply, socket}
   end
 end

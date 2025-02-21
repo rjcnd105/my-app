@@ -12,7 +12,7 @@ defmodule Dutchpay.Application do
       {DNSCluster, query: Application.get_env(:dutchpay, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Dutchpay.PubSub},
       # Start the Finch HTTP client for sending emails
-      {Finch, name: Dutchpay.Finch}
+      {Finch, name: Dutchpay.Finch},
       # Start a worker by calling: Dutchpay.Worker.start_link(arg)
       # {Dutchpay.Worker, arg}
     ]

@@ -55,7 +55,6 @@ defmodule DutchpayWeb.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:bun, "~> 1.4", only: :dev},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
