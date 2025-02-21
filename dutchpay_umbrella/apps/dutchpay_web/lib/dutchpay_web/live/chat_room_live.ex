@@ -10,7 +10,7 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-1">
+    <div class="flex flex-1 overflow-hidden">
       <div class="flex flex-col shrink-0 w-64 bg-slate-100">
         <div class="flex justify-between items-center shrink-0 h-16 border-b border-slate-300 px-4">
           <div class="flex flex-col gap-1.5">
@@ -98,7 +98,7 @@ defmodule DutchpayWeb.ChatRoomLive do
           <.form
             id="new-message-form"
             for={@new_message_form}
-            class="flex item-center border-2 border-slate-300 rounded-sm p-1"
+            class="flex item-center border-2 items-center gap-1 border-slate-300 rounded-sm p-1"
             phx-change="validate-message"
             phx-submit="submit-message"
           >
@@ -110,7 +110,7 @@ defmodule DutchpayWeb.ChatRoomLive do
               phx-debounce={500}
               rows="1"
             >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
-            <button class="shrink flex items-center justify-center size-6 rounded-md hover:bg-slate-200">
+            <button class="shrink flex items-center justify-center size-8 p-1 rounded-md hover:bg-slate-200">
               <.icon name="hero-paper-airplane" class="size-4" />
             </button>
           </.form>
@@ -213,6 +213,7 @@ defmodule DutchpayWeb.ChatRoomLive do
       |> stream(:messages, messages, reset: true)
       # message form 초기화
       |> assign_message_form(Chat.change_message(%Message.Schema{}))
+      |> push_event("scroll_messages_to_bottom", %{})
 
     # 새 room 구독
     Chat.subscribe_to_room(room)
@@ -328,9 +329,14 @@ defmodule DutchpayWeb.ChatRoomLive do
   end
 
   def handle_info({:new_message, message}, socket) do
+    socket =
+      socket
+      |> stream_insert(:messages, message)
+      |> push_event("scroll_messages_to_bottom", %{})
+
     # stream 할당인 경우 @message는 존재하지 않으므로 업데이트할 수 없다.
     # 기본적으로 stream_insert/3 은 컬렉션 끝에 새 항목을 삽입합니다.
-    {:noreply, stream_insert(socket, :messages, message)}
+    {:noreply, socket}
   end
 
   def handle_info({:message_deleted, message}, socket) do
