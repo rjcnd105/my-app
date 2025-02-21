@@ -108,6 +108,7 @@ defmodule DutchpayWeb.ChatRoomLive do
               name={@new_message_form[:body].name}
               placeholder={"Message ##{@room.name}"}
               phx-debounce={500}
+              phx-hook={"ChatMessageTextarea"}
               rows="1"
             >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
             <button class="shrink flex items-center justify-center size-8 p-1 rounded-md hover:bg-slate-200">
