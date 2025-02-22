@@ -21,15 +21,17 @@ defmodule DutchpayWeb.ChatRoomLive do
           </div>
         </div>
         <div class="mt-4 overflow-auto">
+
           <div class="flex items-center h-8 px-3">
-            <span class="ml-2 leading-none font-medium text-sm">Rooms</span>
+          <.toggler target_id="rooms-list" dom_id="room-toggler" text="Rooms" />
+
           </div>
           <div id="rooms-list">
             <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
           </div>
           <div class="mt-auto">
             <div class="flex items-center h-8 px-3">
-              <span class="font-medium text-sm">Users</span>
+            <.toggler target_id="users-list" dom_id="users-toggler" text="Users" />
             </div>
             <div id="users-list">
               <.user :for={user <- @users} user={user} online={DutchpayWeb.OnlineUsers.online?(@online_users, user.id)} />
@@ -336,6 +338,32 @@ defmodule DutchpayWeb.ChatRoomLive do
         <.icon name="hero-trash" class="h-4 w-4" />
       </button>
     </div>
+    """
+  end
+
+  attr(:dom_id, :string, required: true)
+  attr(:target_id, :string, required: true)
+  attr(:text, :string, required: true)
+  attr(:icon_class, :string, default: "size-4 shrink-0")
+  # attr(:on_click, JS, required: true)
+
+  defp toggler(assigns) do
+    icon_down = "toggler__#{assigns.dom_id}-chevron-down"
+    icon_right = "toggler__#{assigns.dom_id}-chevron-right"
+
+    toggle_click =
+      JS.toggle(to: "#" <> icon_down)
+      |> JS.toggle(to: "#" <> icon_right)
+      |> JS.toggle(to: "#" <> assigns.target_id)
+
+    ~H"""
+      <button id={@dom_id} class="flex items-center grow" phx-click={toggle_click}>
+        <.icon id={icon_down} name="hero-chevron-down" class={@icon_class} />
+        <.icon id={icon_right} name="hero-chevron-right" class={@icon_class}  style="display:none;" />
+        <span class="ml-2 leading-none font-medium text-sm">
+         {@text}
+        </span>
+      </button>
     """
   end
 
