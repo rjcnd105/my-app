@@ -24,12 +24,12 @@ defmodule DutchpayWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{DutchpayWeb.UserAuth, :ensure_authenticated}] do
-      live "/", ChatRoomLive
-      live "/rooms", ChatRoomLive
-      live "/rooms/:id", ChatRoomLive
-      live "/rooms/:id/edit", ChatRoomLive.Edit
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live("/", ChatRoomLive)
+      live("/rooms", ChatRoomLive.Index)
+      live("/rooms/:id", ChatRoomLive)
+      live("/rooms/:id/edit", ChatRoomLive.Edit)
+      live("/users/settings", UserSettingsLive, :edit)
+      live("/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email)
     end
   end
 
@@ -58,28 +58,28 @@ defmodule DutchpayWeb.Router do
   ## Authentication routes
 
   scope "/", DutchpayWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
+    pipe_through([:browser, :redirect_if_user_is_authenticated])
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{DutchpayWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/log_in", UserLoginLive, :new
-      live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+      live("/users/register", UserRegistrationLive, :new)
+      live("/users/log_in", UserLoginLive, :new)
+      live("/users/reset_password", UserForgotPasswordLive, :new)
+      live("/users/reset_password/:token", UserResetPasswordLive, :edit)
     end
 
-    post "/users/log_in", UserSessionController, :create
+    post("/users/log_in", UserSessionController, :create)
   end
 
   scope "/", DutchpayWeb do
-    pipe_through [:browser]
+    pipe_through([:browser])
 
-    delete "/users/log_out", UserSessionController, :delete
+    delete("/users/log_out", UserSessionController, :delete)
 
     live_session :current_user,
       on_mount: [{DutchpayWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
+      live("/users/confirm/:token", UserConfirmationLive, :edit)
+      live("/users/confirm", UserConfirmationInstructionsLive, :new)
     end
   end
 end
