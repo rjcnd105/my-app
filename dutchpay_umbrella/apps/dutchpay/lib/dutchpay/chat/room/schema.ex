@@ -11,6 +11,14 @@ defmodule Dutchpay.Chat.Room.Schema do
     # 일대다인 경우에 연결된 다수를 가져옴
     has_many(:messages, Dutchpay.Chat.Message.Schema, foreign_key: :room_id)
 
+    # N:N 조인 테이블 생성
+    many_to_many(:members, Dutchpay.Accounts.User,
+      join_through: Dutchpay.Chat.RoomMembership.Schema,
+      join_keys: [room_id: :id, user_id: :id]
+      # 관계는 존재한다는 사실만 모델링 할거면 스키마 대신 이름만 먼저 지정할 수 있다.
+      # join_through: "room_membership"
+    )
+
     timestamps(type: :utc_datetime)
   end
 

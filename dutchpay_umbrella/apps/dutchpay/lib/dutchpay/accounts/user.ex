@@ -3,13 +3,21 @@ defmodule Dutchpay.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :current_password, :string, virtual: true, redact: true
-    field :confirmed_at, :naive_datetime
+    field(:email, :string)
+    field(:password, :string, virtual: true, redact: true)
+    field(:hashed_password, :string, redact: true)
+    field(:current_password, :string, virtual: true, redact: true)
+    field(:confirmed_at, :utc_datetime)
 
-    timestamps()
+    # N:N 조인 테이블 생성
+    many_to_many(:join_rooms, Dutchpay.Chat.Room.Schema,
+      join_through: Dutchpay.Chat.RoomMembership.Schema,
+      join_keys: [user_id: :id, room_id: :id]
+      # 관계는 존재한다는 사실만 모델링 할거면 스키마 대신 이름만 먼저 지정할 수 있다.
+      # join_through: "room_membership"
+    )
+
+    timestamps(type: :utc_datetime)
   end
 
   @doc """

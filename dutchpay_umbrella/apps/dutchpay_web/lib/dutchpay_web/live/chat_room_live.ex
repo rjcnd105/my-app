@@ -21,10 +21,8 @@ defmodule DutchpayWeb.ChatRoomLive do
           </div>
         </div>
         <div class="mt-4 overflow-auto">
-
           <div class="flex items-center h-8 px-3">
-          <.toggler target_id="rooms-list" dom_id="room-toggler" text="Rooms" />
-
+            <.toggler target_id="rooms-list" dom_id="room-toggler" text="Rooms" />
           </div>
           <div id="rooms-list">
             <.room_link :for={room <- @rooms} room={room} active={room.id == @room.id} />
@@ -56,10 +54,14 @@ defmodule DutchpayWeb.ChatRoomLive do
           </div>
           <div class="mt-auto">
             <div class="flex items-center h-8 px-3">
-            <.toggler target_id="users-list" dom_id="users-toggler" text="Users" />
+              <.toggler target_id="users-list" dom_id="users-toggler" text="Users" />
             </div>
             <div id="users-list">
-              <.user :for={user <- @users} user={user} online={DutchpayWeb.OnlineUsers.online?(@online_users, user.id)} />
+              <.user
+                :for={user <- @users}
+                user={user}
+                online={DutchpayWeb.OnlineUsers.online?(@online_users, user.id)}
+              />
             </div>
           </div>
         </div>
@@ -116,10 +118,12 @@ defmodule DutchpayWeb.ChatRoomLive do
             </li>
           </ul>
         </div>
-        <div id="room-messages"
-        class="flex flex-col grow overflow-auto"
-        phx-hook="RoomMessages"
-        phx-update="stream">
+        <div
+          id="room-messages"
+          class="flex flex-col grow overflow-auto"
+          phx-hook="RoomMessages"
+          phx-update="stream"
+        >
           <%!-- <.message :for={message <- @messages} message={message} /> --%>
           <.message
             :for={{dom_id, message} <- @streams.messages}
@@ -144,7 +148,7 @@ defmodule DutchpayWeb.ChatRoomLive do
               name={@new_message_form[:body].name}
               placeholder={"Message ##{@room.name}"}
               phx-debounce={500}
-              phx-hook={"ChatMessageTextarea"}
+              phx-hook="ChatMessageTextarea"
               rows="1"
             >{Phoenix.HTML.Form.normalize_value("textarea", @new_message_form[:body].value)}</textarea>
             <button class="shrink flex items-center justify-center size-8 p-1 rounded-md hover:bg-slate-200">
@@ -382,13 +386,13 @@ defmodule DutchpayWeb.ChatRoomLive do
       |> JS.toggle(to: "#" <> assigns.target_id)
 
     ~H"""
-      <button id={@dom_id} class="flex items-center grow" phx-click={toggle_click}>
-        <.icon id={icon_down} name="hero-chevron-down" class={@icon_class} />
-        <.icon id={icon_right} name="hero-chevron-right" class={@icon_class}  style="display:none;" />
-        <span class="ml-2 leading-none font-medium text-sm">
-         {@text}
-        </span>
-      </button>
+    <button id={@dom_id} class="flex items-center grow" phx-click={toggle_click}>
+      <.icon id={icon_down} name="hero-chevron-down" class={@icon_class} />
+      <.icon id={icon_right} name="hero-chevron-right" class={@icon_class} style="display:none;" />
+      <span class="ml-2 leading-none font-medium text-sm">
+        {@text}
+      </span>
+    </button>
     """
   end
 

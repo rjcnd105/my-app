@@ -2,12 +2,12 @@ defmodule Dutchpay.Chat do
   @moduledoc false
   import Ecto.Query
 
+  alias Dutchpay.Chat.RoomMembership
   alias Dutchpay.Chat.{Message, Room}
   alias Dutchpay.Repo
 
   @pubsub Dutchpay.PubSub
 
-  @doc false
   def list_rooms do
     Repo.all(from(Room.Schema, order_by: [desc: :updated_at]))
   end
@@ -95,6 +95,10 @@ defmodule Dutchpay.Chat do
 
   def unsubscribe_to_room(room) do
     Phoenix.PubSub.unsubscribe(@pubsub, topic(room.id))
+  end
+
+  def join_room!(room, user) do
+    Repo.insert!(%RoomMembership.Schema{room: room, user: user})
   end
 
   defp topic(room_id), do: "chat_room:#{room_id}"
