@@ -67,9 +67,13 @@ defmodule Dutchpay.Chat do
 
   def create_message(room, attrs, user) do
     created_message =
-      %Message.Schema{room: room, user: user}
-      |> change_message(attrs)
-      |> Repo.insert()
+      if joined?(room, user) do
+        %Message.Schema{room: room, user: user}
+        |> change_message(attrs)
+        |> Repo.insert()
+      else
+        {:error, :permission_denied}
+      end
 
     with {:ok, message} <- created_message do
       Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:new_message, message})
@@ -99,6 +103,20 @@ defmodule Dutchpay.Chat do
 
   def join_room!(room, user) do
     Repo.insert!(%RoomMembership.Schema{room: room, user: user})
+    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:join_user, room, user})
+  end
+
+  def leave_room!(room, user) do
+    Repo.delete(%RoomMembership.Schema{room: room, user: user})
+    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:leave_user, room, user})
+  end
+
+  def joined?(%Room.Schema{id: room_id}, %Dutchpay.Accounts.User{id: user_id}) do
+    Dutchpay.Repo.exists?(
+      from(room_membership in Dutchpay.Chat.RoomMembership.Schema,
+        where: room_membership.room_id == ^room_id and room_membership.user_id == ^user_id
+      )
+    )
   end
 
   defp topic(room_id), do: "chat_room:#{room_id}"

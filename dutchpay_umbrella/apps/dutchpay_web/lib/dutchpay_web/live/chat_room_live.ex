@@ -134,7 +134,7 @@ defmodule DutchpayWeb.ChatRoomLive do
           />
         </div>
 
-        <div class="h-12 bg-white px-4 pb-4">
+        <div id="message-form-wrap" :if={@is_joined} class="h-12 bg-white px-4 pb-4" phx-update="stream">
           <.form
             id="new-message-form"
             for={@new_message_form}
@@ -260,6 +260,8 @@ defmodule DutchpayWeb.ChatRoomLive do
 
     messages = Dutchpay.Chat.list_messages_in_room(room)
     # IO.inspect(messages, label: "messages")
+    #
+    is_joined = Chat.joined?(room, socket.assigns.current_user)
 
     IO.puts("mounting")
 
@@ -268,7 +270,8 @@ defmodule DutchpayWeb.ChatRoomLive do
       |> assign(
         hide_topic?: false,
         room: room,
-        page_title: "#" <> room.name
+        page_title: "#" <> room.name,
+        is_joined: is_joined
       )
       # stream으로 하면 socket.assign에 저장하지 않고 한번 렌더링하고 지운다.
       # 그로 인해 서버 부하를 줄일 수 있다.
@@ -430,6 +433,14 @@ defmodule DutchpayWeb.ChatRoomLive do
 
   def handle_info({:message_deleted, message}, socket) do
     {:noreply, stream_delete(socket, :messages, message)}
+  end
+
+  def handle_info({:user_joined, room, user}, socket) do
+    {:noreply, socket |> assign(is_joined: true)}
+  end
+
+  def handle_info({:user_leaved, room, user}, socket) do
+    {:noreply, socket |> assign(is_joined: false)}
   end
 
   def handle_info(%{event: "presence_diff", payload: diff}, socket) do
