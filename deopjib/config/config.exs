@@ -20,6 +20,8 @@ config :ash,
   default_page_type: :keyset,
   policies: [no_filter_static_forbidden_reads?: false]
 
+config :ash, :policies, no_filter_static_forbidden_reads?: false
+
 config :spark,
   formatter: [
     remove_parens?: true,
@@ -53,7 +55,7 @@ config :spark,
 config :deopjib,
   ecto_repos: [Deopjib.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Deopjib.Accounts]
+  ash_domains: [Deopjib.Accounts, Deopjib.Settlement]
 
 # Configures the endpoint
 config :deopjib, DeopjibWeb.Endpoint,

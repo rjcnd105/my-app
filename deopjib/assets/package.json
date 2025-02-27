@@ -5,6 +5,7 @@
     "../deps/*"
   ],
   "devDependencies": {
+    "@tailwindcss/cli": "^4.0.8",
     "@tailwindcss/forms": "^0.5.10",
     "@types/bun": "latest",
     "@types/phoenix": "^1.6.6",
@@ -20,7 +21,7 @@
     "js:dev": "bun run js --external /fonts/* --external /images/* --watch",
     "js:prod": "bun run js --splitting --minify",
     "lint:dev": "bunx biome lint --watch",
-    "tailwind": "bunx @tailwindcss/cli -i ./css/app.css -o ../priv/static/assets/app.css",
+    "tailwind": "bunx tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css",
     "tailwind:dev": "bun run tailwind --watch",
     "tailwind:prod": "bun run tailwind --minify"
   },

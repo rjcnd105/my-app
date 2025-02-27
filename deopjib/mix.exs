@@ -20,7 +20,7 @@ defmodule Deopjib.MixProject do
   def application do
     [
       mod: {Deopjib.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -35,6 +35,7 @@ defmodule Deopjib.MixProject do
     [
       {:picosat_elixir, "~> 0.2"},
       {:oban, "~> 2.0"},
+      {:oban_web, "~> 2.11"},
       {:bun, "~> 1.4", runtime: Mix.env() == :dev},
       {:ash_state_machine, "~> 0.2"},
       {:ash_oban, "~> 0.3"},

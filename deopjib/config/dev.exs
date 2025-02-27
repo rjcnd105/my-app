@@ -20,14 +20,14 @@ config :deopjib, Deopjib.Repo,
 # Binding to loopback ipv4 address prevents access from other machines.
 config :deopjib, DeopjibWeb.Endpoint,
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 5000],
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "/c9BvQdaOfntQLTOw2YFBJzjNY+NqplXGP1vJ5sNKcI23ewgM13VgyYGuGxvNbob",
   watchers: [
-    js: {Bun, :install_and_run, [:app@js, ~w(--watch)]},
-    tailwind: {Bun, :install_and_run, [:app@tailwind, ~w(--watch)]}
+    app@js: {Bun, :install_and_run, [:app@js, ~w(--watch)]},
+    app@tailwind: {Bun, :install_and_run, [:app@tailwind, ~w(--watch)]}
   ]
 
 config :live_debugger,
@@ -35,7 +35,7 @@ config :live_debugger,
   # IP on which LiveDebugger will be hosted
   ip: {127, 0, 0, 1},
   # Port on which LiveDebugger will be hosted
-  port: 5007,
+  port: 4007,
   # Secret key used for LiveDebugger.Endpoint
   # secret_key_base: "yj1H3eE84FHzktJVOhM57GaD7aXDkQ4/ojdXlUmCqEoXSyFOc9fKGsmc4EDI4bME",
   # Signing salt used for LiveDebugger.Endpoint

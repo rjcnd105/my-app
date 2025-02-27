@@ -6,23 +6,23 @@ defmodule DeopjibWeb.Router do
   import AshAuthentication.Plug.Helpers
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {DeopjibWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug :load_from_session
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, html: {DeopjibWeb.Layouts, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(:load_from_session)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
-    plug :load_from_bearer
-    plug :set_actor, :user
+    plug(:accepts, ["json"])
+    plug(:load_from_bearer)
+    plug(:set_actor, :user)
   end
 
   scope "/", DeopjibWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
     ash_authentication_live_session :authenticated_routes do
       # in each liveview, add one of the following at the top of the module:
@@ -39,25 +39,29 @@ defmodule DeopjibWeb.Router do
   end
 
   scope "/", DeopjibWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :home
-    auth_routes AuthController, Deopjib.Accounts.User, path: "/auth"
-    sign_out_route AuthController
+    get("/", PageController, :home)
+    auth_routes(AuthController, Deopjib.Accounts.User, path: "/auth")
+    sign_out_route(AuthController)
 
     # Remove these if you'd like to use your own authentication views
-    sign_in_route register_path: "/register",
-                  reset_path: "/reset",
-                  auth_routes_prefix: "/auth",
-                  on_mount: [{DeopjibWeb.LiveUserAuth, :live_no_user}],
-                  overrides: [
-                    DeopjibWeb.AuthOverrides,
-                    AshAuthentication.Phoenix.Overrides.Default
-                  ]
+    sign_in_route(
+      register_path: "/register",
+      reset_path: "/reset",
+      auth_routes_prefix: "/auth",
+      on_mount: [{DeopjibWeb.LiveUserAuth, :live_no_user}],
+      overrides: [
+        DeopjibWeb.AuthOverrides,
+        AshAuthentication.Phoenix.Overrides.Default
+      ]
+    )
 
     # Remove this if you do not want to use the reset password feature
-    reset_route auth_routes_prefix: "/auth",
-                overrides: [DeopjibWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    reset_route(
+      auth_routes_prefix: "/auth",
+      overrides: [DeopjibWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    )
   end
 
   # Other scopes may use custom stacks.
@@ -75,10 +79,10 @@ defmodule DeopjibWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: DeopjibWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: DeopjibWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 
@@ -86,9 +90,19 @@ defmodule DeopjibWeb.Router do
     import AshAdmin.Router
 
     scope "/admin" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      ash_admin "/"
+      ash_admin("/")
+    end
+  end
+
+  if Application.compile_env(:deopjib, :dev_routes) do
+    import Oban.Web.Router
+
+    scope "/" do
+      pipe_through(:browser)
+
+      oban_dashboard("/oban")
     end
   end
 end
