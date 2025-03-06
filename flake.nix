@@ -56,9 +56,11 @@
                 ];
             };
           };
-          commonPackages = [] ++ lib.optionals pkgs.stdenv.isLinux [ 
-            pkgs.inotify-tools
-          ];
+          commonPackages =
+            [ ]
+            ++ lib.optionals pkgs.stdenv.isLinux [
+              pkgs.inotify-tools
+            ];
 
         in
         # str = lib.concatStringsSep "\n" (lib.mapAttrsToList (n: v: "export ${n}=${v}") devEnv);
@@ -88,8 +90,8 @@
                   port = DB_PORT;
                   initialScript = {
                     before = ''
-                      CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;
-                     CREATE DATABASE ${DB_NAME};
+                       CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;
+                      CREATE DATABASE ${DB_NAME};
                     '';
                   };
                 };
@@ -109,7 +111,7 @@
             };
 
           devShells.default = pkgs.mkShell {
-            packages = [] ++ commonPackages;
+            packages = [ ] ++ commonPackages;
             inputsFrom = [
               config.process-compose."app-services".services.outputs.devShell
             ];

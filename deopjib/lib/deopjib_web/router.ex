@@ -9,7 +9,7 @@ defmodule DeopjibWeb.Router do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_live_flash)
-    plug(:put_root_layout, html: {DeopjibWeb.Layouts, :root})
+    plug(:put_root_layout, html: {DeopjibWebUI.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(:load_from_session)
@@ -41,7 +41,10 @@ defmodule DeopjibWeb.Router do
   scope "/", DeopjibWeb do
     pipe_through(:browser)
 
-    get("/", PageController, :home)
+    get("/home", PageController, :home)
+    live("/", Live.RoomEntry)
+    live("/components", Live.ComponentsLive)
+
     auth_routes(AuthController, Deopjib.Accounts.User, path: "/auth")
     sign_out_route(AuthController)
 

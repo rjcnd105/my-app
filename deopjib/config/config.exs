@@ -78,7 +78,7 @@ config :deopjib, DeopjibWeb.Endpoint,
 config :deopjib, Deopjib.Mailer, adapter: Swoosh.Adapters.Local
 
 config :bun,
-  version: "1.2.3",
+  version: "1.2.4",
   app@js: [
     args: ~w(run js),
     cd: Path.expand("../assets", __DIR__),

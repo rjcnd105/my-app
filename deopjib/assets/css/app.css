@@ -1,10 +1,16 @@
+@layer theme, base, components, utilities;
+
 @variant dark (&:where(.dark, .dark *));
 
 @variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
 @variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
 
-@import "tailwindcss" source("../../lib");
+/* @import "tailwindcss/theme.css" layer(theme); */
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "./theme.css";
+@source "../../lib";
 @source "../js/**/*.js";
 
 @plugin "../js/heroicons.tailwind.plugin.js";
@@ -14,5 +20,10 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  * {
+    line-height: var(--default-text-line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

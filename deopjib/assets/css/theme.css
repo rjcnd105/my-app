@@ -1,0 +1,71 @@
+@theme {
+  --spacing: 0.25rem;
+  --default-text-size: --spacing(4);
+
+  --breakpoint-md: 20rem;
+  --breakpoint-xl: 40rem;
+
+  /* fonts */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --text-caption2: 0.75rem;
+  --text-caption2--font-weight: var(--font-light);
+
+  --text-caption1: 0.875rem;
+
+  --text-body2: 1rem;
+  --text-body1: 1.125rem;
+
+  --text-subtitle: 1.25rem;
+  --text-title: 1.5rem;
+
+  --text-heading: 2rem;
+  --text-heading--font-weight: var(--font-bold);
+
+  /* colors */
+  --color-darkgray-300: rgba(28, 28, 28, 1);
+  --color-darkgray-200: rgba(76, 77, 78, 1);
+  --color-darkgray-100: rgba(141, 141, 146, 1);
+
+  --color-gray-300: rgba(188, 188, 193, 1);
+  --color-gray-200: rgba(212, 212, 218, 1);
+  --color-gray-100: rgba(232, 232, 235, 1);
+
+  --color-lightgray-300: rgba(238, 238, 241, 1);
+  --color-lightgray-200: rgba(245, 245, 249, 1);
+  --color-lightgray-100: rgba(255, 255, 255, 1);
+
+  --color-blue-500: rgba(47, 73, 226, 1);
+  --color-blue-400: rgba(78, 103, 248, 1);
+  --color-blue-300: rgba(150, 165, 255, 1);
+  --color-blue-200: rgba(219, 224, 255, 1);
+  --color-blue-100: rgba(234, 237, 255, 1);
+
+  --color-orange-300: rgba(255, 178, 29, 1);
+  --color-orange-200: rgba(255, 212, 130, 1);
+  --color-orange-100: rgba(255, 247, 231, 1);
+
+  --color-white: var(--color-lightgray-100);
+  --color-black: var(--color-darkgray-300);
+  --color-red: rgba(251, 98, 88, 1);
+
+  --color-primary: var(--color-blue-400);
+  --color-secondary: var(--color-blue-300);
+  --color-sub: var(--color-orange-300);
+  --color-warning: var(--color-red);
+  --color-success: rgba(47, 179, 254, 1);
+
+  --radius: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-full: 50%;
+
+  --default-font-family:
+    "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    sans-serif;
+}

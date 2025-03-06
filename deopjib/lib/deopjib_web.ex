@@ -17,7 +17,7 @@ defmodule DeopjibWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts icons images favicon.ico robots.txt)
 
   def router do
     quote do
@@ -40,7 +40,7 @@ defmodule DeopjibWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: DeopjibWeb.Layouts]
+        layouts: [html: DeopjibWebUI.Layouts]
 
       use Gettext, backend: DeopjibWeb.Gettext
 
@@ -53,7 +53,7 @@ defmodule DeopjibWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {DeopjibWeb.Layouts, :app}
+        layout: {DeopjibWebUI.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -88,7 +88,7 @@ defmodule DeopjibWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import DeopjibWeb.CoreComponents
+      # import DeopjibWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

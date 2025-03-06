@@ -1,4 +1,4 @@
-defmodule DeopjibWeb.Layouts do
+defmodule DeopjibWebUI.Layouts do
   @moduledoc """
   This module holds different layouts used by your application.
 
@@ -10,5 +10,5 @@ defmodule DeopjibWeb.Layouts do
   """
   use DeopjibWeb, :html
 
-  embed_templates "layouts/*"
+  embed_templates("layouts/*")
 end
