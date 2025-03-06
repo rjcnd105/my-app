@@ -2,7 +2,7 @@ defmodule DeopjibWebUI.Composites.Chip do
   alias DeopjibWebUI.Parts.{Icon}
   use DeopjibWeb, :html
 
-  @themes [
+  @theme_classes [
     white: [
       button: "bg-white font-bold text-primary",
       icon: "fill-gray-200 stroke-white"
@@ -21,29 +21,33 @@ defmodule DeopjibWebUI.Composites.Chip do
     ]
   ]
 
-  attr(:theme, :atom, default: :white, values: Keyword.keys(@themes))
+  @themes Keyword.keys(@theme_classes)
+
+  attr(:theme, :atom, default: :white, values: @themes)
 
   slot(:inner_block, required: true)
 
-  def render(assigns) do
-    theme = Keyword.get(@themes, assigns.theme)
+  def render(%{theme: theme} = assigns) do
+    theme = Keyword.get(@theme_classes, theme)
 
-    wrap_class =
-      "flex items-center gap-0.5 pl-2 pr-1 h-9 rounded-[26px] #{theme[:button]}"
-
-    icon_class = "size-4 [&_path]:first:stroke-none #{theme[:icon]}"
+    assigns =
+      assigns
+      |> assign(
+        wrap_class: "flex items-center gap-0.5 pl-2 pr-1 h-9 rounded-[26px] #{theme[:button]}",
+        icon_class: "size-4 [&_path]:first:stroke-none #{theme[:icon]}"
+      )
 
     ~H"""
-    <div class={wrap_class}>
+    <div class={@wrap_class}>
       {render_slot(@inner_block)}
       <button class="flex justify-center items-center w-6 h-full">
         <Icon.render
         name={:cross_circle}
-        class={icon_class} />
+        class={@icon_class} />
       </button>
     </div>
     """
   end
 
-  def themes, do: Keyword.keys(@themes)
+  def themes, do: @themes
 end

@@ -70,6 +70,7 @@ defmodule DeopjibWeb do
   def html do
     quote do
       use Phoenix.Component
+      import Twix
 
       # Import convenience functions from controllers
       import Phoenix.Controller,

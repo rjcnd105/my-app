@@ -50,7 +50,6 @@ defmodule Deopjib.MixProject do
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.20"},
       {:phoenix_ecto, "~> 4.5"},
-      {:tw_merge, "~> 0.1"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},

@@ -16,22 +16,28 @@ defmodule DeopjibWebUI.Parts.Icon do
                  end)
                  |> Map.new()
 
+  @additional_icon_classes [
+    cross_circle: "[&_path]:first:stroke-none"
+  ]
+
   attr(:name, :atom, required: true, values: @icons)
-  attr(:class, :any, default: nil)
+  attr(:class, :string, default: "")
   attr(:rest, :global, default: %{})
 
   def render(assigns) do
     svg_content =
       process_svg_content(
         Map.get(@icon_contents, assigns.name, "<svg></svg>"),
-        assigns.class,
+        [@additional_icon_classes[:name], assigns.class]
+        |> Enum.reject(&is_nil/1)
+        |> Enum.join(" "),
         assigns.rest
       )
 
     assigns = assign(assigns, :svg_content, Phoenix.HTML.raw(svg_content))
 
     ~H"""
-    <%= @svg_content %>
+    {@svg_content}
     """
   end
 
