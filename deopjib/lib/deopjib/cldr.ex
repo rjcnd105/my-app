@@ -1,5 +1,5 @@
 defmodule Deopjib.Cldr do
   use Cldr,
-    locales: ["en"],
-    default_locale: "en"
+    locales: ["en", "ko"],
+    default_locale: "ko"
 end
