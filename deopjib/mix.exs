@@ -33,6 +33,8 @@ defmodule Deopjib.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ex_money_sql, "~> 1.0"},
+      {:ash_money, "~> 0.1"},
       {:picosat_elixir, "~> 0.2"},
       {:oban, "~> 2.0"},
       {:oban_web, "~> 2.11"},
