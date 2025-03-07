@@ -27,35 +27,37 @@
   --text-heading--font-weight: var(--font-bold);
 
   /* colors */
-  --color-darkgray-300: rgba(28, 28, 28, 1);
-  --color-darkgray-200: rgba(76, 77, 78, 1);
-  --color-darkgray-100: rgba(141, 141, 146, 1);
+  --color-darkgray300: rgba(28, 28, 28, 1);
+  --color-darkgray200: rgba(76, 77, 78, 1);
+  --color-darkgray100: rgba(141, 141, 146, 1);
 
-  --color-gray-300: rgba(188, 188, 193, 1);
-  --color-gray-200: rgba(212, 212, 218, 1);
-  --color-gray-100: rgba(232, 232, 235, 1);
+  --color-gray300: rgba(188, 188, 193, 1);
+  --color-gray200: rgba(212, 212, 218, 1);
+  --color-gray100: rgba(232, 232, 235, 1);
 
-  --color-lightgray-300: rgba(238, 238, 241, 1);
-  --color-lightgray-200: rgba(245, 245, 249, 1);
-  --color-lightgray-100: rgba(255, 255, 255, 1);
+  --color-lightgray300: rgba(238, 238, 241, 1);
+  --color-lightgray200: rgba(245, 245, 249, 1);
+  --color-lightgray100: rgba(255, 255, 255, 1);
 
-  --color-blue-500: rgba(47, 73, 226, 1);
-  --color-blue-400: rgba(78, 103, 248, 1);
-  --color-blue-300: rgba(150, 165, 255, 1);
-  --color-blue-200: rgba(219, 224, 255, 1);
-  --color-blue-100: rgba(234, 237, 255, 1);
+  --color-blue500: rgba(47, 73, 226, 1);
+  --color-blue400: rgba(78, 103, 248, 1);
+  --color-blue300: rgba(150, 165, 255, 1);
+  --color-blue200: rgba(219, 224, 255, 1);
+  --color-blue100: rgba(234, 237, 255, 1);
 
-  --color-orange-300: rgba(255, 178, 29, 1);
-  --color-orange-200: rgba(255, 212, 130, 1);
-  --color-orange-100: rgba(255, 247, 231, 1);
+  --color-orange300: rgba(255, 178, 29, 1);
+  --color-orange200: rgba(255, 212, 130, 1);
+  --color-orange100: rgba(255, 247, 231, 1);
 
-  --color-white: var(--color-lightgray-100);
-  --color-black: var(--color-darkgray-300);
+  --color-white: var(--color-lightgray100);
+  --color-black: var(--color-darkgray300);
   --color-red: rgba(251, 98, 88, 1);
 
-  --color-primary: var(--color-blue-400);
-  --color-secondary: var(--color-blue-300);
-  --color-sub: var(--color-orange-300);
+  --color-none: transparent;
+
+  --color-primary: var(--color-blue400);
+  --color-secondary: var(--color-blue300);
+  --color-sub: var(--color-orange300);
   --color-warning: var(--color-red);
   --color-success: rgba(47, 179, 254, 1);
 

@@ -5,7 +5,7 @@ defmodule DeopjibWebUI.Composites.Chip do
   @theme_classes [
     white: [
       button: "bg-white font-bold text-primary",
-      icon: "fill-gray-200 stroke-white"
+      icon: "fill-gray200 stroke-white"
     ],
     secondary: [
       button: "text-white bg-secondary",
@@ -13,11 +13,11 @@ defmodule DeopjibWebUI.Composites.Chip do
     ],
     primary: [
       button: "bg-primary font-bold text-white",
-      icon: "fill-blue-500 stroke-white"
+      icon: "fill-blue500 stroke-white"
     ],
     gray: [
-      button: "bg-lightgray-100 text-black",
-      icon: "fill-gray-200 stroke-white"
+      button: "bg-lightgray100 text-black",
+      icon: "fill-gray200 stroke-white"
     ]
   ]
 

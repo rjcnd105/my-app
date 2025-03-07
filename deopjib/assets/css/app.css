@@ -21,6 +21,10 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  button:focus-visible {
+    outline: none;
+  }
   * {
     line-height: var(--default-text-line-height);
     -webkit-font-smoothing: antialiased;
