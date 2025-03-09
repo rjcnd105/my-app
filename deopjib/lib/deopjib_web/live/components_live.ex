@@ -1,4 +1,6 @@
 defmodule DeopjibWeb.Live.ComponentsLive do
+  alias DeopjibWebUi.Parts.Number
+  alias DeopjibWebUi.Parts.Checkbox
   alias DeopjibWebUI.Parts.{Button, Icon}
   alias DeopjibWebUI.Composites.{Chip, InputBox}
   use DeopjibWeb, :live_view
@@ -21,7 +23,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
 
       <.tmpl title="Icons" is_wrap={false}>
       <%= for cls <- ["stroke-primary", "stroke-black stroke-2", "fill-primary stroke-white"] do %>
-        <p class="text-subtitle my-2">  {cls}</p>
+        <p class="text-subtitle my-2"> {cls}</p>
         <.flex>
         <%= for icon <- Icon.icons() do %>
           <%= if cls == "stroke-primary" do %>
@@ -33,7 +35,17 @@ defmodule DeopjibWeb.Live.ComponentsLive do
         </.flex>
       <% end %>
       </.tmpl>
+      <.tmpl title="Checkbox" class="bg-white">
+        <Checkbox.render  />
+        <Checkbox.render checked />
 
+        disabled:
+        <Checkbox.render disabled />
+        <Checkbox.render checked disabled />
+      </.tmpl>
+      <.tmpl title="number">
+        <Number.render value={99242492}/>
+      </.tmpl>
 
 
       <.h2>Composites</.h2>
@@ -56,6 +68,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
         <Chip.render theme={theme} >{"#{theme}"}</Chip.render>
       <% end %>
       </.tmpl>
+
     </div>
     """
   end
