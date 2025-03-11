@@ -1,12 +1,13 @@
-defmodule DeopjibWebUi.Parts.Checkbox do
-  alias DeopjibWebUI.Parts.Icon
+defmodule DeopjibWebUI.Composites.Checkbox do
   use DeopjibWeb, :html
+  alias DeopjibWebUI.Parts.Icon
 
   attr(:name, :any, default: nil)
   attr(:value, :string)
   attr(:checked, :boolean, default: false)
   attr(:class, :string, default: nil)
   attr(:rest, :global)
+  attr(:disabled, :boolean, default: false)
 
   def render(assigns) do
     assigns =

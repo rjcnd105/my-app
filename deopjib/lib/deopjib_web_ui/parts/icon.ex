@@ -22,13 +22,13 @@ defmodule DeopjibWebUI.Parts.Icon do
 
   attr(:name, :atom, required: true, values: @icons)
   attr(:class, :string, default: "")
-  attr(:rest, :global, default: %{})
+  attr(:rest, :global)
 
   def render(assigns) do
     svg_content =
       process_svg_content(
         Map.get(@icon_contents, assigns.name, "<svg></svg>"),
-        [@additional_icon_classes[:name], assigns.class]
+        [@additional_icon_classes[assigns.name], assigns.class]
         |> Enum.reject(&is_nil/1)
         |> Enum.join(" "),
         assigns.rest

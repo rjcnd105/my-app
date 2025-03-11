@@ -1,4 +1,4 @@
-defmodule DeopjibWebUi.Parts.Number do
+defmodule DeopjibWebUI.Parts.Number do
   use DeopjibWeb, :html
   alias Deopjib.Cldr.Number
 

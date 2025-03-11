@@ -1,9 +1,8 @@
 defmodule DeopjibWeb.Live.ComponentsLive do
-  alias DeopjibWebUi.Parts.Number
-  alias DeopjibWebUi.Parts.Checkbox
-  alias DeopjibWebUI.Parts.{Button, Icon}
-  alias DeopjibWebUI.Composites.{Chip, InputBox}
   use DeopjibWeb, :live_view
+
+  alias DeopjibWebUI.Parts.{Number, Button, Icon}
+  alias DeopjibWebUI.Composites.{Modal, Chip, InputBox, Toast, Checkbox}
 
   def render(assigns) do
     ~H"""
@@ -69,6 +68,39 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       <% end %>
       </.tmpl>
 
+      <.tmpl title="Toast">
+        <Button.render phx-click={Toast.toast(%{message: "마지막 사람은 삭제 할 수 없어요."})} >open toast</Button.render>
+      </.tmpl>
+
+      <.tmpl title="modal">
+        <Button.render phx-click={Modal.show("my-modal")}>
+        Open modal
+        </Button.render>
+
+
+        <Button.render phx-click={Modal.show("my-wrap-modal")}>
+        Open custom wrap modal
+        </Button.render>
+
+        <Modal.modal id="my-modal" show>
+          <%!-- <Modal.title>aaaa</Modal.title> --%>
+          <div>
+          hihi
+          </div>
+        </Modal.modal>
+
+        <Modal.modal id="my-wrap-modal">
+          <:content_wrapper>
+            <p class="custom-wrapper bg-red size-12 text-white">
+            hihi
+            </p>
+          </:content_wrapper>
+        </Modal.modal>
+
+      </.tmpl>
+
+
+
     </div>
     """
   end
@@ -82,6 +114,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
   defp tmpl(assigns) do
     ~H"""
     <div class={"mb-8 #{@class}"}>
+
       <h3 class="text-title mb-2 font-semibold">{@title}</h3>
       <%= if assigns.is_wrap do %>
       <div class="flex gap-2 flex-wrap w-full">

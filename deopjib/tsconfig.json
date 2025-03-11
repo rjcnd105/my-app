@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "rootDirs": [".", "../lib"],
-
     "lib": ["ESNext", "DOM"],
     "target": "ES2021",
     "module": "ESNext",
@@ -22,13 +20,14 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
-      "@web_ui/*": ["../lib/deopjib_web_ui/*"],
-      "@web/*": ["../lib/deopjib_web/*"]
+      "@assets/*": ["./assets/deopjib_assets/*"],
+      "@web_ui/*": ["./lib/deopjib_web_ui/*"],
+      "@web/*": ["./lib/deopjib_web/*"]
     }
   },
   "include": [
-    "./js/**/*",
-    "../lib/deopjib_web_ui/**/*.ts",
-    "../lib/deopjib_web/**/*.ts"
+    "./assets/js/**/*",
+    "./lib/deopjib_web_ui/**/*.ts",
+    "./lib/deopjib_web/**/*.ts"
   ]
 }

@@ -2,28 +2,24 @@
   "name": "deopjib_assets",
   "type": "module",
   "workspaces": [
-    "../deps/*"
+    "./deps/*"
   ],
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.10",
+    "@tailwindcss/cli": "^4.0.12",
     "@tailwindcss/forms": "^0.5.10",
     "@types/bun": "latest",
     "@types/phoenix": "^1.6.6",
     "@types/phoenix_live_view": "^1.0.0",
-    "tailwindcss": "^4.0.10",
+    "tailwindcss": "^4.0.12",
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
     "typescript": "^5.8"
   },
   "scripts": {
-    "js": "bun build ./js/app.ts --outdir ../priv/static/assets --sourcemap=linked",
-    "js:dev": "bun run js --external /fonts/* --external /images/* --watch",
-    "js:prod": "bun run js --splitting --minify",
+    "js": "bun build ./assets/js/app.ts --outdir ./priv/static/assets --sourcemap=linked",
     "lint:dev": "bunx biome lint --watch",
-    "tailwind": "bunx tailwindcss -i ./css/app.css -o ../priv/static/assets/app.css",
-    "tailwind:dev": "bun run tailwind --watch",
-    "tailwind:prod": "bun run tailwind --minify"
+    "tailwind": "bunx tailwindcss -i ./assets/css/app.css -o ./priv/static/assets/app.css"
   },
   "dependencies": {
     "phoenix": "workspace:*",

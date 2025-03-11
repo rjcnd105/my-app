@@ -60,14 +60,54 @@
   --color-sub: var(--color-orange300);
   --color-warning: var(--color-red);
   --color-success: rgba(47, 179, 254, 1);
+  --color-dimm: rgba(0, 0, 0, 0.4);
 
   --radius: 0.25rem;
   --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
   --radius-full: 50%;
 
-  --default-font-family:
-    "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
-    "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    sans-serif;
+  --blur-dimm: 10px;
+
+  --ease-spring-2: linear(
+    0,
+    0.036 2%,
+    0.142 4.2%,
+    0.944 15.8%,
+    1.086 19.4%,
+    1.155 23%,
+    1.157 28.2%,
+    1.016 40.6%,
+    0.975 48.2%,
+    1
+  );
+  --animate-modal-in: 0.2s var(--ease-spring-2) both modal-in;
+  --animate-modal-out: 0.1s ease-in-out both modal-out;
+
+  @keyframes modal-in {
+    0% {
+      transform: translateY(12px) scale(0.95);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0px) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-out {
+    0% {
+      transform: translateY(0px) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(8px) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  --default-font-family: "Pretendard Variable", -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }

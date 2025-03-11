@@ -1,6 +1,6 @@
 defmodule DeopjibWebUI.Composites.Chip do
-  alias DeopjibWebUI.Parts.{Icon}
   use DeopjibWeb, :html
+  alias DeopjibWebUI.Parts.{Icon}
 
   @theme_classes [
     white: [
@@ -38,7 +38,7 @@ defmodule DeopjibWebUI.Composites.Chip do
       )
 
     ~H"""
-    <div class={@wrap_class}>
+    <div class={@wrap_class} >
       {render_slot(@inner_block)}
       <button class="flex justify-center items-center w-6 h-full">
         <Icon.render

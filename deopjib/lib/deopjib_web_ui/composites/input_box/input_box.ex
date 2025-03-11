@@ -1,7 +1,7 @@
 defmodule DeopjibWebUI.Composites.InputBox do
+  use DeopjibWeb, :html
   alias DeopjibWebUI.Parts.Icon
   alias DeopjibWebUI.Parts.Button
-  use DeopjibWeb, :html
 
   @theme_classes [
     none: "h-7 border-none",

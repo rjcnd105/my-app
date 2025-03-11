@@ -13,5 +13,6 @@ devenv.local.nix
 .lexical
 .secret.env
 
+.vscode
 data/pg
 dutchpay_umbrella/deps

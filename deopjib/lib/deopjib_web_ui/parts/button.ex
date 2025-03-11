@@ -12,8 +12,7 @@ defmodule DeopjibWebUI.Parts.Button do
   @size_classes [
     sm: "px-4 h-6 rounded text-caption1 font-light",
     md: "px-4 h-8 rounded-md text-body2",
-    lg: "px-4 h-9 rounded-md text-body2",
-    xlg: "px-4 h-12 rounded-md font-bold"
+    lg: "px-4 h-9 rounded-md text-body2"
   ]
 
   @themes Keyword.keys(@theme_classes)
@@ -31,8 +30,6 @@ defmodule DeopjibWebUI.Parts.Button do
   def render(assigns) do
     theme_class = Keyword.get(@theme_classes, assigns[:theme])
     size_class = Keyword.get(@size_classes, assigns[:size])
-
-    IO.inspect(assigns[:is_rounded], label: "is rounded")
 
     assigns =
       assigns
