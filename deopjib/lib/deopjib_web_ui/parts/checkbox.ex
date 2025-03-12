@@ -1,4 +1,4 @@
-defmodule DeopjibWebUI.Composites.Checkbox do
+defmodule DeopjibWebUI.Parts.Checkbox do
   use DeopjibWeb, :html
   alias DeopjibWebUI.Parts.Icon
 

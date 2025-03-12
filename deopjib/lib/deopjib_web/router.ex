@@ -21,6 +21,12 @@ defmodule DeopjibWeb.Router do
     plug(:set_actor, :user)
   end
 
+  scope "/api", DeopjibWeb do
+    pipe_through(:api)
+    post("/test", TestController, :index)
+    get("/test", TestController, :hello)
+  end
+
   scope "/", DeopjibWeb do
     pipe_through(:browser)
 

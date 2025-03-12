@@ -21,13 +21,11 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 
-
 import topbar from "./vendor/topbar";
 import { RoomMessages } from "./hooks/RoomMessages";
-import { ChatMessageTextarea } from "./hooks/ChatMessageTextarea";
-import "./events";
+import { EnterSubmit } from "./hooks/EnterSubmit";
 import hooks from "./hooks";
-
+import "./events";
 
 let csrfToken = (
   document.querySelector("meta[name='csrf-token']") as HTMLElement
@@ -77,9 +75,9 @@ window.addEventListener("phx:live_reload:attached", ({ detail: reloader }) => {
   window.liveReloader = reloader;
 });
 
-
 // connect if there are any LiveViews on the page
 liveSocket.connect();
+liveSocket.enableDebug();
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()

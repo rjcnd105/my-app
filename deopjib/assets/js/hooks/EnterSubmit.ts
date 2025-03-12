@@ -1,6 +1,6 @@
 import type { Hook } from "phoenix_live_view";
 
-export const ChatMessageTextarea: Hook = {
+export const EnterSubmit: Hook = {
   mounted() {
     this.el.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {

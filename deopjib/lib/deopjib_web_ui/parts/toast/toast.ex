@@ -1,4 +1,4 @@
-defmodule DeopjibWebUI.Composites.Toast do
+defmodule DeopjibWebUI.Parts.Toast do
   use DeopjibWeb, :html
 
   defstruct [:uuid]

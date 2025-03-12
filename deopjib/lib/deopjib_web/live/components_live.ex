@@ -1,8 +1,7 @@
 defmodule DeopjibWeb.Live.ComponentsLive do
   use DeopjibWeb, :live_view
 
-  alias DeopjibWebUI.Parts.{Number, Button, Icon}
-  alias DeopjibWebUI.Composites.{Modal, Chip, InputBox, Toast, Checkbox}
+  alias DeopjibWebUI.Parts.{Number, Button, Icon, Modal, Chip, InputBox, Toast, Checkbox}
 
   def render(assigns) do
     ~H"""
@@ -47,7 +46,6 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       </.tmpl>
 
 
-      <.h2>Composites</.h2>
       <.tmpl title="input">
       <%= for theme <- InputBox.themes() do %>
         {theme}:
@@ -83,7 +81,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
         </Button.render>
 
         <Modal.modal id="my-modal" show>
-          <%!-- <Modal.title>aaaa</Modal.title> --%>
+          <Modal.title>title</Modal.title>
           <div>
           hihi
           </div>

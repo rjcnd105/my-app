@@ -1,4 +1,4 @@
-defmodule DeopjibWebUI.Composites.Chip do
+defmodule DeopjibWebUI.Parts.Chip do
   use DeopjibWeb, :html
   alias DeopjibWebUI.Parts.{Icon}
 

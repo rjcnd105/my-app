@@ -1,1 +1,1 @@
-import "@web_ui/composites/input_box/input_box.event";
+import "@web_ui/parts/input_box/input_box.event";

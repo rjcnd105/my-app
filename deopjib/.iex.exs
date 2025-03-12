@@ -1,3 +1,3 @@
-alias DeopjibWebUI.{Composites, Layouts, Parts}
+alias DeopjibWebUI.{Layouts, Parts}
 
 IO.puts("hello world")

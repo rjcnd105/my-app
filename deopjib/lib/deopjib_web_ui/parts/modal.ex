@@ -1,4 +1,4 @@
-defmodule DeopjibWebUI.Composites.Modal do
+defmodule DeopjibWebUI.Parts.Modal do
   use DeopjibWeb, :html
   alias DeopjibWebUI.Parts.Overlay
 
@@ -35,8 +35,8 @@ defmodule DeopjibWebUI.Composites.Modal do
   end
 
   attr(:class, :string, default: nil)
-  slot(:inner_block, required: true)
   attr(:rest, :global)
+  slot(:inner_block, required: true)
 
   def content_wrapper(assigns) do
     ~H"""
@@ -59,7 +59,7 @@ defmodule DeopjibWebUI.Composites.Modal do
 
   def title(assigns) do
     ~H"""
-    <h3 class={["text-subtitle font-bold text-center", @class]} {@rest}>
+    <h3 class={["text-subtitle font-bold text-center mb-2", @class]} {@rest}>
       {render_slot(@inner_block)}
     </h3>
     """

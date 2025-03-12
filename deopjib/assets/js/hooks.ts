@@ -1,7 +1,9 @@
-import { ToastHook } from "../../lib/deopjib_web_ui/composites/toast/toast";
+import { EnterSubmit } from "./hooks/EnterSubmit";
+import { ToastHook } from "@web_ui/parts/toast/toast";
 
 const hooks = {
-  ToastHook
+  ToastHook,
+  EnterSubmit,
 };
 
 export default hooks;
