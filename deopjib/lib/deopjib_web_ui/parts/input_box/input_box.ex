@@ -25,6 +25,7 @@ defmodule DeopjibWebUI.Parts.InputBox do
   attr(:min_length, :integer, default: nil)
   attr(:max_length, :integer, default: nil)
   attr(:rest, :global, include: ~w(placeholder))
+  attr(:error_message, :any)
 
   slot(:input_right)
 
@@ -35,8 +36,9 @@ defmodule DeopjibWebUI.Parts.InputBox do
     |> assign_new(:name, fn -> field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> assign(
-      :errors,
-      field.errors |> then(&Enum.at(&1, 0))
+      :error_message,
+      field.errors
+      |> DeopjibWeb.Utils.Error.translate_first_error()
     )
     |> IO.inspect(label: "input_box before")
     |> render()
@@ -85,6 +87,7 @@ defmodule DeopjibWebUI.Parts.InputBox do
         data-ui="input_box#message"
       >
         <p class="group-data-[valid=invalid]/input-box:text-warning">
+          {Monad.Result.unwrap_ok_else(@error_message, @message)}
         </p>
 
         <%= if is_integer(@min_length) || is_integer(@max_length) do %>

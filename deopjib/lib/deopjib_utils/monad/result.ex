@@ -18,7 +18,6 @@ defmodule Monad.Result do
 
   @spec match(result_t(v, e), %{ok: (v -> b), error: (e -> c)}) :: b | c
         when v: term(), e: term(), b: term(), c: term()
-
   def match({:ok, val}, %{ok: ok_fn, error: _err_fn}), do: ok_fn.(val)
   def match({:error, val}, %{ok: _ok_fn, error: err_fn}), do: err_fn.(val)
 
@@ -32,6 +31,10 @@ defmodule Monad.Result do
   @spec err(a) :: error_t(a) when a: term()
   def err(val), do: {:error, val}
 
+  @spec with_default(result_t(a, any()), b) :: a | b when a: term(), b: term()
+  def with_default({:ok, value}, _default), do: value
+  def with_default({:error, _}, default), do: default
+
   @spec err?(result_t(any(), any())) :: boolean()
   def err?({:error, _val}), do: true
   def err?({:ok, _val}), do: false
@@ -41,4 +44,16 @@ defmodule Monad.Result do
   defp fold([{:ok, v} | tail], acc), do: fold(tail, [v | acc])
   defp fold([{:error, v} | _tail], _acc), do: {:error, v}
   defp fold([], acc), do: {:ok, Enum.reverse(acc)}
+
+  @spec from_option(ok_t(v) | :error) :: result_t(v, nil) when v: term()
+  def from_option(result), do: from_option(result, nil)
+
+  @spec from_option(ok_t(v) | :error, d) :: result_t(v, d)
+        when v: term(), d: term()
+  def from_option({:ok, val}, _default), do: {:ok, val}
+  def from_option(:error, default), do: err(default)
+
+  def unwrap_ok_else({:ok, val} = ok, _), do: unwrap_ok_else(ok)
+  def unwrap_ok_else({:ok, val}), do: val
+  def unwrap_ok_else(_, default \\ nil), do: default
 end
