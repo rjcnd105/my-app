@@ -22,8 +22,6 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 
 import topbar from "./vendor/topbar";
-import { RoomMessages } from "./hooks/RoomMessages";
-import { EnterSubmit } from "./hooks/EnterSubmit";
 import hooks from "./hooks";
 import "./events";
 
@@ -38,6 +36,22 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: {
     _csrf_token: csrfToken,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  },
+  metadata: {
+    keydown: (e, el) => {
+      return {
+        key: e.key,
+        metaKey: e.metaKey,
+        repeat: e.repeat,
+      };
+    },
+    keyup: (e, el) => {
+      return {
+        key: e.key,
+        metaKey: e.metaKey,
+        repeat: e.repeat,
+      };
+    },
   },
 });
 

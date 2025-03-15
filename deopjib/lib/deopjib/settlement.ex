@@ -15,7 +15,7 @@ defmodule Deopjib.Settlement do
     end
 
     resource Payer do
-      define(:create_payer, action: :create)
+      define(:create_payer, action: :create, args: [:name])
       define(:get_payer, action: :read)
       define(:delete_payer, action: :destroy)
     end

@@ -43,6 +43,7 @@ defmodule Deopjib.MixProject do
       {:ash_state_machine, "~> 0.2"},
       {:ash_oban, "~> 0.3"},
       {:ash_admin, "~> 0.13"},
+      {:live_state, "~> 0.8.2"},
       {:ash_authentication_phoenix, "~> 2.0"},
       {:ash_authentication, "~> 4.0"},
       {:ash_postgres, "~> 2.0"},

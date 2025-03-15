@@ -103,12 +103,12 @@ defmodule Dutchpay.Chat do
 
   def join_room!(room, user) do
     Repo.insert!(%RoomMembership.Schema{room: room, user: user})
-    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:join_user, room, user})
+    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:user_joined, room, user})
   end
 
   def leave_room!(room, user) do
     Repo.delete(%RoomMembership.Schema{room: room, user: user})
-    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:leave_user, room, user})
+    |> Phoenix.PubSub.broadcast!(@pubsub, topic(room.id), {:user_leaved, room, user})
   end
 
   def joined?(%Room.Schema{id: room_id}, %Dutchpay.Accounts.User{id: user_id}) do

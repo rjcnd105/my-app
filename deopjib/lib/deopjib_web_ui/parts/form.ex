@@ -2,17 +2,10 @@ defmodule DeopjibWebUI.Parts.Form do
   use DeopjibWeb, :html
   use Gettext, backend: DeopjibWeb.Gettext
 
-  defdelegate form(assigns), to: Phoenix.Component
-
-  attr(:id, :any, default: nil)
-  attr(:name, :any)
-  attr(:label, :string, default: nil)
-  attr(:value, :any)
-
   attr(:type, :string,
     default: "text",
-    values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+    values: ~w(color date datetime-local email file month number password
+               range search select tel text time url week)
   )
 
   attr(:field, Phoenix.HTML.FormField,
@@ -20,17 +13,14 @@ defmodule DeopjibWebUI.Parts.Form do
   )
 
   attr(:errors, :list, default: [])
-  attr(:checked, :boolean, doc: "the checked flag for checkbox inputs")
-  attr(:prompt, :string, default: nil, doc: "the prompt for select inputs")
-  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
-  attr(:multiple, :boolean, default: false, doc: "the multiple flag for select inputs")
 
   attr(:rest, :global,
-    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
+    include:
+      ~w(id name accept value autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
   )
 
-  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
+  def assign_from_field(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
     assigns
@@ -38,7 +28,63 @@ defmodule DeopjibWebUI.Parts.Form do
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
-    |> input()
+  end
+
+  @doc """
+  Renders a simple form.
+
+  ## Examples
+
+      <.simple_form for={@form} phx-change="validate" phx-submit="save">
+        <.input field={@form[:email]} label="Email"/>
+        <.input field={@form[:username]} label="Username" />
+        <:actions>
+          <.button>Save</.button>
+        </:actions>
+      </.simple_form>
+  """
+  attr(:for, :any, required: true, doc: "the data structure for the form")
+  attr(:as, :any, default: nil, doc: "the server side parameter to collect all input under")
+
+  attr(:rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+  )
+
+  slot(:inner_block, required: true)
+
+  def simple_form(assigns) do
+    JS
+
+    ~H"""
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      {render_slot(@inner_block, f)}
+    </.form>
+    """
+  end
+
+  attr(:checked, :boolean, doc: "the checked flag for checkbox inputs")
+  attr(:prompt, :string, default: nil, doc: "the prompt for select inputs")
+  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
+  attr(:multiple, :boolean, default: false, doc: "the multiple flag for select inputs")
+
+  attr(:errors, :list, default: [])
+
+  attr(:rest, :global,
+    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
+                multiple pattern placeholder readonly required rows size step)
+  )
+
+  def input(assigns) do
+    ~H"""
+    <input
+      type={@type}
+      name={@name}
+      id={@id}
+      value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+      {@rest}
+    />
+    """
   end
 
   def translate_error({msg, opts}) do

@@ -4,6 +4,10 @@ defmodule Deopjib.Settlement.Payer do
     domain: Deopjib.Settlement,
     data_layer: AshPostgres.DataLayer
 
+  @name_length [
+    min: 1,
+    max: 6
+  ]
   postgres do
     table("payer")
     repo(Deopjib.Repo)
@@ -47,4 +51,6 @@ defmodule Deopjib.Settlement.Payer do
   validations do
     validate(string_length(:name, min: 1, max: 6))
   end
+
+  def name_length, do: @name_length
 end

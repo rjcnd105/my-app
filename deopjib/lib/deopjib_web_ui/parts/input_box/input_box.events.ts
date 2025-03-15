@@ -1,4 +1,5 @@
 window.addEventListener("input_box/clear-input", (e) => {
+  console.log("input_box/clear-input");
   const buttonEl = e.target as HTMLButtonElement;
   const inputEl = buttonEl.previousElementSibling;
 

@@ -6,6 +6,7 @@ defmodule DeopjibWebUI.Parts.Button do
     primary: "bg-primary text-white",
     sub: "bg-sub",
     warning: "bg-warning text-white",
+    dark: "bg-darkgray200 text-white",
     ghost: "border border-secondary rounded-[26px] text-secondary"
   ]
 

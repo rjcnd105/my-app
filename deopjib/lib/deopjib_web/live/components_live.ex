@@ -49,16 +49,16 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       <.tmpl title="input">
       <%= for theme <- InputBox.themes() do %>
         {theme}:
-        <InputBox.render placeholder="Placeholder" theme={theme} />
+        <InputBox.render placeholder="Placeholder" theme={theme} id="n1" name="n1" />
       <% end %>
         with class:
-        <InputBox.render placeholder="Placeholder" class="text-center bg-white" />
+        <InputBox.render placeholder="Placeholder" class="text-center bg-white" id="n2" name="n2"/>
 
         <.br />
         valid:
-        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="valid" />
+        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="valid" id="n3" name="n3"/>
         invalid:
-        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="invalid" />
+        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="invalid" id="n4"name="n4"/>
       </.tmpl>
       <.tmpl title="Chips">
       <%= for theme <- Chip.themes() do %>

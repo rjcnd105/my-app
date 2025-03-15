@@ -22,8 +22,11 @@
     "tailwind": "bunx tailwindcss -i ./assets/css/app.css -o ./priv/static/assets/app.css"
   },
   "dependencies": {
+    "es-toolkit": "^1.33.0",
+    "nanostores": "^0.11.4",
     "phoenix": "workspace:*",
     "phoenix_html": "workspace:*",
-    "phoenix_live_view": "workspace:*"
+    "phoenix_live_view": "workspace:*",
+    "phx-live-state": "^0.12.1"
   }
 }

@@ -1,5 +1,6 @@
 defmodule DeopjibWebUI.Parts.InputBox do
   use DeopjibWeb, :html
+  alias DeopjibWeb.CoreComponents
   alias DeopjibWebUI.Parts.Icon
   alias DeopjibWebUI.Parts.Button
 
@@ -11,60 +12,97 @@ defmodule DeopjibWebUI.Parts.InputBox do
 
   @themes Keyword.keys(@theme_classes)
 
-  @valid_states [nil, "valid", "invalid"]
-
-  attr(:id, :string, required: true)
-  attr(:name, :string)
   attr(:theme, :atom, values: @themes, default: :none)
-  attr(:class, :string, default: "")
   attr(:has_close, :boolean, default: true)
-  attr(:valid, :string || nil, values: @valid_states, default: hd(@valid_states))
-  attr(:rest, :global)
+  attr(:valid, :any, default: nil)
+  attr(:field, Phoenix.HTML.FormField)
+  attr(:box_class, :any, default: nil)
+  attr(:id, :any)
+  attr(:name, :any)
+  attr(:value, :any, default: nil)
+  attr(:errors, :list, default: [])
+  attr(:message, :string, default: "")
+  attr(:min_length, :integer, default: nil)
+  attr(:max_length, :integer, default: nil)
+  attr(:rest, :global, include: ~w(placeholder))
 
   slot(:input_right)
-  slot(:bottom)
+
+  def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
+    assigns
+    |> assign(field: nil)
+    |> assign(id: assigns[:id] || field.id)
+    |> assign_new(:name, fn -> field.name end)
+    |> assign_new(:value, fn -> field.value end)
+    |> assign(
+      :errors,
+      field.errors |> then(&Enum.at(&1, 0))
+    )
+    |> IO.inspect(label: "input_box before")
+    |> render()
+  end
 
   def render(assigns) do
     assigns =
       assigns
       |> assign(:theme_class, @theme_classes[assigns.theme])
+      |> IO.inspect(label: "input_box")
 
     ~H"""
-    <div class={"#{@theme_class} group/input-box width-full data-[valid=valid]:border-primary data-[valid=invalid]:border-red #{@class}"} data-valid={@valid}>
-      <div class="h-full flex items-center justify-center">
-        <input class="peer flex flex-1 h-full bg-none p-0 placeholder:text-body2 placeholder:text-gray200 ring-0 border-none" {@rest} phx-hook="EnterSubmit" />
-        <Button.render :if={@has_close} phx-click={JS.dispatch("input_box/clear-input")} class="flex justify-center items-center size-8 shrink-0 peer-[&:placeholder-shown]:invisible [&_svg]:fill-gray100 [&_svg]:stroke-white focus-visible:[&_svg]:fill-darkgray100">
-          <Icon.render name={:cross_circle} class="fill-gray100 stroke-white size-3.5" />
-        </Button.render>
-        {render_slot(@input_right)}
+    <div
+      class="group/input-box"
+      data-ui="input_box"
+      data-valid={getValid(@valid)}
+    >
+      <div
+        class={["width-full group-data-[valid=valid]/input-box:border-primary group-data-[valid=invalid]/input-box:border-red", @theme_class,  @box_class]}
+      >
+        <div class="h-full flex items-center justify-center">
+          <input
+            type="text"
+            id={@id}
+            name={@name}
+            value={Phoenix.HTML.Form.normalize_value("text", @value)}
+            class="peer flex flex-1 h-full bg-none p-0 placeholder:text-body2 placeholder:text-gray200 ring-0 border-none"
+            phx-mounted={JS.dispatch("addEvent:enter-submit", detail: %{event_name: "keyup"})}
+            {@rest}
+
+          />
+          <Button.render
+            :if={@has_close}
+            type="button"
+            phx-click={JS.dispatch("input_box/clear-input")}
+            class="flex justify-center items-center size-8 shrink-0 peer-[&:placeholder-shown]:invisible [&_svg]:fill-gray100 [&_svg]:stroke-white focus-visible:[&_svg]:fill-darkgray100"
+          >
+            <Icon.render name={:cross_circle} class="fill-gray100 stroke-white size-3.5" />
+          </Button.render>
+          {render_slot(@input_right)}
+        </div>
       </div>
-      {render_slot(@bottom)}
+      <div
+        :if={is_binary(@message) || is_integer(@max_length) || is_integer(@min_length)}
+        class="flex text-caption2 text-gray300 mt-1"
+        data-ui="input_box#message"
+      >
+        <p class="group-data-[valid=invalid]/input-box:text-warning">
+        </p>
+
+        <%= if is_integer(@min_length) || is_integer(@max_length) do %>
+          <span id={@id <> "_length"} phx-update="ignore" class="group-data-[valid=invalid]/input-box:text-warning ml-auto" data-ui="input_box#current_length" phx-hook="InputBoxLengthHook">0</span>
+          &nbsp;/{@max_length}
+        <% end %>
+      </div>
     </div>
+
     """
   end
 
-  attr(:min_length, :integer, default: nil)
-  attr(:max_length, :integer, default: nil)
-  attr(:message, :string, default: "")
-  attr(:rest, :global)
-
-  def message(assigns) do
-    ~H"""
-    <div
-      class="flex text-caption2 text-gray300 has-data-[ui=input_box#length]:bg-blue300"
-      data-ui="input_box#message"
-      {@rest}
-    >
-      <p class="group-data-[valid=invalid]/input-box:text-warning">
-        {@message}
-      </p>
-
-      <%= if is_integer(@min_length) && is_integer(@max_length) do %>
-        <span class="group-data-[valid=invalid]/input-box:text-warning" data-ui="input_box#current_length" />
-        &nbsp;/{@max_length}
-      <% end %>
-    </div>
-    """
+  defp getValid(b) do
+    case b do
+      true -> "valid"
+      false -> "invalid"
+      _ -> nil
+    end
   end
 
   def themes, do: @themes

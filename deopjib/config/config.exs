@@ -83,7 +83,7 @@ config :bun,
   version: "1.2.4",
   app@js: [
     args: ~w(run js),
-    cd: Path.expand("../assets", __DIR__),
+    cd: Path.expand("../", __DIR__),
     env: %{}
   ],
   # dutchpay_web@js_build: [
@@ -92,7 +92,7 @@ config :bun,
   # ],
   app@tailwind: [
     args: ~w(run tailwind),
-    cd: Path.expand("../assets", __DIR__),
+    cd: Path.expand("../", __DIR__),
     env: %{}
   ]
 
