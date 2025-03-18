@@ -19,6 +19,8 @@ export const InputBoxLengthHook: Hook = {
     this.el.innerText = `${length}`;
 
     input?.addEventListener("input", updateCounter.bind(this));
+    input?.addEventListener("change", updateCounter.bind(this));
+    input?.addEventListener("reset", updateCounter.bind(this));
   },
   destroyed() {
     const input = this.el
@@ -28,5 +30,7 @@ export const InputBoxLengthHook: Hook = {
     if (!input) return;
 
     input.removeEventListener("input", updateCounter);
+    input.removeEventListener("change", updateCounter);
+    input.removeEventListener("reset", updateCounter);
   },
 };

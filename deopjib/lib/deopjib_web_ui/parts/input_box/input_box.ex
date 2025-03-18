@@ -25,7 +25,7 @@ defmodule DeopjibWebUI.Parts.InputBox do
   attr(:min_length, :integer, default: nil)
   attr(:max_length, :integer, default: nil)
   attr(:rest, :global, include: ~w(placeholder))
-  attr(:error_message, :any)
+  attr(:error_message, :any, default: nil)
 
   slot(:input_right)
 
@@ -35,12 +35,12 @@ defmodule DeopjibWebUI.Parts.InputBox do
     |> assign(id: assigns[:id] || field.id)
     |> assign_new(:name, fn -> field.name end)
     |> assign_new(:value, fn -> field.value end)
+    # |> IO.inspect(label: "input_box before")
     |> assign(
       :error_message,
       field.errors
       |> DeopjibWeb.Utils.Error.translate_first_error()
     )
-    |> IO.inspect(label: "input_box before")
     |> render()
   end
 
@@ -48,7 +48,8 @@ defmodule DeopjibWebUI.Parts.InputBox do
     assigns =
       assigns
       |> assign(:theme_class, @theme_classes[assigns.theme])
-      |> IO.inspect(label: "input_box")
+
+    # |> IO.inspect(label: "input_box")
 
     ~H"""
     <div

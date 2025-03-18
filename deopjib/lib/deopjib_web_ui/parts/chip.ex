@@ -24,6 +24,8 @@ defmodule DeopjibWebUI.Parts.Chip do
   @themes Keyword.keys(@theme_classes)
 
   attr(:theme, :atom, default: :white, values: @themes)
+  attr(:rest, :global)
+  attr(:wrap_class, :any, default: nil)
 
   slot(:inner_block, required: true)
 
@@ -33,7 +35,10 @@ defmodule DeopjibWebUI.Parts.Chip do
     assigns =
       assigns
       |> assign(
-        wrap_class: "flex items-center gap-0.5 pl-2 pr-1 h-9 rounded-[26px] #{theme[:button]}",
+        wrap_class: [
+          "flex items-center gap-0.5 pl-2 pr-1 h-9 rounded-[26px] #{theme[:button]}",
+          assigns.wrap_class
+        ],
         icon_class: "size-4 [&_path]:first:stroke-none #{theme[:icon]}"
       )
 
@@ -43,7 +48,9 @@ defmodule DeopjibWebUI.Parts.Chip do
       <button class="flex justify-center items-center w-6 h-full">
         <Icon.render
         name={:cross_circle}
-        class={@icon_class} />
+        class={@icon_class}
+        {@rest}
+      />
       </button>
     </div>
     """

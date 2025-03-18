@@ -22,11 +22,12 @@ defmodule DeopjibWebUI.Parts.Checkbox do
         type="checkbox"
         name={@name}
         checked={@checked}
+        disabled={@disabled}
         {@rest}
       />
       <Icon.render
         name={:check_circle_filled}
-        class="absolute inset-0 rounded-full fill-gray100 stroke-0 peer-checked:stroke-1 disabled:opacity-50 peer-focus-visible:ring-1 ring-primary peer-checked:fill-primary peer-checked:stroke-white"
+        class="absolute inset-0 rounded-full fill-gray100 stroke-0 peer-checked:stroke-1 peer-disabled:opacity-50 peer-focus-visible:ring-1 ring-primary peer-checked:fill-primary peer-checked:stroke-white"
       />
     </label>
     """

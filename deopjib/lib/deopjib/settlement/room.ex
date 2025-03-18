@@ -4,6 +4,8 @@ defmodule Deopjib.Settlement.Room do
     domain: Deopjib.Settlement,
     data_layer: AshPostgres.DataLayer
 
+  @max_payer 10
+
   postgres do
     table("rooms")
     repo(Deopjib.Repo)
@@ -21,12 +23,11 @@ defmodule Deopjib.Settlement.Room do
     create :create do
       accept([:name])
 
-      change(fn changeset, _context ->
-        expiration_at = DateTime.utc_now() |> DateTime.add(7, :day)
+      change(Deopjib.Settlement.Room.Changes.SetExpirationAt)
+    end
 
-        changeset
-        |> Ash.Changeset.force_change_attribute(:expiration_at, expiration_at)
-      end)
+    update :update_payers do
+      argument(:payer_names, {:array, :string}, allow_nil?: false)
     end
   end
 
@@ -47,6 +48,10 @@ defmodule Deopjib.Settlement.Room do
     update_timestamp(:updated_at)
   end
 
+  aggregates do
+    count(:counts_of_payers, :payers)
+  end
+
   relationships do
     has_many(:payers, Deopjib.Settlement.Payer) do
       source_attribute(:id)
@@ -57,4 +62,6 @@ defmodule Deopjib.Settlement.Room do
   validations do
     validate(string_length(:name, min: 1, max: 13))
   end
+
+  def max_payer(), do: @max_payer
 end

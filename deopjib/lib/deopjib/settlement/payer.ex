@@ -49,7 +49,11 @@ defmodule Deopjib.Settlement.Payer do
   end
 
   validations do
-    validate(string_length(:name, min: 1, max: 6))
+    validate(string_length(:name, max: 6), message: "이름은 6자까지 입력 가능해")
+  end
+
+  identities do
+    identity(:unique_name_per_room, [:name, :room_id], message: "이미 방에 있는 이름이야")
   end
 
   def name_length, do: @name_length

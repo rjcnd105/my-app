@@ -13,7 +13,8 @@ defmodule DeopjibWebUI.Parts.Button do
   @size_classes [
     sm: "px-4 h-6 rounded text-caption1 font-light",
     md: "px-4 h-8 rounded-md text-body2",
-    lg: "px-4 h-9 rounded-md text-body2"
+    lg: "px-4 h-9 rounded-md text-body2",
+    xlg: "px-4 h-12 rounded-md text-body2"
   ]
 
   @themes Keyword.keys(@theme_classes)
