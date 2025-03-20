@@ -1,4 +1,5 @@
 alias DeopjibWebUI.{Layouts, Parts}
+alias Monad.Result, as: R
 alias Deopjib.{Settlement}
 
 import DeopjibUtils.Debug,

@@ -88,7 +88,7 @@ defmodule DeopjibWebUI.Parts.InputBox do
         data-ui="input_box#message"
       >
         <p class="group-data-[valid=invalid]/input-box:text-warning">
-          {Monad.Result.unwrap_ok_else(@error_message, @message)}
+          {Monad.Result.unwrap(@error_message, @message)}
         </p>
 
         <%= if is_integer(@min_length) || is_integer(@max_length) do %>

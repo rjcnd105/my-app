@@ -13,7 +13,20 @@ defmodule Monad.Result do
 
   @spec flat_map(result_t(a, e), (a -> result_t(b, e))) :: result_t(b, e)
         when a: term(), b: term(), e: term()
-  def flat_map({:ok, val}, f), do: f.(val)
+  def flat_map({:ok, val}, f) do
+    case(f.(val)) do
+      {:ok, _} = result ->
+        result
+
+      {:error, _} = result ->
+        result
+
+      other ->
+        raise ArgumentError,
+              "Expected function to return result_t type ({:ok, value} or {:error, reason}), got: #{inspect(other)}"
+    end
+  end
+
   def flat_map({:error, _val} = err, _f), do: err
 
   @spec match(result_t(v, e), %{ok: (v -> b), error: (e -> c)}) :: b | c
@@ -53,9 +66,9 @@ defmodule Monad.Result do
   def from_option({:ok, val}, _default), do: {:ok, val}
   def from_option(:error, default), do: err(default)
 
-  @spec unwrap_ok_else({:ok, v}, dv) :: v | dv when v: term(), dv: term()
-  def unwrap_ok_else({:ok, value}, _default), do: value
-  def unwrap_ok_else(_, default), do: default
+  @spec unwrap({:ok, v}, dv) :: v | dv when v: term(), dv: term()
+  def unwrap({:ok, value}, _default), do: value
+  def unwrap(_, default), do: default
 
   @spec from_nil(nil | v, e) :: {:ok, v} | {:error, nil | e} when v: term(), e: term()
   def from_nil(nil, error_value), do: {:error, error_value}
