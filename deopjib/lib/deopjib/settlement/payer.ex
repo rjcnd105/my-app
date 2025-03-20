@@ -18,9 +18,10 @@ defmodule Deopjib.Settlement.Payer do
   end
 
   actions do
-    defaults([:read, :destroy])
+    defaults([:read, :destroy, :update])
 
     create :create do
+      primary?(true)
       accept([:name])
     end
   end
@@ -49,7 +50,7 @@ defmodule Deopjib.Settlement.Payer do
   end
 
   validations do
-    validate(string_length(:name, max: 6), message: "이름은 6자까지 입력 가능해")
+    validate(string_length(:name, min: 1, max: 6), message: "이름은 6자까지 입력 가능해")
   end
 
   identities do

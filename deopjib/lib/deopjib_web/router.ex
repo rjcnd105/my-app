@@ -48,7 +48,8 @@ defmodule DeopjibWeb.Router do
     pipe_through(:browser)
 
     get("/home", PageController, :home)
-    live("/", Live.RoomEntry)
+    live("/", Live.CreateRoom)
+    live("/:room_id/add_pay_items", Live.PayItemByPayer)
     live("/components", Live.ComponentsLive)
 
     auth_routes(AuthController, Deopjib.Accounts.User, path: "/auth")

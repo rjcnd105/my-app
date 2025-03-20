@@ -5,30 +5,45 @@ defmodule Deopjib.Settlement.Room do
     data_layer: AshPostgres.DataLayer
 
   @max_payer 10
+  @add_expiration_at 30
+  @default_name "정산영수증"
 
   postgres do
     table("rooms")
     repo(Deopjib.Repo)
   end
 
-  code_interface do
-    define(:create, action: :create)
-    define(:read)
-    define(:destroy)
-  end
+  # code_interface do
+  #   define(:create, action: :create)
+  #   define(:read)
+  #   define(:destroy)
+  # end
 
   actions do
     defaults([:read, :destroy])
 
     create :create do
       accept([:name])
-
-      change(Deopjib.Settlement.Room.Changes.SetExpirationAt)
+      primary?(true)
     end
 
-    update :update_payers do
-      argument(:payer_names, {:array, :string}, allow_nil?: false)
+    create :create_with_payers do
+      argument(:payers, {:array, :map})
+
+      change(set_attribute(:name, @default_name))
+      change(manage_relationship(:payers, type: :create))
     end
+
+    update :put_payers_in_room do
+      argument(:payers, {:array, :map})
+      require_atomic?(false)
+
+      change(manage_relationship(:payers, type: :direct_control))
+    end
+  end
+
+  changes do
+    change(Deopjib.Settlement.Room.Changes.SetExpirationAt, on: :create)
   end
 
   attributes do
@@ -49,7 +64,9 @@ defmodule Deopjib.Settlement.Room do
   end
 
   aggregates do
-    count(:counts_of_payers, :payers)
+    count(:counts_of_payers, :payers) do
+      public?(true)
+    end
   end
 
   relationships do
@@ -64,4 +81,5 @@ defmodule Deopjib.Settlement.Room do
   end
 
   def max_payer(), do: @max_payer
+  def add_expiration_at(), do: @add_expiration_at
 end

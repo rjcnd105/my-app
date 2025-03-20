@@ -1,15 +1,16 @@
-defmodule DeopjibWeb.Live.RoomEntry do
+defmodule DeopjibWeb.Live.CreateRoom do
   use DeopjibWeb, :live_view
-  alias Deopjib.Settlement
+  alias Deopjib.Settlement.{Payer, Room}
   alias DeopjibWebUI.Templates.Main
   alias DeopjibWebUI.Parts.{InputBox, Button, Chip}
 
   def render(assigns) do
-    name_length = Settlement.Payer.name_length()
-    is_once_valid = assigns.form.action == :validate
-    has_errors = assigns.form.errors != []
+    name_length = Payer.name_length()
+    is_once_valid = assigns.payer_form.action == :validate
+    has_errors = assigns.payer_form.errors != []
     user_count = length(assigns.users)
     is_user_full = user_count >= 10
+    max_payer = Deopjib.Settlement.Room.max_payer()
 
     assigns =
       assigns
@@ -26,11 +27,11 @@ defmodule DeopjibWeb.Live.RoomEntry do
     <Main.render class="pt-8 flex flex-col h-full">
       <h2 class="text-title font-light mb-4">누구누구 정산할거야?</h2>
 
-      <.form phx-submit="add_temp_user" phx-change="validate" for={@form} onkeydown="return event.key != 'Enter';">
+      <.form phx-submit="add_temp_payer" phx-change="payer_validate" for={@payer_form} onkeydown="return event.key != 'Enter';">
         <InputBox.render
           valid={if @is_once_valid, do: !@add_disabled, else: nil}
           theme={:big_rounded_border}
-          field={@form[:name]}
+          field={@payer_form[:name]}
           placeholder="정산할 사람 이름"
           max_length={name_length[:max]}
           min_length={name_length[:min]}
@@ -55,19 +56,18 @@ defmodule DeopjibWeb.Live.RoomEntry do
 
         >{user.name}</Chip.render>
       </div>
-
       <div class="sticky bottom-4 left-0">
         <div class="text-darkgray100 text-caption1">
-          <span class="">{@user_count}명</span>/{Deopjib.Settlement.Room.max_payer()}명
+          <span class="">{@user_count}명</span>/{max_payer}명
         </div>
         <div>
-          <Button.render theme={:primary} size={:xlg} class="w-full mt-1" type="submit" disabled={@user_count == 0 || @is_user_full}>
+          <.form phx-submit="create_room_with_payer">
+            <Button.render theme={:primary} size={:xlg} class="w-full mt-1" type="submit" disabled={@user_count == 0 || @is_user_full}>
           다음
           </Button.render>
+          </.form>
         </div>
       </div>
-
-
     </Main.render>
     """
   end
@@ -79,9 +79,19 @@ defmodule DeopjibWeb.Live.RoomEntry do
 
   def mount(_params, _session, socket) do
     # Here we call our new generated function to create the form
+
+    payer_form =
+      AshPhoenix.Form.for_create(Payer, :create)
+      |> to_form()
+
+    room_form =
+      AshPhoenix.Form.for_create(Room, :create_with_payers)
+      |> to_form()
+
     {:ok,
      assign(socket,
-       form: Deopjib.Settlement.form_to_create_room() |> to_form(),
+       payer_form: payer_form,
+       room_form: room_form,
        users: []
      )}
   end
@@ -93,31 +103,41 @@ defmodule DeopjibWeb.Live.RoomEntry do
      )}
   end
 
-  def handle_event("validate", %{"form" => form_params}, socket) do
-    form =
-      AshPhoenix.Form.validate(socket.assigns.form, form_params)
+  def handle_event("payer_validate", %{"form" => form_params}, socket) do
+    payer_form =
+      AshPhoenix.Form.validate(socket.assigns.payer_form, form_params)
       |> Map.put(:action, :validate)
       |> dbg_store()
 
     {:noreply,
      assign(socket,
-       form: form
+       payer_form: payer_form
      )}
   end
 
-  def handle_event("add_temp_user", %{"form" => form_params}, socket) do
+  def handle_event("add_temp_payer", %{"form" => %{"name" => name} = form_params}, socket) do
     users = socket.assigns.users
-    name = form_params["name"]
+    payer_form = socket.assigns.payer_form
 
     form =
-      AshPhoenix.Form.validate(socket.assigns.form, form_params)
+      AshPhoenix.Form.validate(socket.assigns.payer_form, form_params)
 
     socket =
       if(form.errors == []) do
+        room_form =
+          socket.assigns.room_form
+          |> AshPhoenix.Form.add_form(
+            [:payers],
+            params: %{name: name}
+          )
+
+        dbg_store(room_form)
+
         socket
         |> assign(
           users: Enum.uniq_by(users ++ [%{name: name}], & &1[:name]),
-          form: Deopjib.Settlement.form_to_create_payer() |> to_form()
+          payer_form: AshPhoenix.Form.clear_value(payer_form, :name),
+          room_form: room_form
         )
       else
         socket
@@ -126,6 +146,6 @@ defmodule DeopjibWeb.Live.RoomEntry do
     {:noreply, socket}
   end
 
-  def handle_event(event, unsigned_params, socket) do
+  def handle_event("create_room_with_payer", unsigned_params, socket) do
   end
 end

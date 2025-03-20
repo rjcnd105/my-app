@@ -53,12 +53,11 @@ defmodule Monad.Result do
   def from_option({:ok, val}, _default), do: {:ok, val}
   def from_option(:error, default), do: err(default)
 
-  def unwrap_ok_else({:ok, val} = ok, _), do: unwrap_ok_else(ok)
+  @spec unwrap_ok_else({:ok, v}, dv) :: v | dv when v: term(), dv: term()
+  def unwrap_ok_else({:ok, value}, _default), do: value
   def unwrap_ok_else(_, default), do: default
-  def unwrap_ok_else({:ok, val}), do: val
-  def unwrap_ok_else(_), do: nil
 
-  def from_nil(nil, default_err), do: err(default_err)
-  def from_nil(value), do: ok(value)
-  def from_nil(nil), do: err(nil)
+  @spec from_nil(nil | v, e) :: {:ok, v} | {:error, nil | e} when v: term(), e: term()
+  def from_nil(nil, error_value), do: {:error, error_value}
+  def from_nil(value, _error_value), do: {:ok, value}
 end
