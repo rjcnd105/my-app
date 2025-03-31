@@ -11,10 +11,22 @@ defmodule Monad.Result do
   def map_err({:error, value}, f), do: {:error, f.(value)}
   def map_err({:ok, _} = result, _f), do: result
 
-  @spec flat_map(result_t(a, e), (a -> result_t(b, e))) :: result_t(b, e)
-        when a: term(), b: term(), e: term()
-  def flat_map({:ok, val}, f) do
-    case(f.(val)) do
+  def map_guard({:ok, v}, f, guard) do
+    result = f.(v)
+
+    if guard.(result) do
+      {:error, nil}
+    else
+      {:ok, result}
+    end
+  end
+
+  def map_guard({:error, _val} = err, f, _guard), do: map(err, f)
+
+  def map_ok_nil_to_err(v, f), do: map_guard(v, f, &is_nil/1)
+
+  defp flat({_, v}, f) do
+    case(f.(v)) do
       {:ok, _} = result ->
         result
 
@@ -27,7 +39,12 @@ defmodule Monad.Result do
     end
   end
 
-  def flat_map({:error, _val} = err, _f), do: err
+  @spec flat_map(result_t(a, e), (a -> result_t(b, e))) :: result_t(b, e)
+        when a: term(), b: term(), e: term()
+  def flat_map({:ok, _} = ok, f), do: flat(ok, f)
+  def flat_map({:error, _} = err, _f), do: err
+  def flat_error({:ok, _} = ok, _f), do: ok
+  def flat_error({:error, _} = err, f), do: flat(err, f)
 
   @spec match(result_t(v, e), %{ok: (v -> b), error: (e -> c)}) :: b | c
         when v: term(), e: term(), b: term(), c: term()
@@ -66,11 +83,15 @@ defmodule Monad.Result do
   def from_option({:ok, val}, _default), do: {:ok, val}
   def from_option(:error, default), do: err(default)
 
-  @spec unwrap({:ok, v}, dv) :: v | dv when v: term(), dv: term()
-  def unwrap({:ok, value}, _default), do: value
-  def unwrap(_, default), do: default
+  @spec unwrap_with_default({:ok, v}, dv) :: v | dv when v: term(), dv: term()
+  def unwrap_with_default({:ok, value}, _default), do: value
+  def unwrap_with_default(_, default), do: default
 
-  @spec from_nil(nil | v, e) :: {:ok, v} | {:error, nil | e} when v: term(), e: term()
-  def from_nil(nil, error_value), do: {:error, error_value}
-  def from_nil(value, _error_value), do: {:ok, value}
+  def unwrap({:ok, value}, f), do: f.(value)
+  def unwrap({:error, _val} = err, _f), do: err
+  def unwrap({:ok, value}), do: value
+
+  @spec from_with_default(nil | v, e) :: {:ok, v} | {:error, nil | e} when v: term(), e: term()
+  def from_with_default(nil, error_value), do: {:error, error_value}
+  def from_with_default(value, _error_value), do: {:ok, value}
 end
