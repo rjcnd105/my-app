@@ -16,3 +16,5 @@ devenv.local.nix
 .vscode
 data/pg
 dutchpay_umbrella/deps
+
+_dutchpay_umbrella
