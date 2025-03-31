@@ -50,6 +50,6 @@ defmodule DeopjibWebUI.Parts.Toast do
   end
 
   def toast(data) do
-    JS.dispatch("toast/open", detail: data)
+    JS.dispatch("phx:toast/open", detail: data)
   end
 end

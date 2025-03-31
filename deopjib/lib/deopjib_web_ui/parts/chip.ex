@@ -45,11 +45,10 @@ defmodule DeopjibWebUI.Parts.Chip do
     ~H"""
     <div class={@wrap_class} >
       {render_slot(@inner_block)}
-      <button class="flex justify-center items-center w-6 h-full">
+      <button class="flex justify-center items-center w-6 h-full" {@rest}>
         <Icon.render
         name={:cross_circle}
         class={@icon_class}
-        {@rest}
       />
       </button>
     </div>

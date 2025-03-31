@@ -79,23 +79,6 @@ config :deopjib, DeopjibWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :deopjib, Deopjib.Mailer, adapter: Swoosh.Adapters.Local
 
-config :bun,
-  version: "1.2.4",
-  app@js: [
-    args: ~w(run js),
-    cd: Path.expand("../", __DIR__),
-    env: %{}
-  ],
-  # dutchpay_web@js_build: [
-  #   args: ~w(run js:build),
-  #   cd: Path.expand("../assets", __DIR__)
-  # ],
-  app@tailwind: [
-    args: ~w(run tailwind),
-    cd: Path.expand("../", __DIR__),
-    env: %{}
-  ]
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

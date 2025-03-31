@@ -26,8 +26,18 @@ config :deopjib, DeopjibWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "/c9BvQdaOfntQLTOw2YFBJzjNY+NqplXGP1vJ5sNKcI23ewgM13VgyYGuGxvNbob",
   watchers: [
-    app@js: {Bun, :install_and_run, [:app@js, ~w(--watch)]},
-    app@tailwind: {Bun, :install_and_run, [:app@tailwind, ~w(--watch)]}
+    bun: [
+      "run",
+      "js",
+      "--watch"
+      # cd: "./assets"
+    ],
+    bun: [
+      "run",
+      "tailwind",
+      "--watch"
+      # cd: "./assets"
+    ]
   ]
 
 config :live_debugger,

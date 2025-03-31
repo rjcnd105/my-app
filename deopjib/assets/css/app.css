@@ -13,7 +13,6 @@
 @source "../../lib";
 @source "../js/**/*.js";
 
-@plugin "../js/heroicons.tailwind.plugin.js";
 @plugin "@tailwindcss/forms";
 
 @layer base {

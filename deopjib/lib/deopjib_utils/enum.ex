@@ -1,4 +1,4 @@
-defmodule Deopjib.Utils.Enum do
+defmodule DeopjibUtils.Enum do
   @doc """
   주어진 열거 가능한 컬렉션의 각 요소에 대해 fun을 적용한 결과가 모두 유일한지 검사합니다.
   중복된 결과가 발견되는 즉시 false를 반환하여 성능을 최적화합니다.

@@ -27,7 +27,7 @@ export class ToastManager {
     };
 
     // @ts-ignore
-    window.addEventListener("toast/open", (e) => this.showToast(e));
+    window.addEventListener("phx:toast/open", (e) => this.showToast(e));
 
     // 글로벌 객체로 노출
     // window.toast = this.showToast.bind(this);

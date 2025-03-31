@@ -1,5 +1,6 @@
 defmodule Deopjib.MixProject do
   use Mix.Project
+  @assets_path Path.expand("./assets", __DIR__)
 
   def project do
     [
@@ -35,11 +36,8 @@ defmodule Deopjib.MixProject do
     [
       {:ex_cldr, "~> 2.40"},
       {:ex_cldr_numbers, "~> 2.33"},
-      {:picosat_elixir, "~> 0.2"},
       {:oban, "~> 2.0"},
       {:oban_web, "~> 2.11"},
-      {:phoenix_storybook, "~> 0.8.0"},
-      {:bun, "~> 1.4", runtime: Mix.env() == :dev},
       {:ash_state_machine, "~> 0.2"},
       {:ash_oban, "~> 0.3"},
       {:ash_admin, "~> 0.13"},
@@ -90,11 +88,10 @@ defmodule Deopjib.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
-      "assets.setup": ["bun.install --if-missing"],
-      "assets.build": ["bun app@js", "bun app@tailwind"],
+      "assets.setup": ["cd #{@assets_path} && bun install --only-missing"],
       "assets.deploy": [
-        "bun app@js --minify",
-        "bun app@tailwind --minify",
+        "cmd --cd #{@assets_path} bun js --deploy",
+        "cmd --cd #{@assets_path} bun tailwind --minify",
         "phx.digest"
       ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]

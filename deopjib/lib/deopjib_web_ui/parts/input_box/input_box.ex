@@ -1,6 +1,5 @@
 defmodule DeopjibWebUI.Parts.InputBox do
   use DeopjibWeb, :html
-  alias DeopjibWeb.CoreComponents
   alias DeopjibWebUI.Parts.Icon
   alias DeopjibWebUI.Parts.Button
 
@@ -88,7 +87,7 @@ defmodule DeopjibWebUI.Parts.InputBox do
         data-ui="input_box#message"
       >
         <p class="group-data-[valid=invalid]/input-box:text-warning">
-          {Monad.Result.unwrap(@error_message, @message)}
+          {Monad.Result.unwrap_with_default(@error_message, @message)}
         </p>
 
         <%= if is_integer(@min_length) || is_integer(@max_length) do %>

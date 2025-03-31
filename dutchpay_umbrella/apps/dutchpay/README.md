@@ -1,3 +1,0 @@
-# Dutchpay
-
-**TODO: Add description**

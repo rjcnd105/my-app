@@ -46,15 +46,23 @@ defmodule Deopjib.Settlement.Room do
     change(Deopjib.Settlement.Room.Changes.SetExpirationAt, on: :create)
   end
 
+  validations do
+    alias Deopjib.Settlement.Room.Validate
+
+    validate(string_length(:name, min: 1, max: 13))
+    validate(Validate.MinMaxPayerInRoom, on: [:create, :update])
+    validate(Validate.PayerUniqueNameInRoom, on: [:create, :update])
+  end
+
   attributes do
     uuid_primary_key(:id)
 
-    attribute(:name, :string) do
+    attribute :name, :string do
       allow_nil?(false)
       public?(true)
     end
 
-    attribute(:expiration_at, :utc_datetime) do
+    attribute :expiration_at, :utc_datetime do
       allow_nil?(true)
       public?(true)
     end
@@ -63,21 +71,17 @@ defmodule Deopjib.Settlement.Room do
     update_timestamp(:updated_at)
   end
 
-  aggregates do
-    count(:counts_of_payers, :payers) do
-      public?(true)
-    end
-  end
-
   relationships do
-    has_many(:payers, Deopjib.Settlement.Payer) do
+    has_many :payers, Deopjib.Settlement.Payer do
       source_attribute(:id)
       destination_attribute(:room_id)
     end
   end
 
-  validations do
-    validate(string_length(:name, min: 1, max: 13))
+  aggregates do
+    count :counts_of_payers, :payers do
+      public?(true)
+    end
   end
 
   def max_payer(), do: @max_payer
