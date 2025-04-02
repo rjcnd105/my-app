@@ -4,6 +4,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
+
   };
   outputs =
     inputs@{
@@ -16,12 +17,12 @@
 
       unquote = s: builtins.replaceStrings [ "\"" ] [ "" ] s;
       devEnv = {
-        DB_HOST = builtins.getEnv "DB_HOST";
-        DB_PORT = builtins.getEnv "DB_PORT";
-        DB_LISTEN_ADDRESSES = builtins.getEnv "DB_LISTEN_ADDRESSES";
-        DB_NAME = builtins.getEnv "DB_NAME";
-        DB_USER = builtins.getEnv "DB_USER";
-        DB_PASSWORD = builtins.getEnv "DB_PASSWORD";
+        DB_HOST = unquote (builtins.getEnv "DB_HOST");
+        DB_PORT = unquote (builtins.getEnv "DB_PORT");
+        DB_LISTEN_ADDRESSES = unquote (builtins.getEnv "DB_LISTEN_ADDRESSES");
+        DB_NAME = unquote (builtins.getEnv "DB_NAME");
+        DB_USER = unquote (builtins.getEnv "DB_USER");
+        DB_PASSWORD = unquote (builtins.getEnv "DB_PASSWORD");
       };
 
     in
@@ -69,12 +70,12 @@
 
           process-compose."app-services" =
             let
-              _DB_HOST = unquote devEnv.DB_HOST;
-              DB_PORT = lib.strings.toIntBase10 (unquote devEnv.DB_PORT);
-              DB_LISTEN_ADDRESSES = unquote devEnv.DB_LISTEN_ADDRESSES;
-              DB_NAME = unquote devEnv.DB_NAME;
-              DB_USER = unquote devEnv.DB_USER;
-              DB_PASSWORD = unquote devEnv.DB_PASSWORD;
+              _DB_HOST = devEnv.DB_HOST;
+              DB_PORT = lib.strings.toIntBase10 devEnv.DB_PORT;
+              DB_LISTEN_ADDRESSES = devEnv.DB_LISTEN_ADDRESSES;
+              DB_NAME = devEnv.DB_NAME;
+              DB_USER = devEnv.DB_USER;
+              DB_PASSWORD = devEnv.DB_PASSWORD;
             in
             { config, lib, ... }:
             {

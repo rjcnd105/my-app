@@ -1,22 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer theme, base, components, utilities;
+
+@variant dark (&:where(.dark, .dark *));
+
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "./theme.css";
 
 @layer base {
-  html {
-    color-scheme: light dark;
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 
+  button:focus-visible {
+    outline: none;
+  }
   * {
-    @apply border-gray-200 dark:border-gray-800;
+    line-height: var(--default-text-line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  html,
-  body {
-    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200;
+  [disabled] {
+    cursor: cursor-not-allowed;
   }
 
-  .using-mouse * {
-    outline: none !important;
+  div[data-phx-main] {
+    height: 100%;
   }
 }
