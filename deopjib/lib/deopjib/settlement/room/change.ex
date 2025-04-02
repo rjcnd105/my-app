@@ -1,4 +1,4 @@
-defmodule Deopjib.Settlement.Room.Changes do
+defmodule Deopjib.Settlement.Room.Change do
   alias Deopjib.Settlement.Room
 
   defmodule SetExpirationAt do

@@ -11,8 +11,8 @@ defmodule Deopjib.Settlement.PayItemExcludedPayer do
     repo(Deopjib.Repo)
 
     references do
-      reference(:payer, on_delete: :delete)
-      reference(:pay_item, on_delete: :delete)
+      reference(:payer, on_delete: :restrict)
+      reference(:pay_item, on_delete: :restrict)
     end
   end
 

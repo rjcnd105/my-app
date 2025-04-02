@@ -1,4 +1,5 @@
 defmodule DeopjibWeb.Live.ComponentsLive do
+  alias DeopjibWebUI.Parts.Overlay
   use DeopjibWeb, :live_view
 
   alias DeopjibWebUI.Parts.{Number, Button, Icon, Modal, Chip, InputBox, Toast, Checkbox}
@@ -76,7 +77,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
         </Button.render>
 
 
-        <Button.render phx-click={Modal.show("my-wrap-modal")}>
+        <Button.render phx-click={Modal.show("my-wrap-modal")} >
         Open custom wrap modal
         </Button.render>
 
@@ -87,13 +88,16 @@ defmodule DeopjibWeb.Live.ComponentsLive do
           </div>
         </Modal.modal>
 
-        <Modal.modal id="my-wrap-modal">
+        <Modal.modal id="my-wrap-modal" wrap_class="item-end justify-center">
           <:content_wrapper>
             <p class="custom-wrapper bg-red size-12 text-white">
             hihi
             </p>
           </:content_wrapper>
         </Modal.modal>
+
+
+
 
       </.tmpl>
 

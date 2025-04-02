@@ -11,8 +11,8 @@ defmodule Deopjib.Settlement.PayItem do
     repo(Deopjib.Repo)
 
     references do
-      reference(:settler, on_delete: :delete)
-      reference(:room, on_delete: :delete)
+      reference(:settler, on_delete: :restrict)
+      reference(:room, on_delete: :restrict)
     end
   end
 

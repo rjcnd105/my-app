@@ -13,7 +13,7 @@ defmodule Deopjib.Settlement.Payer do
     repo(Deopjib.Repo)
 
     references do
-      reference(:room, on_delete: :delete)
+      reference(:room, on_delete: :restrict)
     end
   end
 

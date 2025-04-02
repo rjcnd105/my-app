@@ -134,59 +134,67 @@ defmodule DeopjibWeb.Live.CreateRoom do
     form =
       AshPhoenix.Form.validate(socket.assigns.payer_form, form_params)
 
-    if(form.errors == []) do
-      room_added_form =
-        socket.assigns.room_form
-        |> AshPhoenix.Form.add_form(
-          [:payers],
-          params: %{name: name},
-          validate?: true
-        )
+    socket |> IO.inspect(label: "before socket")
 
-      room_form =
-        case room_added_form do
-          %{valid?: true} ->
-            room_added_form
+    socket =
+      if(form.errors == []) do
+        room_added_form =
+          socket.assigns.room_form
+          |> AshPhoenix.Form.add_form(
+            [:payers],
+            params: %{name: name},
+            validate?: true
+          )
 
-          %{valid?: false} = failed_form ->
-            socket.assigns.room_form
+        room_form =
+          case room_added_form do
+            %{valid?: true} ->
+              room_added_form
+
+            %{valid?: false} = failed_form ->
+              socket.assigns.room_form
+          end
+          |> dbg_store()
+
+        socket =
+          socket
+          |> assign(
+            payer_form: AshPhoenix.Form.for_create(Payer, :create) |> to_form(),
+            room_form: room_form
+          )
+
+        if room_added_form.source.errors != [] do
+          push_event(socket, "toast/open", %{
+            message: hd(room_added_form.source.errors).message
+          })
+        else
+          socket
         end
-        |> dbg_store()
-
-      socket =
-        socket
-        |> assign(
-          payer_form: AshPhoenix.Form.for_create(Payer, :create) |> to_form(),
-          room_form: room_form
-        )
-
-      IO.inspect(room_added_form, label: "fuck1")
-
-      if room_added_form.source.errors != [] do
-        {:noreply,
-         socket
-         |> push_event("toast/open", %{
-           message: hd(room_added_form.source.errors).message
-         })}
       else
-        {:noreply, socket}
+        socket
       end
-    end
+
+    socket |> IO.inspect(label: "socket")
+
+    {:noreply, socket}
   end
 
-  def handle_event("create_room_with_payer", unsigned_params, socket) do
+  def handle_event("create_room_with_payer", _params, socket) do
     submitted_room_form =
       socket.assigns.room_form
       |> AshPhoenix.Form.submit()
 
     case(submitted_room_form) do
       {:ok, room} ->
-        dbg_store(room)
-
-      # Phoenix.LiveView.push_navigate(~P"/")
+        {:noreply, push_navigate(socket, to: ~p"/#{room.short_id}/add_pay_items")}
 
       {:error, form} ->
-        {:noreply, assign(socket, :room_form, form)}
+        {:noreply,
+         socket
+         |> assign(:room_form, form)
+         |> push_event("toast/open", %{
+           message: hd(form.errors).message
+         })}
     end
   end
 

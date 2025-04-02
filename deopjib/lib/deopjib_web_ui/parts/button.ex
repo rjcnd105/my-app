@@ -7,7 +7,8 @@ defmodule DeopjibWebUI.Parts.Button do
     sub: "bg-sub",
     warning: "bg-warning text-white",
     dark: "bg-darkgray200 text-white",
-    ghost: "border border-secondary rounded-[26px] text-secondary"
+    ghost: "border border-secondary rounded-[26px] text-secondary",
+    text: "text-primary underline underline-offset-3"
   ]
 
   @size_classes [
@@ -32,6 +33,8 @@ defmodule DeopjibWebUI.Parts.Button do
   def render(assigns) do
     theme_class = Keyword.get(@theme_classes, assigns[:theme])
     size_class = Keyword.get(@size_classes, assigns[:size])
+
+    class = "underline underline-offset-2"
 
     assigns =
       assigns

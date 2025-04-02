@@ -11,6 +11,7 @@ defmodule DeopjibWebUI.Parts.Modal do
   attr(:show, :boolean, default: false)
   attr(:on_cancel, JS, default: %JS{})
   attr(:class, :string, default: nil)
+  attr(:wrap_class, :string, default: "self-center")
 
   slot(:inner_block)
   slot(:content_wrapper)
@@ -22,32 +23,48 @@ defmodule DeopjibWebUI.Parts.Modal do
       show={@show}
       has_dimm={@has_dimm}
       on_cancel={@on_cancel}
+      wrap_class={@wrap_class}
     >
       <%= if @content_wrapper != [] do %>
         {render_slot(@content_wrapper)}
       <% else %>
-        <.content_wrapper>
+        <.dialog_content_wrapper>
           {render_slot(@inner_block)}
-        </.content_wrapper>
+        </.dialog_content_wrapper>
       <% end %>
     </Overlay.full>
     """
   end
 
-  attr(:class, :string, default: nil)
+  attr(:class, :any, default: nil)
   attr(:rest, :global)
   slot(:inner_block, required: true)
 
-  def content_wrapper(assigns) do
+  def dialog_content_wrapper(assigns) do
     ~H"""
     <div
       role="dialog"
       aria-modal="true"
       tabindex="0"
-      class={["max-h-[calc(100dvh - 2rem)] bg-white p-6 overflow-y-auto overflow-x-hidden sm:max-w-[336px] rounded-lg focus-visible:outline-1 group-data-[view-state=open]/overlay:animate-modal-in group-data-[view-state=closed]/overlay:animate-modal-out", @class]}
+      class={["max-h-[calc(100dvh - 2rem)] bg-white p-6 overflow-y-auto overflow-x-hidden rounded-lg justify-self-center focus-visible:outline-1 pointer-events-auto group-data-[view-state=open]/overlay:animate-modal-in group-data-[view-state=closed]/overlay:animate-modal-out", @class]}
       {@rest}
     >
 
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  attr(:class, :any, default: nil)
+
+  def default_content_wrapper(assigns) do
+    ~H"""
+    <div
+    role="dialog"
+      aria-modal="true"
+      tabindex="0"
+      class={["overflow-x-hidden pointer-events-auto", @class]}
+    >
       {render_slot(@inner_block)}
     </div>
     """

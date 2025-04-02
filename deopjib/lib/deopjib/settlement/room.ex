@@ -4,6 +4,9 @@ defmodule Deopjib.Settlement.Room do
     domain: Deopjib.Settlement,
     data_layer: AshPostgres.DataLayer
 
+  alias Deopjib.Settlement.Room.ShortId
+  alias Deopjib.Settlement
+
   @max_payer 10
   @add_expiration_at 30
   @default_name "정산영수증"
@@ -43,7 +46,9 @@ defmodule Deopjib.Settlement.Room do
   end
 
   changes do
-    change(Deopjib.Settlement.Room.Changes.SetExpirationAt, on: :create)
+    alias Deopjib.Settlement.Room.Change
+    change(Change.SetExpirationAt, on: :create)
+    change(set_new_attribute(:short_id, &ShortId.generate/0), on: :create)
   end
 
   validations do
@@ -56,6 +61,10 @@ defmodule Deopjib.Settlement.Room do
 
   attributes do
     uuid_primary_key(:id)
+
+    attribute :short_id, :string do
+      allow_nil?(true)
+    end
 
     attribute :name, :string do
       allow_nil?(false)
@@ -84,6 +93,14 @@ defmodule Deopjib.Settlement.Room do
     end
   end
 
+  identities do
+    identity(:unique_short_id, keys: [:short_id])
+  end
+
   def max_payer(), do: @max_payer
   def add_expiration_at(), do: @add_expiration_at
+
+  defmodule ShortId do
+    use Puid, total: 1.0e12, risk: 1.0e15
+  end
 end
