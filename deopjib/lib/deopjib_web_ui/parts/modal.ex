@@ -9,9 +9,10 @@ defmodule DeopjibWebUI.Parts.Modal do
   attr(:id, :string, required: true)
   attr(:has_dimm, :boolean, default: true)
   attr(:show, :boolean, default: false)
-  attr(:on_cancel, JS, default: %JS{})
+  attr(:on_close_before, JS, default: %JS{})
   attr(:class, :string, default: nil)
   attr(:wrap_class, :string, default: "self-center")
+  attr(:rest, :global)
 
   slot(:inner_block)
   slot(:content_wrapper)
@@ -22,8 +23,9 @@ defmodule DeopjibWebUI.Parts.Modal do
       id={@id}
       show={@show}
       has_dimm={@has_dimm}
-      on_cancel={@on_cancel}
+      on_close_before={@on_close_before}
       wrap_class={@wrap_class}
+      {@rest}
     >
       <%= if @content_wrapper != [] do %>
         {render_slot(@content_wrapper)}
@@ -56,6 +58,7 @@ defmodule DeopjibWebUI.Parts.Modal do
   end
 
   attr(:class, :any, default: nil)
+  slot(:inner_block, required: true)
 
   def default_content_wrapper(assigns) do
     ~H"""
@@ -81,9 +84,4 @@ defmodule DeopjibWebUI.Parts.Modal do
     </h3>
     """
   end
-
-  defdelegate show(id), to: Overlay
-  defdelegate show(js, id), to: Overlay
-  defdelegate hide(id), to: Overlay
-  defdelegate hide(js, id), to: Overlay
 end

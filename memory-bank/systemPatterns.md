@@ -46,7 +46,7 @@ defmodule Deopjib.Settlement.Room do
   end
 
   actions do
-    create :create_with_payers do
+    create :upsert_with_payers do
       argument :payers, {:array, :map}
       change manage_relationship(:payers, type: :create)
       # 검증 로직
@@ -62,15 +62,15 @@ def render(assigns) do
   ~H"""
   <.form for={@form} phx-submit="save">
     <.input field={@form[:name]} label="방 이름" />
-    
+
     <div class="payers">
       <.inputs_for :let={payer_form} field={@form[:payers]}>
         <.input field={payer_form[:name]} label="참여자 이름" />
       </.inputs_for>
-      
+
       <button type="button" phx-click="add-payer">참여자 추가</button>
     </div>
-    
+
     <.button type="submit">저장</.button>
   </.form>
   """

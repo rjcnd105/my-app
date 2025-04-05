@@ -10,9 +10,10 @@ defmodule Deopjib.Settlement do
   resources do
     resource Room do
       define(:create_room, action: :create)
-      define(:create_room_with_payers, action: :create_with_payers)
+      define(:upsert_room_with_payers, action: :upsert_with_payers)
       define(:get_room_by_id, action: :read, get_by: :id)
       define(:get_room_by_short_id, action: :read, get_by: :short_id)
+
       define(:delete_room, action: :destroy)
     end
 

@@ -30,11 +30,18 @@ defmodule Deopjib.Settlement.Room do
       primary?(true)
     end
 
-    create :create_with_payers do
+    create :upsert_with_payers do
+      upsert?(true)
+      upsert_identity(true)
+      argument(:id, :uuid, allow_nil?: true)
       argument(:payers, {:array, :map})
 
       change(set_attribute(:name, @default_name))
       change(manage_relationship(:payers, type: :create))
+    end
+
+    update :update_name do
+      accept([:name])
     end
 
     update :put_payers_in_room do
@@ -55,8 +62,8 @@ defmodule Deopjib.Settlement.Room do
     alias Deopjib.Settlement.Room.Validate
 
     validate(string_length(:name, min: 1, max: 13))
-    validate(Validate.MinMaxPayerInRoom, on: [:create, :update])
-    validate(Validate.PayerUniqueNameInRoom, on: [:create, :update])
+    validate(Validate.MinMaxPayerInRoom, where: [action_is(:upsert_with_payers)])
+    validate(Validate.PayerUniqueNameInRoom, where: [action_is(:upsert_with_payers)])
   end
 
   attributes do

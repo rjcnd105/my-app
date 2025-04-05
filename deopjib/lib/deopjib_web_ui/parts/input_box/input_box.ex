@@ -3,38 +3,40 @@ defmodule DeopjibWebUI.Parts.InputBox do
   alias DeopjibWebUI.Parts.Icon
   alias DeopjibWebUI.Parts.Button
 
-  @theme_classes [
-    none: "h-7 border-none",
-    underline: "h-7 border-b-1 border-gray200",
-    big_rounded_border: "h-12 px-4 rounded-md border-1 border-gray200"
-  ]
+  # 추후 Input 컴포넌트 따로 분리
+
+  @theme_classes none: "h-7 border-none",
+                 underline: "h-7 border-b-1 border-gray200",
+                 big_rounded_border: "h-12 px-4 rounded-md border-1 border-gray200"
 
   @themes Keyword.keys(@theme_classes)
 
   attr(:theme, :atom, values: @themes, default: :none)
   attr(:has_close, :boolean, default: true)
+  attr(:has_message, :boolean, default: true)
   attr(:valid, :any, default: nil)
   attr(:field, Phoenix.HTML.FormField)
   attr(:box_class, :any, default: nil)
   attr(:id, :any)
   attr(:name, :any)
-  attr(:value, :any, default: nil)
+  attr(:value, :any)
   attr(:errors, :list, default: [])
-  attr(:message, :string, default: "")
+  attr(:message, :string, default: nil)
   attr(:min_length, :integer, default: nil)
   attr(:max_length, :integer, default: nil)
   attr(:rest, :global, include: ~w(placeholder))
+  attr(:class, :any, default: nil)
   attr(:error_message, :any, default: nil)
+  attr(:container_class, :any, default: nil)
+  attr(:"phx-mounted", JS, default: %JS{})
 
   slot(:input_right)
 
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
-    |> assign(field: nil)
-    |> assign(id: assigns[:id] || field.id)
+    |> assign(field: nil, id: assigns[:id] || field.id)
     |> assign_new(:name, fn -> field.name end)
     |> assign_new(:value, fn -> field.value end)
-    # |> IO.inspect(label: "input_box before")
     |> assign(
       :error_message,
       field.errors
@@ -46,13 +48,14 @@ defmodule DeopjibWebUI.Parts.InputBox do
   def render(assigns) do
     assigns =
       assigns
+      |> assign_new(:value, fn -> nil end)
       |> assign(:theme_class, @theme_classes[assigns.theme])
 
     # |> IO.inspect(label: "input_box")
 
     ~H"""
     <div
-      class="group/input-box"
+      class={["group/input-box h-fit", @container_class]}
       data-ui="input_box"
       data-valid={getValid(@valid)}
     >
@@ -65,8 +68,8 @@ defmodule DeopjibWebUI.Parts.InputBox do
             id={@id}
             name={@name}
             value={Phoenix.HTML.Form.normalize_value("text", @value)}
-            class="peer flex flex-1 h-full bg-none p-0 placeholder:text-body2 placeholder:text-gray200 ring-0 border-none"
-            phx-mounted={JS.dispatch("addEvent:enter-submit", detail: %{event_name: "keyup"})}
+            class={["peer flex flex-1 h-full bg-none p-0 placeholder:text-body2 placeholder:text-gray200 ring-0 border-none", @class]}
+            phx-mounted={assigns[:"phx-mounted"] |> JS.dispatch("addEvent:enterSubmit", detail: %{event_name: "keyup"}) }
             {@rest}
 
           />

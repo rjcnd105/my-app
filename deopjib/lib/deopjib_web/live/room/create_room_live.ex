@@ -101,7 +101,7 @@ defmodule DeopjibWeb.Live.CreateRoom do
       |> to_form()
 
     room_form =
-      AshPhoenix.Form.for_create(Room, :create_with_payers)
+      AshPhoenix.Form.for_create(Room, :upsert_with_payers)
 
     {:ok,
      assign(socket,

@@ -300,11 +300,9 @@ defmodule DeopjibWeb.CoreComponents do
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> IO.inspect(label: "corecomponent input")
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
-    |> IO.inspect(label: "corecomponent input")
     |> input()
   end
 

@@ -38,7 +38,7 @@ valid?: false
 
 1. **transform_errors 옵션 활용**:
    ```elixir
-   AshPhoenix.Form.for_create(Deopjib.Settlement.Room, :create_with_payers,
+   AshPhoenix.Form.for_create(Deopjib.Settlement.Room, :upsert_with_payers,
      transform_errors: fn errors ->
        # Ash 에러를 Phoenix 폼에서 사용할 수 있는 형식으로 변환
        Enum.map(errors, fn error ->
@@ -57,7 +57,7 @@ valid?: false
    ```heex
    <.form for={@form} phx-submit="save">
      <!-- 폼 필드들 -->
-     
+
      <!-- 전체 폼 에러 표시 -->
      <%= if @form.source && !@form.source.valid? do %>
        <div class="alert alert-danger">
@@ -66,7 +66,7 @@ valid?: false
          <% end %>
        </div>
      <% end %>
-     
+
      <!-- 중첩된 폼의 에러 표시 -->
      <%= for {_id, payer_form} <- @form.forms.payers do %>
        <!-- 각 payer 폼 필드 -->
@@ -85,13 +85,13 @@ valid?: false
    ```elixir
    def validate_unique_payer_names(changeset) do
      payers = Ash.Changeset.get_argument(changeset, :payers) || []
-     
+
      names = Enum.map(payers, & &1.name)
      duplicates = names -- Enum.uniq(names)
-     
+
      if duplicates != [] do
-       Ash.Changeset.add_error(changeset, 
-         message: "이미 같은 이름이 있어", 
+       Ash.Changeset.add_error(changeset,
+         message: "이미 같은 이름이 있어",
          field: :payers
        )
      else
@@ -110,6 +110,8 @@ valid?: false
 - **에러 처리 전략**: Ash 에러를 Phoenix 폼에 어떻게 효과적으로 전파할 것인가?
 - **UI/UX 고려사항**: 사용자에게 검증 오류를 어떻게 명확하게 표시할 것인가?
 - **코드 구성**: 검증 로직을 리소스 정의에 포함시킬 것인가, 아니면 별도의 모듈로 분리할 것인가?
+- **성능 최적화 고려사항**: LiveView 컴포넌트에서 비효율적인 데이터 로딩, 디버깅 코드, 비효율적인 리스트 처리, 불필요한 DOM 업데이트 등을 식별하고 개선하는 방법
+
 - **성능 고려사항**: 복잡한 중첩 폼에서 검증 성능을 어떻게 최적화할 것인가?
 
 ## 중요한 패턴 및 선호도
@@ -143,11 +145,11 @@ defmodule Deopjib.Settlement.Room do
   end
 
   actions do
-    create :create_with_payers do
+    create :upsert_with_payers do
       argument :payers, {:array, :map}
-      
+
       change manage_relationship(:payers, type: :create)
-      
+
       # 중복 이름 검증
       validate {Deopjib.Settlement.Validations, :validate_unique_payer_names}
     end
@@ -157,38 +159,38 @@ end
 # LiveView 구현
 defmodule DeopjibWeb.RoomLive.New do
   use DeopjibWeb, :live_view
-  
+
   def mount(_params, _session, socket) do
-    form = AshPhoenix.Form.for_create(Deopjib.Settlement.Room, :create_with_payers,
+    form = AshPhoenix.Form.for_create(Deopjib.Settlement.Room, :upsert_with_payers,
       transform_errors: &transform_errors/1
     )
-    
+
     {:ok, assign(socket, form: form)}
   end
-  
+
   def handle_event("validate", %{"form" => params}, socket) do
     form = AshPhoenix.Form.validate(socket.assigns.form, params)
     {:noreply, assign(socket, form: form)}
   end
-  
+
   def handle_event("save", %{"form" => params}, socket) do
     case AshPhoenix.Form.submit(socket.assigns.form, params) do
       {:ok, room} ->
-        {:noreply, 
+        {:noreply,
           socket
           |> put_flash(:info, "방이 생성되었습니다.")
           |> redirect(to: ~p"/rooms/#{room}")
         }
-        
+
       {:error, form} ->
-        {:noreply, 
+        {:noreply,
           socket
           |> put_flash(:error, "방 생성 중 오류가 발생했습니다.")
           |> assign(form: form)
         }
     end
   end
-  
+
   defp transform_errors(errors) do
     Enum.map(errors, fn error ->
       case error do

@@ -2,7 +2,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
   alias DeopjibWebUI.Parts.Overlay
   use DeopjibWeb, :live_view
 
-  alias DeopjibWebUI.Parts.{Number, Button, Icon, Modal, Chip, InputBox, Toast, Checkbox}
+  alias DeopjibWebUI.Parts.{Number, Button, Icon, Modal, Chip, InputBox, Toast, Checkbox, Overlay}
 
   def render(assigns) do
     ~H"""
@@ -47,7 +47,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       </.tmpl>
 
 
-      <.tmpl title="input">
+      <.tmpl title="input_box">
       <%= for theme <- InputBox.themes() do %>
         {theme}:
         <InputBox.render placeholder="Placeholder" theme={theme} id="n1" name="n1" />
@@ -72,21 +72,23 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       </.tmpl>
 
       <.tmpl title="modal">
-        <Button.render phx-click={Modal.show("my-modal")}>
-        Open modal
+        <Button.render phx-click={Overlay.show("my-modal")}>
+          Open modal
         </Button.render>
 
 
-        <Button.render phx-click={Modal.show("my-wrap-modal")} >
-        Open custom wrap modal
+        <Button.render phx-click={Overlay.show("my-wrap-modal")} >
+          Open custom wrap modal
         </Button.render>
 
+        <%!--
         <Modal.modal id="my-modal" show>
           <Modal.title>title</Modal.title>
           <div>
           hihi
           </div>
         </Modal.modal>
+        --%>
 
         <Modal.modal id="my-wrap-modal" wrap_class="item-end justify-center">
           <:content_wrapper>

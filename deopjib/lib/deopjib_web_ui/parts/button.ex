@@ -1,14 +1,19 @@
 defmodule DeopjibWebUI.Parts.Button do
   use DeopjibWeb, :html
 
+  @selected_class "data-selected:bg-primary data-selected:text-white data-selected:pointer-events-none"
+
   @theme_classes [
     none: "bg-none",
-    primary: "bg-primary text-white",
-    sub: "bg-sub",
-    warning: "bg-warning text-white",
-    dark: "bg-darkgray200 text-white",
-    ghost: "border border-secondary rounded-[26px] text-secondary",
-    text: "text-primary underline underline-offset-3"
+    primary: "bg-primary text-white disabled:bg-gray100 ",
+    sub: "bg-sub #{@selected_class}",
+    gray: "bg-lightgray100 #{@selected_class}",
+    warning: "bg-warning text-white disabled:bg-gray100 ",
+    dark: "bg-darkgray200 text-white disabled:bg-gray100 #{@selected_class}",
+    ghost:
+      "border border-blue200 rounded-[26px] text-blue300 disabled:text-gray100 disabled:border-gray100",
+    text:
+      "text-primary underline underline-offset-3 disabled:text-gray100 group-invalid/form:text-gray100"
   ]
 
   @size_classes [
@@ -26,6 +31,7 @@ defmodule DeopjibWebUI.Parts.Button do
   attr(:is_rounded, :boolean)
   attr(:theme, :atom, values: @themes)
   attr(:size, :atom, values: @sizes)
+  attr(:type, :string, default: "button")
   attr(:rest, :global, include: ~w(disabled type form name value))
 
   slot(:inner_block, required: true)
@@ -34,13 +40,13 @@ defmodule DeopjibWebUI.Parts.Button do
     theme_class = Keyword.get(@theme_classes, assigns[:theme])
     size_class = Keyword.get(@size_classes, assigns[:size])
 
-    class = "underline underline-offset-2"
-
     assigns =
       assigns
       |> assign(
         classes: [
-          "disabled:bg-gray100 disabled:cursor-not-allowed",
+          "disabled:cursor-not-allowed",
+          "group-invalid/form:pointer-events-none group-invalid/form:cursor-not-allowed",
+          assigns[:_submit_class],
           size_class,
           theme_class,
           assigns[:is_rounded] && "!rounded-[26px]",
