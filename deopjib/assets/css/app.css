@@ -10,6 +10,7 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "./theme.css";
+@import "./layouts.css";
 @source "../../lib";
 @source "../js/**/*.js";
 

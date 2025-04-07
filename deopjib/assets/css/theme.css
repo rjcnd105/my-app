@@ -12,6 +12,8 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
+  --text-caption3: 0.5625rem;
+  --text-caption3--font-weight: var(--font-light);
   --text-caption2: 0.75rem;
   --text-caption2--font-weight: var(--font-light);
 
@@ -86,6 +88,8 @@
   --animate-modal-out: 0.1s ease-in-out both modal-out;
   --animate-wiggle: 0.2s var(--ease-spring-2) both wiggle;
   --animate-wiggle-reverse: 0.15s var(--ease-spring-2) both wiggle-reverse;
+
+  --shadow-1: 0px -4px 12px 0px rgba(0, 0, 0, 0.05);
 
   @keyframes fade-in {
     0% {

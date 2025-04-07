@@ -2,65 +2,145 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
   alias Phoenix.LiveView.AsyncResult
   alias DeopjibUtils.Debug
   alias Deopjib.Settlement
+  alias Deopjib.Settlement.{Payer, PayItem}
   alias DeopjibWebUI.Parts.{Button, Icon, Modal, InputBox, Overlay}
   alias Monad.Result, as: R
   use DeopjibWeb, :live_view
 
   def render(assigns) do
     ~H"""
-    <header class="h-12">
-     <%= if @is_room_loading do %>
-       <.header_contents room={@room} room_name_form={@room_name_form} />
-     <% end %>
-    </header>
-
-    <ul class="flex mt-1 gap-1">
-      <li>
-        <Button.render theme={:ghost} size={:lg} is_rounded >
-          <Icon.render name={:pen} class="stroke-blue300 size-6 stroke-2" />
-        </Button.render>
-      </li>
+    <div
+      class="grid grid-rows-[--spacing(12)_--spacing(9)_1fr] h-full"
+    >
+      <header ui-layout="app">
       <%= if @is_room_loading do %>
-        <li :for={payer <- @room.payers}>
-          <Button.render theme={:gray} size={:lg} is_rounded data-selected={payer.id == @selected_payer_id}>
-            {payer.name}
+        <.header_contents room={@room} room_name_form={@room_name_form} />
+      <% end %>
+      </header>
+
+      <ul ui-layout="app" class="flex gap-1 pl-5 pr-2" >
+        <li>
+          <Button.render theme={:ghost} size={:lg} is_rounded >
+            <Icon.render name={:pen} class="stroke-blue300 size-6 stroke-2" />
           </Button.render>
         </li>
-      <% end %>
-    </ul>
+        <%= if @selected_payer do %>
+          <li :for={payer <- @room.payers}>
+            <Button.render theme={:gray} size={:lg} is_rounded data-selected={payer.id == @selected_payer.id}>
+              {payer.name}
+            </Button.render>
+          </li>
+        <% end %>
+
+      </ul>
+
+      <div class="flex flex-col flex-1 mt-2 bg-lightgray100">
+        <%= if !is_nil(@selected_payer) do %>
+          <div ui-layout="app" class="flex justify-between pt-2 shrink-0">
+            <div>
+              <div class="flex items-center">
+                <strong class="h-13 text-heading font-bold">{@selected_payer.total_paid || 0}</strong>
+                <span class="ml-1 text-body1 font-bold">원</span>
+              </div>
+                <Button.render class="flex items-center  h-5">
+                  <Icon.render name={:plus} class="size-3 stroke-gray300 stroke-2 border-gray300 border-1 rounded-[2px]" />
+                  <span class="ml-1.5 text-darkgray100 text-caption2">계좌 추가</span>
+                </Button.render>
+            </div>
+            <span class="text-darkgray100 text-caption3 text-right self-end">
+              마지막 업데이트<br/>
+              {DeopjibUtils.Date.simple_datetime_format(@room.updated_at)}
+            </span>
+          </div>
+          <hr ui-layout="app_center" class="bg-black mt-4 h-0.5 shrink-0" />
+          <div
+            ui-layout="app"
+            class="flex flex-col flex-auto"
+          >
+
+          <span
+            :if={length(@selected_payer.settled_items) == 0}
+            class="flex flex-auto justify-center items-center pb-32 text-gray300 text-caption1"
+          >등록한 내역이 없어!</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <Modal.modal id="add-pay-item-modal" wrap_class="self-end">
+      <Modal.default_content_wrapper class="h-12 w-full px-3 bg-white ">
+        <.form
+          class="flex w-full h-full items-center gap-1 group/form"
+          for={@dynamic_pay_items_form}
+          phx-submit="change_room_name"
+          onkeydown="return event.key != 'Enter';"
+        >
+          <Button.render
+            class="size-11 cursor-pointer"
+            phx-click={Overlay.hide(%JS{}, "room-name-change-modal")}
+          >
+            취소
+          </Button.render>
+          <InputBox.render
+            placeholder="원하는 영수증 제목"
+            class="text-center"
+            field={@dynamic_pay_items_form[:bulk]}
+            container_class="flex-auto pr-[37px]"
+            has_close={false}
+            phx-mounted={JS.dispatch("addEvent:inputMaxLengthLimit", detail: %{max_length: 13})}
+            required={true}
+          />
+          <Button.render class="flex size-11 px-2 py-1 items-center" type="submit" theme={:text}>
+            저장
+          </Button.render>
+        </.form>
+      </Modal.default_content_wrapper>
+    </Modal.modal>
     """
   end
 
   def mount(%{"room_short_id" => room_short_id}, _, socket) do
     {:ok,
      socket
-     |> assign(is_room_loading: false)
+     |> assign(
+       is_room_loading: false,
+       selected_payer: nil,
+       dynamic_pay_items_form: AshPhoenix.Form.for_create(Settlement.PayItem, :create)
+     )
      |> start_async(:get_room, fn ->
        Settlement.get_room_by_short_id!(room_short_id,
-         load: [payers: Payer |> Ash.Query.select([:id, :name])],
-         query: [select: [:id, :name]]
+         load: [
+          payers: Payer
+           |> Ash.Query.select([:id, :name])
+           |> Ash.Query.load([:settled_items, :total_paid])
+         ],
+         # load: [payers: [:id, :name]],
+         query: [select: [:id, :name, :updated_at]]
        )
-     end)}
+     end)
+     }
   end
 
   def handle_async(:get_room, {:ok, room}, socket) do
+    first_selected_payer = case room.payers do
+      [first_payer | _] -> first_payer
+      _ -> nil
+    end
     {:noreply,
-     assign(socket,
+     socket
+     |> assign(
        room: room,
        room_name_form:
          room
          |> AshPhoenix.Form.for_update(:update_name, api: Settlement.Room)
          |> to_form(),
-       selected_payer_id:
-         case room.payers do
-           [first_payer | _] -> first_payer.id
-           _ -> nil
-         end,
+       selected_payer: first_selected_payer,
        is_room_loading: true
-     )}
-
-    # {:noreply, socket}
+     )
+     |> Debug.dbg_store()
+    }
   end
+
 
   def handle_event("change_room_name", %{"form" => %{"name" => name} = form_params}, socket) do
     socket =
@@ -100,7 +180,7 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
 
     <Modal.modal id="room-name-change-modal" wrap_class="item-start justify-center">
       <:content_wrapper>
-        <Modal.default_content_wrapper class="h-12 w-full px-3 bg-white ">
+        <Modal.default_content_wrapper class="shadow-1 h-12 w-full px-3 bg-white ">
           <.form
             class="flex w-full h-full items-center gap-1 group/form"
             for={@room_name_form}

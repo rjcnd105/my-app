@@ -57,5 +57,10 @@ defmodule Deopjib.Settlement.Payer do
     identity(:unique_name_per_room, [:name, :room_id], message: "이미 방에 있는 이름이야")
   end
 
+  aggregates do
+    sum :total_paid, :settled_items, :price
+  end
+
+
   def name_length, do: @name_length
 end

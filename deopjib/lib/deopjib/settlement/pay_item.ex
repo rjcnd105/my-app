@@ -4,7 +4,7 @@ defmodule Deopjib.Settlement.PayItem do
     domain: Deopjib.Settlement,
     data_layer: AshPostgres.DataLayer
 
-  alias Deopjib.Settlement.{Room, Payer}
+  alias Deopjib.Settlement.{Room, Payer, PayItem}
 
   postgres do
     table("pay_item")
@@ -16,13 +16,20 @@ defmodule Deopjib.Settlement.PayItem do
     end
   end
 
-  actions do
-    defaults([:read, :destroy])
 
-    create :create do
-      accept([:name])
+
+  actions do
+    defaults([:create, :read, :destroy])
+
+    create :create_from_words do
+      # accept [:settler_id, :room_id]
+      argument :words, :string
+
+      change(PayItem.Change.InputFromWords)
+
     end
   end
+
 
   attributes do
     uuid_primary_key(:id)
@@ -33,11 +40,12 @@ defmodule Deopjib.Settlement.PayItem do
     end
 
     attribute :price, :integer do
-      allow_nil?(true)
+      default(0)
       public?(true)
     end
 
     create_timestamp(:inserted_at)
+    update_timestamp(:updated_at)
   end
 
   relationships do
@@ -47,7 +55,7 @@ defmodule Deopjib.Settlement.PayItem do
     end
 
     belongs_to(:settler, Payer) do
-      source_attribute(:settled_ids)
+      source_attribute(:settled_id)
       destination_attribute(:id)
       allow_nil?(false)
     end
@@ -61,7 +69,7 @@ defmodule Deopjib.Settlement.PayItem do
 
   validations do
     validate(
-      string_length(:name, min: 1, max: 13, message: "Name must be between 1 and 13 characters")
+      string_length(:name, min: 1, max: 8, message: "Name must be between 1 and 13 characters")
     )
   end
 end

@@ -21,12 +21,17 @@ defmodule Deopjib.Settlement do
       define(:create_payer, action: :create, args: [:name])
       define(:get_payer_by_id, action: :read, get_by: :id)
       define(:delete_payer, action: :destroy)
+
+
+
     end
 
     resource PayItem do
       define(:create_pay_item, action: :create)
       define(:get_pay_item_by_id, action: :read, get_by: :id)
       define(:delete_pay_item, action: :destroy)
+      # define (:get_pay_items_from_payer_id, )
+      define(:create_pay_item_from_words, action: :create_from_words)
     end
 
     resource PayItemExcludedPayer do

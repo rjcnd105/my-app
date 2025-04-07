@@ -68,31 +68,40 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       </.tmpl>
 
       <.tmpl title="Toast">
-        <Button.render phx-click={Toast.toast(%{message: "마지막 사람은 삭제 할 수 없어요."})} >open toast</Button.render>
+        <Button.render theme={:dark} size={:md} phx-click={Toast.toast(%{message: "마지막 사람은 삭제 할 수 없어요."})} >open toast</Button.render>
       </.tmpl>
 
       <.tmpl title="modal">
-        <Button.render phx-click={Overlay.show("my-modal")}>
+        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-modal")}>
           Open modal
         </Button.render>
 
 
-        <Button.render phx-click={Overlay.show("my-wrap-modal")} >
-          Open custom wrap modal
+        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal")} >
+          custom modal
         </Button.render>
 
-        <%!--
-        <Modal.modal id="my-modal" show>
+        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal-bottom")} >
+          custom bottom modal
+        </Button.render>
+
+        <Modal.modal id="my-modal">
           <Modal.title>title</Modal.title>
           <div>
           hihi
           </div>
         </Modal.modal>
-        --%>
 
         <Modal.modal id="my-wrap-modal" wrap_class="item-end justify-center">
           <:content_wrapper>
             <p class="custom-wrapper bg-red size-12 text-white">
+            hihi
+            </p>
+          </:content_wrapper>
+        </Modal.modal>
+        <Modal.modal id="my-wrap-modal-bottom" wrap_class="item-end self-end">
+          <:content_wrapper>
+            <p class="justify-self-center custom-wrapper bg-primary size-12 text-white ">
             hihi
             </p>
           </:content_wrapper>
