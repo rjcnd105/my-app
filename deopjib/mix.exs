@@ -34,6 +34,8 @@ defmodule Deopjib.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe_phoenix, "~> 2.0"},
+      {:ash_graphql, "~> 1.0"},
       {:ex_cldr, "~> 2.40"},
       {:ex_cldr_numbers, "~> 2.33"},
       {:oban, "~> 2.0"},
