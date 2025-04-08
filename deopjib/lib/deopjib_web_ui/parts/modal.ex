@@ -10,7 +10,6 @@ defmodule DeopjibWebUI.Parts.Modal do
   attr(:has_dimm, :boolean, default: true)
   attr(:show, :boolean, default: false)
   attr(:on_close_before, JS, default: %JS{})
-  attr(:class, :string, default: nil)
   attr(:wrap_class, :string, default: "self-center")
   attr(:rest, :global)
 
@@ -38,8 +37,39 @@ defmodule DeopjibWebUI.Parts.Modal do
     """
   end
 
+  attr(:id, :string, required: true)
+  attr(:show, :boolean, default: false)
+  attr(:wrap_class, :string, default: "self-center")
+  attr(:rest, :global)
+
+  slot(:inner_block)
+  slot(:content_wrapper)
+
+  def draw(assigns) do
+    ~H"""
+    <Overlay.full
+      id={@id}
+      show={@show}
+      is_close_on_click_away={false}
+      has_dimm={false}
+      wrap_class={@wrap_class}
+      container_class="z-40"
+      {@rest}
+    >
+      <%= if @content_wrapper != [] do %>
+        {render_slot(@content_wrapper)}
+      <% else %>
+        <.dialog_content_wrapper>
+          {render_slot(@inner_block)}
+        </.dialog_content_wrapper>
+      <% end %>
+    </Overlay.full>
+    """
+  end
+
   attr(:class, :any, default: nil)
   attr(:rest, :global)
+
   slot(:inner_block, required: true)
 
   def dialog_content_wrapper(assigns) do
@@ -58,6 +88,8 @@ defmodule DeopjibWebUI.Parts.Modal do
   end
 
   attr(:class, :any, default: nil)
+  attr(:rest, :global)
+
   slot(:inner_block, required: true)
 
   def default_content_wrapper(assigns) do
@@ -67,6 +99,7 @@ defmodule DeopjibWebUI.Parts.Modal do
       aria-modal="true"
       tabindex="0"
       class={["overflow-x-hidden pointer-events-auto", @class]}
+      {@rest}
     >
       {render_slot(@inner_block)}
     </div>

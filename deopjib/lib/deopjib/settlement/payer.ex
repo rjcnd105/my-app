@@ -45,7 +45,7 @@ defmodule Deopjib.Settlement.Payer do
 
     has_many(:settled_items, Deopjib.Settlement.PayItem) do
       source_attribute(:id)
-      destination_attribute(:settled_ids)
+      destination_attribute(:settled_id)
     end
   end
 

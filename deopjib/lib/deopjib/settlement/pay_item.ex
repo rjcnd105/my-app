@@ -22,7 +22,7 @@ defmodule Deopjib.Settlement.PayItem do
     defaults([:create, :read, :destroy])
 
     create :create_from_words do
-      # accept [:settler_id, :room_id]
+      accept [:room_id]
       argument :words, :string
 
       change(PayItem.Change.InputFromWords)

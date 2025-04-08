@@ -6,6 +6,8 @@ defmodule DeopjibWebUI.Parts.Overlay do
   attr(:show, :boolean, default: false)
   attr(:on_close_before, JS, default: %JS{})
   attr(:wrap_class, :any, default: nil)
+  attr(:is_close_on_click_away, :boolean, default: true)
+  attr(:container_class, :any, default: "z-50")
 
   slot(:inner_block)
 
@@ -22,22 +24,22 @@ defmodule DeopjibWebUI.Parts.Overlay do
       phx-mounted={@show && JS.exec("phx-show", to: "##{@id}")}
       phx-show={show(@id)}
       phx-hide={@on_close_before |> hide(@id)}
-      class="fixed inset-0 max-h-screen max-w-screen backdrop-blur-dimm z-50 ease-in-out duration-100 hidden group/overlay"
+      class={["fixed inset-0 max-h-screen max-w-screen ease-in-out pointer-events-none duration-100 hidden group/overlay", @container_class]}
       data-view-state={@view_state}
     >
       <div
         :if={@has_dimm}
         id={"#{@id}-dimm"}
-        class="absolute transition-opacity inset-0 size-full blur-dimm bg-dimm opacity-0 delay-100 group-data-[view-state=open]/overlay:opacity-100"
+        class="absolute transition-opacity inset-0 size-full blur-dimm backdrop-blur-dimm bg-dimm opacity-0 delay-100 pointer-events-none group-data-[view-state=open]/overlay:opacity-100"
         aria-hidden="true"
       />
-      <div class={["absolute inset-0 grid overflow-y-auto"]}>
+      <div class={["absolute inset-0 grid overflow-y-auto pointer-events-none"]}>
         <.focus_wrap
           id={"#{@id}-focus-wrap"}
           class={["pointer-events-none", @wrap_class]}
           phx-key="escape"
           phx-window-keydown={JS.exec("phx-hide", to: "##{@id}")}
-          phx-click-away={JS.exec("phx-hide", to: "##{@id}")}
+          phx-click-away={if @is_close_on_click_away, do: JS.exec("phx-hide", to: "##{@id}"), else: nil}
         >
         {render_slot(@inner_block)}
         </.focus_wrap>

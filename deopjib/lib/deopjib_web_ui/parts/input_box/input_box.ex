@@ -24,13 +24,15 @@ defmodule DeopjibWebUI.Parts.InputBox do
   attr(:message, :string, default: nil)
   attr(:min_length, :integer, default: nil)
   attr(:max_length, :integer, default: nil)
-  attr(:rest, :global, include: ~w(placeholder))
   attr(:class, :any, default: nil)
   attr(:error_message, :any, default: nil)
   attr(:container_class, :any, default: nil)
   attr(:"phx-mounted", JS, default: %JS{})
+  attr(:rest, :global, include: ~w(placeholder))
 
   slot(:input_right)
+
+  slot(:message_line)
 
   def render(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
@@ -50,8 +52,6 @@ defmodule DeopjibWebUI.Parts.InputBox do
       assigns
       |> assign_new(:value, fn -> nil end)
       |> assign(:theme_class, @theme_classes[assigns.theme])
-
-    # |> IO.inspect(label: "input_box")
 
     ~H"""
     <div
@@ -84,8 +84,26 @@ defmodule DeopjibWebUI.Parts.InputBox do
           {render_slot(@input_right)}
         </div>
       </div>
+      <%= if @message_line do %>
+        {render_slot(@message_line, @error_message)}
+      <% else %>
+        <.messages message={@message} max_length={@max_length} min_length={@min_length} error_message={@error_message} />
+      <% end %>
+    </div>
+
+    """
+  end
+
+  attr(:error_message, :any, default: nil)
+  attr(:min_length, :integer, default: nil)
+  attr(:max_length, :integer, default: nil)
+  attr(:hook, :string, default: "InputBoxLengthHook")
+  attr(:message, :string, default: nil)
+
+  def messages(assigns) do
+    ~H"""
       <div
-        :if={is_binary(@message) || is_integer(@max_length) || is_integer(@min_length)}
+        :if={is_binary(@message) || is_binary(@error_message) || is_integer(@max_length)}
         class="flex text-caption2 text-gray300 mt-1"
         data-ui="input_box#message"
       >
@@ -94,12 +112,10 @@ defmodule DeopjibWebUI.Parts.InputBox do
         </p>
 
         <%= if is_integer(@min_length) || is_integer(@max_length) do %>
-          <span id={@id <> "_length"} phx-update="ignore" class="group-data-[valid=invalid]/input-box:text-warning ml-auto" data-ui="input_box#current_length" phx-hook="InputBoxLengthHook">0</span>
+          <span id={@id <> "_length"} phx-update="ignore" class="group-data-[valid=invalid]/input-box:text-warning ml-auto" data-ui="input_box#current_length" phx-hook={@hook}>0</span>
           &nbsp;/{@max_length}
         <% end %>
       </div>
-    </div>
-
     """
   end
 

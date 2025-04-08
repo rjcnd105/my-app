@@ -24,6 +24,7 @@ import { LiveSocket } from "phoenix_live_view";
 import topbar from "./vendor/topbar";
 import hooks from "./hooks";
 import "./events";
+import { globalFunctions } from "./common/globalFunctions";
 
 let csrfToken = (
   document.querySelector("meta[name='csrf-token']") as HTMLElement
@@ -98,3 +99,5 @@ liveSocket.enableDebug();
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket;
+
+window.__globalFunctions = globalFunctions;

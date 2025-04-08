@@ -1,4 +1,6 @@
 import type { Hook, ViewHookInterface } from "phoenix_live_view";
+import type { HookWithAbortController } from "../../../../assets/js/types/liveview";
+import { get, identity } from "es-toolkit/compat";
 
 function updateCounter(this: ViewHookInterface, e: Event) {
   const input = e.target;
@@ -7,30 +9,38 @@ function updateCounter(this: ViewHookInterface, e: Event) {
     this.el.innerText = `${length}`;
   }
 }
-export const InputBoxLengthHook: Hook = {
+export const InputBoxLengthHook = {
+  _abortController: new AbortController(),
+  input: null as HTMLInputElement | null,
   mounted() {
-    const input = this.el
-      .closest(`[data-ui="input_box"]`)
-      ?.querySelector("input");
+    const input_target = this.el.getAttribute("phx-value-target");
+    const filterKind = this.el.dataset["filterKind"];
 
-    if (!input) return;
+    const k = filterKind ? get(window.__globalFunctions, filterKind) : identity;
 
-    const length = input.value.length;
+    if (!input_target) return;
+
+    const inputEl = document.querySelector(input_target);
+
+    if (!(inputEl instanceof HTMLInputElement)) return;
+
+    this.input = inputEl;
+
+    const length = this.input.value.length;
     this.el.innerText = `${length}`;
 
-    input?.addEventListener("input", updateCounter.bind(this));
-    input?.addEventListener("change", updateCounter.bind(this));
-    input?.addEventListener("reset", updateCounter.bind(this));
+    this.input?.addEventListener("input", updateCounter.bind(this), {
+      signal: this._abortController.signal,
+    });
+    this.input?.addEventListener("change", updateCounter.bind(this), {
+      signal: this._abortController.signal,
+    });
+    this.input?.addEventListener("reset", updateCounter.bind(this), {
+      signal: this._abortController.signal,
+    });
   },
   destroyed() {
-    const input = this.el
-      .closest("[data-ui=input_box]")
-      ?.querySelector("input");
-
-    if (!input) return;
-
-    input.removeEventListener("input", updateCounter);
-    input.removeEventListener("change", updateCounter);
-    input.removeEventListener("reset", updateCounter);
+    if (!this.input) return;
+    this._abortController.abort();
   },
-};
+} satisfies HookWithAbortController<{ input: HTMLInputElement | null }>;
