@@ -8,6 +8,95 @@ input RoomPutPayersInRoomPayersInput {
   name: String
 }
 
+"The result of the :create_from_words mutation"
+type CreateFromWordsResult {
+  "The successful result of the mutation"
+  result: PayItem
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError!]!
+}
+
+input CreateFromWordsInput {
+  words: String
+}
+
+enum PayItemSortField {
+  ID
+  NAME
+  AMOUNT
+}
+
+"A keyset page of :pay_item"
+type KeysetPageOfPayItem {
+  "Total count on all pages"
+  count: Int
+
+  "The records contained in the page"
+  results: [PayItem!]
+
+  "The first keyset in the results"
+  startKeyset: String
+
+  "The last keyset in the results"
+  endKeyset: String
+}
+
+input PayItemFilterAmount {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
+}
+
+input PayItemFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+  like: String
+  ilike: String
+}
+
+input PayItemFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input PayItemFilterInput {
+  and: [PayItemFilterInput!]
+  or: [PayItemFilterInput!]
+  not: [PayItemFilterInput!]
+  id: PayItemFilterId
+  name: PayItemFilterName
+  amount: PayItemFilterAmount
+}
+
+input PayItemSortInput {
+  order: SortOrder
+  field: PayItemSortField!
+}
+
+type PayItem {
+  id: ID!
+  name: String
+  amount: Int
+}
+
 "The result of the :put_payers_in_room mutation"
 type PutPayersInRoomResult {
   "The successful result of the mutation"
@@ -195,12 +284,38 @@ type RootQueryType {
     "The number of records to return to the end. Maximum 250"
     last: Int
   ): KeysetPageOfRoom
+
+  getPayItem(
+    "The id of the record"
+    id: ID!
+  ): PayItem
+
+  getPayItemList(
+    "How to sort the records in the response"
+    sort: [PayItemSortInput]
+
+    "A filter to limit the results"
+    filter: PayItemFilterInput
+
+    "The number of records to return from the beginning. Maximum 250"
+    first: Int
+
+    "Show records before the specified keyset."
+    before: String
+
+    "Show records after the specified keyset."
+    after: String
+
+    "The number of records to return to the end. Maximum 250"
+    last: Int
+  ): KeysetPageOfPayItem
 }
 
 type RootMutationType {
   createRoom(input: CreateRoomInput!): CreateRoomResult!
   updateRoomName(id: ID!, input: UpdateRoomNameInput): UpdateRoomNameResult!
   putPayersInRoom(id: ID!, input: PutPayersInRoomInput): PutPayersInRoomResult!
+  createFromWords(input: CreateFromWordsInput): CreateFromWordsResult!
 }
 
 """

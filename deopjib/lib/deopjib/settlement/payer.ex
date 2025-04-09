@@ -63,7 +63,7 @@ defmodule Deopjib.Settlement.Payer do
   end
 
   aggregates do
-    sum(:total_paid, :settled_items, :price)
+    sum(:total_paid, :settled_items, :amount)
   end
 
   def name_length, do: @name_length

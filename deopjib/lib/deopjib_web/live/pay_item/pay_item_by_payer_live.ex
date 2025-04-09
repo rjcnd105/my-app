@@ -119,7 +119,7 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
        is_room_loading: false,
        selected_payer: nil,
        pay_items_form:
-         AshPhoenix.Form.for_create(Settlement.PayItem, :create_from_words) |> to_form()
+         AshPhoenix.Form.for_create(Settlement.PayItem, :upsert_from_words) |> to_form()
      )
      |> start_async(:get_room, fn ->
        Settlement.get_room_by_short_id!(room_short_id,

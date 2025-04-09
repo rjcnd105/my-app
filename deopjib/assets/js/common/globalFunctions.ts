@@ -1,7 +1,7 @@
 function payItemNameFilter(text: string) {
-  const [name, price] = text.split("/");
+  const [name, amount] = text.split("/");
 
-  if (!name || !price) return "";
+  if (!name || !amount) return "";
 
   return name;
 }

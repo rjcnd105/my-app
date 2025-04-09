@@ -2,7 +2,8 @@ defmodule Deopjib.Settlement.PayItem do
   use Ash.Resource,
     otp_app: :deopjib,
     domain: Deopjib.Settlement,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   alias Deopjib.Settlement.{Room, Payer, PayItem}
 
@@ -22,11 +23,12 @@ defmodule Deopjib.Settlement.PayItem do
     attribute :name, :string do
       allow_nil?(true)
       public?(true)
+      constraints(max_length: 8, min_length: 1)
     end
 
-    attribute :price, :integer do
-      default(0)
+    attribute :amount, :integer do
       public?(true)
+      default(0)
     end
 
     create_timestamp(:inserted_at)
@@ -55,7 +57,6 @@ defmodule Deopjib.Settlement.PayItem do
 
     mutations do
       create(:create_from_words, :upsert_from_words)
-      update(:upsert_from_words, :upsert_from_words)
     end
   end
 
