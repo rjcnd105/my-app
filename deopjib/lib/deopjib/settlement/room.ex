@@ -24,11 +24,23 @@ defmodule Deopjib.Settlement.Room do
   # end
 
   actions do
-    defaults([:read, :destroy])
+    defaults([:destroy])
+
+    read :read do
+      primary?(true)
+    end
+
+    read :get_by_id do
+      get_by(:id)
+    end
 
     create :create do
       accept([:name])
       primary?(true)
+    end
+
+    read :get_by_short_id do
+      get_by(:short_id)
     end
 
     create :upsert_with_payers do
@@ -58,9 +70,9 @@ defmodule Deopjib.Settlement.Room do
     type(:room)
 
     queries do
-      # create a field called `get_ticket` that uses the `read` read action to fetch a single ticket
-      get(:get_room, :read)
-      list(:list_rooms, :read)
+      read_one(:room, :get_by_short_id, allow_nil?: false)
+
+      list(:rooms, :read)
     end
 
     mutations do
@@ -89,6 +101,7 @@ defmodule Deopjib.Settlement.Room do
 
     attribute :short_id, :string do
       allow_nil?(true)
+      public?(true)
     end
 
     attribute :name, :string do

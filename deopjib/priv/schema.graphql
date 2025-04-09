@@ -138,24 +138,10 @@ input CreateRoomInput {
 
 enum RoomSortField {
   ID
+  SHORT_ID
   NAME
   EXPIRATION_AT
   COUNTS_OF_PAYERS
-}
-
-"A keyset page of :room"
-type KeysetPageOfRoom {
-  "Total count on all pages"
-  count: Int
-
-  "The records contained in the page"
-  results: [Room!]
-
-  "The first keyset in the results"
-  startKeyset: String
-
-  "The last keyset in the results"
-  endKeyset: String
 }
 
 input RoomFilterCountsOfPayers {
@@ -193,6 +179,19 @@ input RoomFilterName {
   ilike: String
 }
 
+input RoomFilterShortId {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+  like: String
+  ilike: String
+}
+
 input RoomFilterId {
   isNil: Boolean
   eq: ID
@@ -209,6 +208,7 @@ input RoomFilterInput {
   or: [RoomFilterInput!]
   not: [RoomFilterInput!]
   id: RoomFilterId
+  shortId: RoomFilterShortId
   name: RoomFilterName
   expirationAt: RoomFilterExpirationAt
   countsOfPayers: RoomFilterCountsOfPayers
@@ -221,6 +221,7 @@ input RoomSortInput {
 
 type Room {
   id: ID!
+  shortId: String
   name: String!
   expirationAt: DateTime
   countsOfPayers: Int!
@@ -260,30 +261,20 @@ type RootQueryType {
   """
   sayHello: String
 
-  getRoom(
-    "The id of the record"
-    id: ID!
-  ): Room
+  room(
+    "A filter to limit the results"
+    filter: RoomFilterInput
 
-  listRooms(
+    shortId: String
+  ): Room!
+
+  rooms(
     "How to sort the records in the response"
     sort: [RoomSortInput]
 
     "A filter to limit the results"
     filter: RoomFilterInput
-
-    "The number of records to return from the beginning. Maximum 250"
-    first: Int
-
-    "Show records before the specified keyset."
-    before: String
-
-    "Show records after the specified keyset."
-    after: String
-
-    "The number of records to return to the end. Maximum 250"
-    last: Int
-  ): KeysetPageOfRoom
+  ): [Room!]!
 
   getPayItem(
     "The id of the record"
