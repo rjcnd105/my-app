@@ -5,10 +5,6 @@ defmodule DeopjibWeb.Router do
 
   import AshAuthentication.Plug.Helpers
 
-  pipeline :graphql do
-    plug(AshGraphql.Plug)
-  end
-
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
@@ -25,16 +21,15 @@ defmodule DeopjibWeb.Router do
     plug(:set_actor, :user)
   end
 
-  scope "/gql" do
-    pipe_through([:graphql])
+  scope "/api/json" do
+    pipe_through([:api])
 
-    forward("/playground", Absinthe.Plug.GraphiQL,
-      schema: Module.concat(["DeopjibWeb.GraphqlSchema"]),
-      socket: Module.concat(["DeopjibWeb.GraphqlSocket"]),
-      interface: :playground
+    forward("/swaggerui", OpenApiSpex.Plug.SwaggerUI,
+      path: "/api/json/open_api",
+      default_model_expand_depth: 4
     )
 
-    forward("/", Absinthe.Plug, schema: Module.concat(["DeopjibWeb.GraphqlSchema"]))
+    forward("/", DeopjibWeb.AshJsonApiRouter)
   end
 
   scope "/api", DeopjibWeb do

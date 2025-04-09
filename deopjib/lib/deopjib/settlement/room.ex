@@ -2,8 +2,7 @@ defmodule Deopjib.Settlement.Room do
   use Ash.Resource,
     otp_app: :deopjib,
     domain: Deopjib.Settlement,
-    data_layer: AshPostgres.DataLayer,
-    extensions: [AshGraphql.Resource]
+    data_layer: AshPostgres.DataLayer
 
   alias Deopjib.Settlement.Room.ShortId
   alias Deopjib.Settlement
@@ -63,22 +62,6 @@ defmodule Deopjib.Settlement.Room do
       require_atomic?(false)
 
       change(manage_relationship(:payers, type: :direct_control))
-    end
-  end
-
-  graphql do
-    type(:room)
-
-    queries do
-      read_one(:room, :get_by_short_id, allow_nil?: false)
-
-      list(:rooms, :read)
-    end
-
-    mutations do
-      create(:create_room, :create)
-      update(:update_room_name, :update_name)
-      update(:put_payers_in_room, :put_payers_in_room)
     end
   end
 

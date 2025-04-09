@@ -24,8 +24,7 @@ defmodule Deopjib.Application do
       # Start to serve requests, typically the last entry
       DeopjibWeb.Endpoint,
       {AshAuthentication.Supervisor, [otp_app: :deopjib]},
-      {Absinthe.Subscription, DeopjibWeb.Endpoint},
-      AshGraphql.Subscription.Batcher
+      {Absinthe.Subscription, DeopjibWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

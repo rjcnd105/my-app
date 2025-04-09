@@ -1,5 +1,5 @@
 defmodule Deopjib.Settlement do
-  use Ash.Domain, otp_app: :deopjib, extensions: [AshAdmin.Domain, AshGraphql.Domain]
+  use Ash.Domain, otp_app: :deopjib, extensions: [AshAdmin.Domain]
 
   alias Deopjib.Settlement.{Room, Payer, PayItem, PayItemExcludedPayer}
 

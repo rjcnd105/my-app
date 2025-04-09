@@ -7,6 +7,11 @@
 # General application configuration
 import Config
 
+config :mime,
+  extensions: %{"json" => "application/vnd.api+json"},
+  types: %{"application/vnd.api+json" => ["json"]}
+
+config :ash_json_api, show_public_calculations_when_loaded?: false
 config :ex_cldr, default_backend: Deopjib.Cldr
 
 config :deopjib, Oban,
@@ -29,7 +34,7 @@ config :spark,
     remove_parens?: true,
     "Ash.Resource": [
       section_order: [
-        :graphql,
+        :json_api,
         :admin,
         :authentication,
         :tokens,
@@ -52,7 +57,7 @@ config :spark,
     ],
     "Ash.Domain": [
       section_order: [
-        :graphql,
+        :json_api,
         :admin,
         :resources,
         :policies,
@@ -95,11 +100,6 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-
-config :deopjib, DeopjibWeb,
-  graphql: [
-    show_raised_errors?: true
-  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

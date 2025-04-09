@@ -3,7 +3,6 @@ defmodule Deopjib.Settlement.PayItem do
     otp_app: :deopjib,
     domain: Deopjib.Settlement,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshGraphql.Resource]
 
   alias Deopjib.Settlement.{Room, Payer, PayItem}
 
@@ -43,20 +42,6 @@ defmodule Deopjib.Settlement.PayItem do
       argument(:words, :string)
 
       change(PayItem.Change.InputFromWords)
-    end
-  end
-
-  graphql do
-    type(:pay_item)
-
-    queries do
-      # create a field called `get_ticket` that uses the `read` read action to fetch a single ticket
-      get(:get_pay_item, :read)
-      list(:get_pay_item_list, :read)
-    end
-
-    mutations do
-      create(:create_from_words, :upsert_from_words)
     end
   end
 

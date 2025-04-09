@@ -34,8 +34,9 @@ defmodule Deopjib.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:open_api_spex, "~> 3.0"},
+      {:ash_json_api, "~> 1.0"},
       {:absinthe_phoenix, "~> 2.0"},
-      {:ash_graphql, "~> 1.0"},
       {:ex_cldr, "~> 2.40"},
       {:ex_cldr_numbers, "~> 2.33"},
       {:oban, "~> 2.0"},
@@ -98,7 +99,7 @@ defmodule Deopjib.MixProject do
         "cmd --cd #{@assets_path} bun tailwind --minify",
         "phx.digest"
       ],
-      "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
+      "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes", "ash_json_api.routes"]
     ]
   end
 end
