@@ -2,7 +2,8 @@ defmodule Deopjib.Settlement.Room do
   use Ash.Resource,
     otp_app: :deopjib,
     domain: Deopjib.Settlement,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   alias Deopjib.Settlement.Room.ShortId
   alias Deopjib.Settlement
@@ -42,6 +43,7 @@ defmodule Deopjib.Settlement.Room do
 
     update :update_name do
       accept([:name])
+      require_atomic?(false)
     end
 
     update :put_payers_in_room do
@@ -49,6 +51,22 @@ defmodule Deopjib.Settlement.Room do
       require_atomic?(false)
 
       change(manage_relationship(:payers, type: :direct_control))
+    end
+  end
+
+  graphql do
+    type(:room)
+
+    queries do
+      # create a field called `get_ticket` that uses the `read` read action to fetch a single ticket
+      get(:get_room, :read)
+      list(:list_rooms, :read)
+    end
+
+    mutations do
+      create(:create_room, :create)
+      update(:update_room_name, :update_name)
+      update(:put_payers_in_room, :put_payers_in_room)
     end
   end
 
@@ -76,6 +94,7 @@ defmodule Deopjib.Settlement.Room do
     attribute :name, :string do
       allow_nil?(false)
       public?(true)
+      constraints(max_length: 8, min_length: 1, allow_empty?: false)
     end
 
     attribute :expiration_at, :utc_datetime do

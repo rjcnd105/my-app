@@ -28,15 +28,8 @@ config :deopjib, DeopjibWeb.Endpoint,
   watchers: [
     bun: [
       "run",
-      "js",
-      "--watch"
-      # cd: "./assets"
-    ],
-    bun: [
-      "run",
-      "tailwind",
-      "--watch"
-      # cd: "./assets"
+      "dev",
+      cd: "../deopjib_client"
     ]
   ]
 

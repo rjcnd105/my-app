@@ -1,19 +1,23 @@
+// app.config.ts
 import { defineConfig } from "@tanstack/react-start/config";
 import tsConfigPaths from "vite-tsconfig-paths";
-
 import tailwindcss from "@tailwindcss/vite";
-
-export default defineConfig({
+var app_config_default = defineConfig({
   tsr: {
     appDirectory: "src",
-    autoCodeSplitting: true,
+    experimental: {
+      enableCodeSplitting: true
+    }
   },
   vite: {
     plugins: [
       tsConfigPaths({
-        projects: ["./tsconfig.json"],
+        projects: ["./tsconfig.json"]
       }),
-      tailwindcss(),
-    ],
-  },
+      tailwindcss()
+    ]
+  }
 });
+export {
+  app_config_default as default
+};

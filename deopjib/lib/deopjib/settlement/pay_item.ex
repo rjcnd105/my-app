@@ -16,21 +16,6 @@ defmodule Deopjib.Settlement.PayItem do
     end
   end
 
-
-
-  actions do
-    defaults([:create, :read, :destroy])
-
-    create :create_from_words do
-      accept [:room_id]
-      argument :words, :string
-
-      change(PayItem.Change.InputFromWords)
-
-    end
-  end
-
-
   attributes do
     uuid_primary_key(:id)
 
@@ -46,6 +31,32 @@ defmodule Deopjib.Settlement.PayItem do
 
     create_timestamp(:inserted_at)
     update_timestamp(:updated_at)
+  end
+
+  actions do
+    defaults([:create, :read, :destroy])
+
+    create :upsert_from_words do
+      upsert?(true)
+      argument(:words, :string)
+
+      change(PayItem.Change.InputFromWords)
+    end
+  end
+
+  graphql do
+    type(:pay_item)
+
+    queries do
+      # create a field called `get_ticket` that uses the `read` read action to fetch a single ticket
+      get(:get_pay_item, :read)
+      list(:get_pay_item_list, :read)
+    end
+
+    mutations do
+      create(:create_from_words, :upsert_from_words)
+      update(:upsert_from_words, :upsert_from_words)
+    end
   end
 
   relationships do

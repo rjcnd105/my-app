@@ -34,6 +34,11 @@ defmodule Deopjib.Settlement.Payer do
       public?(true)
     end
 
+    attribute :banc_account, :string do
+      public?(true)
+      default("")
+    end
+
     create_timestamp(:inserted_at)
   end
 
@@ -58,9 +63,8 @@ defmodule Deopjib.Settlement.Payer do
   end
 
   aggregates do
-    sum :total_paid, :settled_items, :price
+    sum(:total_paid, :settled_items, :price)
   end
-
 
   def name_length, do: @name_length
 end

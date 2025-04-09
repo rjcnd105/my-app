@@ -6,7 +6,7 @@ defmodule DeopjibWeb.Router do
   import AshAuthentication.Plug.Helpers
 
   pipeline :graphql do
-    plug AshGraphql.Plug
+    plug(AshGraphql.Plug)
   end
 
   pipeline :browser do
@@ -26,14 +26,15 @@ defmodule DeopjibWeb.Router do
   end
 
   scope "/gql" do
-    pipe_through [:graphql]
+    pipe_through([:graphql])
 
-    forward "/playground", Absinthe.Plug.GraphiQL,
+    forward("/playground", Absinthe.Plug.GraphiQL,
       schema: Module.concat(["DeopjibWeb.GraphqlSchema"]),
       socket: Module.concat(["DeopjibWeb.GraphqlSocket"]),
       interface: :playground
+    )
 
-    forward "/", Absinthe.Plug, schema: Module.concat(["DeopjibWeb.GraphqlSchema"])
+    forward("/", Absinthe.Plug, schema: Module.concat(["DeopjibWeb.GraphqlSchema"]))
   end
 
   scope "/api", DeopjibWeb do

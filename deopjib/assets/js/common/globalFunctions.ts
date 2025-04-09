@@ -6,7 +6,7 @@ function payItemNameFilter(text: string) {
   return name;
 }
 
-const globalFunctions = {
+export const globalFunctions = {
   payItemNameFilter,
 } as const;
 

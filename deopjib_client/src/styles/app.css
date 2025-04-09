@@ -5,6 +5,7 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "./theme.css";
+@import "./layouts.css";
 
 @layer base {
   button:not(:disabled),
@@ -23,6 +24,9 @@
 
   [disabled] {
     cursor: cursor-not-allowed;
+  }
+  [hidden] {
+    display: none;
   }
 
   div[data-phx-main] {

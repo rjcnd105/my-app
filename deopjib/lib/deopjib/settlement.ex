@@ -1,5 +1,5 @@
 defmodule Deopjib.Settlement do
-  use Ash.Domain, otp_app: :deopjib, extensions: [AshAdmin.Domain]
+  use Ash.Domain, otp_app: :deopjib, extensions: [AshAdmin.Domain, AshGraphql.Domain]
 
   alias Deopjib.Settlement.{Room, Payer, PayItem, PayItemExcludedPayer}
 
@@ -21,9 +21,6 @@ defmodule Deopjib.Settlement do
       define(:create_payer, action: :create, args: [:name])
       define(:get_payer_by_id, action: :read, get_by: :id)
       define(:delete_payer, action: :destroy)
-
-
-
     end
 
     resource PayItem do

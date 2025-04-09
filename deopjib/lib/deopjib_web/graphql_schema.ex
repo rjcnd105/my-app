@@ -1,10 +1,21 @@
 defmodule DeopjibWeb.GraphqlSchema do
+  alias Deopjib.Settlement
   use Absinthe.Schema
 
   use AshGraphql,
-    domains: []
+    domains: [
+      Settlement
+    ],
+    resources: [
+      Settlement.Room,
+      Settlement.PayItem,
+      Settlement.Payer,
+      Settlement.PayItemExcludedPayer
+    ],
+    generate_sdl_file: "priv/schema.graphql",
+    auto_generate_sdl_file?: true
 
-  import_types Absinthe.Plug.Types
+  import_types(Absinthe.Plug.Types)
 
   query do
     # Custom Absinthe queries can be placed here
@@ -13,11 +24,21 @@ defmodule DeopjibWeb.GraphqlSchema do
     Remove me once you have a query of your own!
     """
     field :say_hello, :string do
-      resolve fn _, _, _ ->
+      resolve(fn _, _, _ ->
         {:ok, "Hello from AshGraphql!"}
-      end
+      end)
     end
   end
+
+  # object :money do
+  #   field(:amount, non_null(:decimal))
+  #   field(:currency, non_null(:string))
+  # end
+
+  # input_object :money_input do
+  #   field(:amount, non_null(:decimal))
+  #   field(:currency, non_null(:string))
+  # end
 
   mutation do
     # Custom Absinthe mutations can be placed here

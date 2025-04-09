@@ -99,9 +99,9 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
                     추가
                   </Button.render>
                 </:input_right>
-                <:message_line :let={error_message}>
+                <%!-- <:message_line :let={error_message}>
                   <InputBox.messages error_message={error_message} max_length={8} min_length={0} />
-                </:message_line>
+                </:message_line> --%>
               </InputBox.render>
             </.form>
           </Modal.default_content_wrapper>
