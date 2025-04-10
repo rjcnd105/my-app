@@ -13,7 +13,6 @@ export namespace Button {
   export interface Props extends ComponentProps<"button">, PropsWithChildren {
     theme: Themes;
   }
-  export type Return = ReturnType<typeof Button> & { __uri: "Button" };
 }
 
 export const Button = ({ theme, ...rest }: Button.Props) => {
@@ -27,26 +26,11 @@ export const Button = ({ theme, ...rest }: Button.Props) => {
     >
       Button
     </button>
-  ) as ReactElement<Button.Props>;
+  );
 };
-export type Button = typeof Button;
 
 Button.utils = {
   getClassName: (props: Button.Props) => {
     return `button ${props.theme}`;
   },
-};
-
-export const ButtonRail = ({
-  MyButton,
-  ButtonProps,
-}: {
-  MyButton: Button;
-  ButtonProps: Button.Props;
-}) => {
-  return (
-    <button className="button">
-      <MyButton {...ButtonProps} />
-    </button>
-  );
 };
