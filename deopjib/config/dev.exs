@@ -30,12 +30,12 @@ config :deopjib, DeopjibWeb.Endpoint,
       "run",
       "dev",
       cd: "../deopjib_client"
-    ],
-    bun: [
-      "run",
-      "codegen",
-      cd: "../deopjib_client"
     ]
+    # bun: [
+    #   "run",
+    #   "codegen",
+    #   cd: "../deopjib_client"
+    # ]
   ]
 
 config :live_debugger,

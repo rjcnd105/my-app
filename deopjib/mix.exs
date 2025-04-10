@@ -58,6 +58,7 @@ defmodule Deopjib.MixProject do
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
+      {:spark, "~> 2.2"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 1.0.0"},
@@ -99,6 +100,7 @@ defmodule Deopjib.MixProject do
         "cmd --cd #{@assets_path} bun tailwind --minify",
         "phx.digest"
       ],
+      "gen.openapi": ["openapi.spec.json --spec DeopjibWeb.AshJsonApiRouter"],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes", "ash_json_api.routes"]
     ]
   end
