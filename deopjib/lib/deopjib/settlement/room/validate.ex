@@ -6,7 +6,10 @@ defmodule Deopjib.Settlement.Room.Validate do
     use Ash.Resource.Validation
 
     @impl true
-    def validate(changeset, _opts, _context) do
+    def validate(changeset, opts, _context) do
+      min = Keyword.get(opts, :min)
+      max = Keyword.get(opts, :max)
+
       changeset
       |> R.ok()
       |> R.map_ok_nil_to_err(&Ash.Changeset.get_argument(&1, :payers))
@@ -15,10 +18,10 @@ defmodule Deopjib.Settlement.Room.Validate do
         count = Enum.count(payers)
 
         cond do
-          count > 10 ->
+          count > max ->
             {:error, "최대 인원에 도달했어"}
 
-          count == 0 ->
+          count == min ->
             {:error, "최소 1명은 필요해"}
 
           true ->

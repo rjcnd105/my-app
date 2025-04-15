@@ -17,7 +17,7 @@ defmodule DeopjibWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts icons images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets locales fonts icons images favicon.ico robots.txt)
 
   def router do
     quote do

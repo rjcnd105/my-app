@@ -9,6 +9,7 @@ defmodule Deopjib.Settlement.PayItemExcludedPayer do
 
   json_api do
     type("pay_item_excluded_payer")
+    includes([:pay_item, :payer])
 
     primary_key do
       keys([:pay_item_id, :payer_id])
@@ -31,7 +32,16 @@ defmodule Deopjib.Settlement.PayItemExcludedPayer do
   end
 
   relationships do
-    belongs_to(:pay_item, PayItem, primary_key?: true, allow_nil?: false)
-    belongs_to(:payer, Payer, primary_key?: true, allow_nil?: false)
+    belongs_to(:pay_item, PayItem) do
+      primary_key?(true)
+      allow_nil?(false)
+      public?(true)
+    end
+
+    belongs_to(:payer, Payer) do
+      primary_key?(true)
+      allow_nil?(false)
+      public?(true)
+    end
   end
 end

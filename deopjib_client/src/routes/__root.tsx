@@ -7,10 +7,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
-import { Provider } from "urql";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
-import { client } from "~/graphql/client";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 
@@ -65,11 +63,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <Provider value={client}>
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
-    </Provider>
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
   );
 }
 

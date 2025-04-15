@@ -18,8 +18,17 @@ defmodule Deopjib.Settlement.Room do
     routes do
       base("rooms")
 
+      includes([:payers])
+
       get(:by_id, route: "/by_id/:id")
       get(:by_short_id, route: "/by_short_id/:short_id")
+
+      post(:upsert_with_payers) do
+        route("/upsert_with_payers")
+        relationship_arguments([:payers])
+      end
+
+      patch(:update_name, route: "name")
     end
   end
 
@@ -61,7 +70,7 @@ defmodule Deopjib.Settlement.Room do
       argument(:payers, {:array, :map})
 
       change(set_attribute(:name, @default_name))
-      change(manage_relationship(:payers, type: :create))
+      change(manage_relationship(:payers, type: :direct_control))
     end
 
     update :update_name do
@@ -87,22 +96,34 @@ defmodule Deopjib.Settlement.Room do
     alias Deopjib.Settlement.Room.Validate
 
     validate(string_length(:name, min: 1, max: 13))
-    validate(Validate.MinMaxPayerInRoom, where: [action_is(:upsert_with_payers)])
+
+    validate({Validate.MinMaxPayerInRoom, [min: 1, max: 10]},
+      where: [action_is(:upsert_with_payers)]
+    )
+
     validate(Validate.PayerUniqueNameInRoom, where: [action_is(:upsert_with_payers)])
   end
 
   attributes do
-    uuid_primary_key(:id)
+    uuid_primary_key(:id) do
+      public?(true)
+    end
 
     attribute :short_id, :string do
       allow_nil?(true)
       public?(true)
     end
 
-    attribute :name, :string do
+    attribute :name, DeopjibUtils.Ash.Type.String do
       allow_nil?(false)
       public?(true)
-      constraints(max_length: 8, min_length: 1, allow_empty?: false)
+
+      constraints(
+        max_length: 8,
+        min_length: 1,
+        match: DeopjibUtils.Regex.general_name(),
+        allow_empty?: false
+      )
     end
 
     attribute :expiration_at, :utc_datetime do
@@ -111,7 +132,10 @@ defmodule Deopjib.Settlement.Room do
     end
 
     create_timestamp(:inserted_at)
-    update_timestamp(:updated_at)
+
+    update_timestamp(:updated_at) do
+      select_by_default?(false)
+    end
   end
 
   relationships do
@@ -125,6 +149,7 @@ defmodule Deopjib.Settlement.Room do
   aggregates do
     count :counts_of_payers, :payers do
       public?(true)
+      default(0)
     end
   end
 
