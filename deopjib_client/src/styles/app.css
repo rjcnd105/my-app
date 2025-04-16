@@ -8,6 +8,13 @@
 @import "./layouts.css";
 
 @layer base {
+  html {
+    height: 100dvh;
+  }
+
+  body {
+    height: 100%;
+  }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
@@ -27,9 +34,5 @@
   }
   [hidden] {
     display: none;
-  }
-
-  div[data-phx-main] {
-    height: 100%;
   }
 }

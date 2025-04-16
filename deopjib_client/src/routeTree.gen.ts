@@ -11,37 +11,44 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as RedirectImport } from './routes/redirect'
-import { Route as DeferredImport } from './routes/deferred'
 import { Route as PathlessLayoutImport } from './routes/_pathlessLayout'
+import { Route as DeferredImport } from './routes/_deferred'
 import { Route as IndexImport } from './routes/index'
+import { Route as RoomIndexImport } from './routes/room/index'
+import { Route as RoomCreateImport } from './routes/room/create'
 import { Route as PathlessLayoutNestedLayoutImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as RoomIdAdditemsImport } from './routes/$roomId.add_items'
+import { Route as RoomShortIdAddpayitemsImport } from './routes/room/$shortId.add_pay_items'
 import { Route as PathlessLayoutNestedLayoutRouteBImport } from './routes/_pathlessLayout/_nested-layout/route-b'
 import { Route as PathlessLayoutNestedLayoutRouteAImport } from './routes/_pathlessLayout/_nested-layout/route-a'
 
 // Create/Update Routes
-
-const RedirectRoute = RedirectImport.update({
-  id: '/redirect',
-  path: '/redirect',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DeferredRoute = DeferredImport.update({
-  id: '/deferred',
-  path: '/deferred',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const PathlessLayoutRoute = PathlessLayoutImport.update({
   id: '/_pathlessLayout',
   getParentRoute: () => rootRoute,
 } as any)
 
+const DeferredRoute = DeferredImport.update({
+  id: '/_deferred',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RoomIndexRoute = RoomIndexImport.update({
+  id: '/room/',
+  path: '/room/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RoomCreateRoute = RoomCreateImport.update({
+  id: '/room/create',
+  path: '/room/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -55,6 +62,12 @@ const PathlessLayoutNestedLayoutRoute = PathlessLayoutNestedLayoutImport.update(
 const RoomIdAdditemsRoute = RoomIdAdditemsImport.update({
   id: '/$roomId/add_items',
   path: '/$roomId/add_items',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RoomShortIdAddpayitemsRoute = RoomShortIdAddpayitemsImport.update({
+  id: '/room/$shortId/add_pay_items',
+  path: '/room/$shortId/add_pay_items',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -83,25 +96,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_deferred': {
+      id: '/_deferred'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof DeferredImport
+      parentRoute: typeof rootRoute
+    }
     '/_pathlessLayout': {
       id: '/_pathlessLayout'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PathlessLayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/deferred': {
-      id: '/deferred'
-      path: '/deferred'
-      fullPath: '/deferred'
-      preLoaderRoute: typeof DeferredImport
-      parentRoute: typeof rootRoute
-    }
-    '/redirect': {
-      id: '/redirect'
-      path: '/redirect'
-      fullPath: '/redirect'
-      preLoaderRoute: typeof RedirectImport
       parentRoute: typeof rootRoute
     }
     '/$roomId/add_items': {
@@ -118,6 +124,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PathlessLayoutNestedLayoutImport
       parentRoute: typeof PathlessLayoutImport
     }
+    '/room/create': {
+      id: '/room/create'
+      path: '/room/create'
+      fullPath: '/room/create'
+      preLoaderRoute: typeof RoomCreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/room/': {
+      id: '/room/'
+      path: '/room'
+      fullPath: '/room'
+      preLoaderRoute: typeof RoomIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_pathlessLayout/_nested-layout/route-a': {
       id: '/_pathlessLayout/_nested-layout/route-a'
       path: '/route-a'
@@ -131,6 +151,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/route-b'
       preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteBImport
       parentRoute: typeof PathlessLayoutNestedLayoutImport
+    }
+    '/room/$shortId/add_pay_items': {
+      id: '/room/$shortId/add_pay_items'
+      path: '/room/$shortId/add_pay_items'
+      fullPath: '/room/$shortId/add_pay_items'
+      preLoaderRoute: typeof RoomShortIdAddpayitemsImport
+      parentRoute: typeof rootRoute
     }
   }
 }
@@ -170,33 +197,37 @@ const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
-  '/redirect': typeof RedirectRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
+  '/room/create': typeof RoomCreateRoute
+  '/room': typeof RoomIndexRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/room/$shortId/add_pay_items': typeof RoomShortIdAddpayitemsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
-  '/redirect': typeof RedirectRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
+  '/room/create': typeof RoomCreateRoute
+  '/room': typeof RoomIndexRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/room/$shortId/add_pay_items': typeof RoomShortIdAddpayitemsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_deferred': typeof DeferredRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
-  '/redirect': typeof RedirectRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/room/create': typeof RoomCreateRoute
+  '/room/': typeof RoomIndexRoute
   '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/room/$shortId/add_pay_items': typeof RoomShortIdAddpayitemsRoute
 }
 
 export interface FileRouteTypes {
@@ -204,47 +235,55 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/deferred'
-    | '/redirect'
     | '/$roomId/add_items'
+    | '/room/create'
+    | '/room'
     | '/route-a'
     | '/route-b'
+    | '/room/$shortId/add_pay_items'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
-    | '/deferred'
-    | '/redirect'
     | '/$roomId/add_items'
+    | '/room/create'
+    | '/room'
     | '/route-a'
     | '/route-b'
+    | '/room/$shortId/add_pay_items'
   id:
     | '__root__'
     | '/'
+    | '/_deferred'
     | '/_pathlessLayout'
-    | '/deferred'
-    | '/redirect'
     | '/$roomId/add_items'
     | '/_pathlessLayout/_nested-layout'
+    | '/room/create'
+    | '/room/'
     | '/_pathlessLayout/_nested-layout/route-a'
     | '/_pathlessLayout/_nested-layout/route-b'
+    | '/room/$shortId/add_pay_items'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   DeferredRoute: typeof DeferredRoute
-  RedirectRoute: typeof RedirectRoute
+  PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   RoomIdAdditemsRoute: typeof RoomIdAdditemsRoute
+  RoomCreateRoute: typeof RoomCreateRoute
+  RoomIndexRoute: typeof RoomIndexRoute
+  RoomShortIdAddpayitemsRoute: typeof RoomShortIdAddpayitemsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   DeferredRoute: DeferredRoute,
-  RedirectRoute: RedirectRoute,
+  PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   RoomIdAdditemsRoute: RoomIdAdditemsRoute,
+  RoomCreateRoute: RoomCreateRoute,
+  RoomIndexRoute: RoomIndexRoute,
+  RoomShortIdAddpayitemsRoute: RoomShortIdAddpayitemsRoute,
 }
 
 export const routeTree = rootRoute
@@ -258,26 +297,25 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_deferred",
         "/_pathlessLayout",
-        "/deferred",
-        "/redirect",
-        "/$roomId/add_items"
+        "/$roomId/add_items",
+        "/room/create",
+        "/room/",
+        "/room/$shortId/add_pay_items"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_deferred": {
+      "filePath": "_deferred.tsx"
     },
     "/_pathlessLayout": {
       "filePath": "_pathlessLayout.tsx",
       "children": [
         "/_pathlessLayout/_nested-layout"
       ]
-    },
-    "/deferred": {
-      "filePath": "deferred.tsx"
-    },
-    "/redirect": {
-      "filePath": "redirect.tsx"
     },
     "/$roomId/add_items": {
       "filePath": "$roomId.add_items.tsx"
@@ -290,6 +328,12 @@ export const routeTree = rootRoute
         "/_pathlessLayout/_nested-layout/route-b"
       ]
     },
+    "/room/create": {
+      "filePath": "room/create.tsx"
+    },
+    "/room/": {
+      "filePath": "room/index.tsx"
+    },
     "/_pathlessLayout/_nested-layout/route-a": {
       "filePath": "_pathlessLayout/_nested-layout/route-a.tsx",
       "parent": "/_pathlessLayout/_nested-layout"
@@ -297,6 +341,9 @@ export const routeTree = rootRoute
     "/_pathlessLayout/_nested-layout/route-b": {
       "filePath": "_pathlessLayout/_nested-layout/route-b.tsx",
       "parent": "/_pathlessLayout/_nested-layout"
+    },
+    "/room/$shortId/add_pay_items": {
+      "filePath": "room/$shortId.add_pay_items.tsx"
     }
   }
 }

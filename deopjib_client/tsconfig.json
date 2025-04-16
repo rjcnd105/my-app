@@ -19,6 +19,7 @@
     "moduleDetection": "force",
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "exactOptionalPropertyTypes": true,
     "paths": {
       "~/*": ["./src/*"]
     }

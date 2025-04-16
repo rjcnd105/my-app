@@ -30,6 +30,11 @@ defmodule DeopjibWeb.Router do
       default_model_expand_depth: 4
     )
 
+    forward("/scalarui", Scalar.Plug.ScalarUI,
+      url: "/api/json/open_api",
+      title: "deopjib - scalar"
+    )
+
     forward("/", DeopjibWeb.AshJsonApiRouter)
   end
 

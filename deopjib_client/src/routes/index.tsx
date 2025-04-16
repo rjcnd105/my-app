@@ -1,15 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "~/ui/Button/Button";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: Home,
+  beforeLoad: async () => {
+    throw redirect({
+      to: "/room/create",
+    });
+  },
 });
-
-function Home() {
-  return (
-    <div className="p-2">
-      <Button theme="primary">hihi</Button>
-      home
-    </div>
-  );
-}

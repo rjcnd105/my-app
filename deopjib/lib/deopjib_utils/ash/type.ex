@@ -5,34 +5,32 @@ defmodule DeopjibUtils.Ash.Type do
 
     use AshJsonApi.Type
 
-    @base_scehma %{
-      "type" => "string"
+    @base_schema %OpenApiSpex.Schema{
+      type: :string
     }
 
     @impl AshJsonApi.Type
+    def json_schema(constraints) do
+      constraints |> DeopjibUtils.Debug.dbg_store() |> IO.inspect(constraints)
+
+      @base_schema
+      |> Map.put(:maxLength, Keyword.get(constraints, :max_length))
+      |> Map.put(:minLength, Keyword.get(constraints, :min_length))
+      |> Map.put(
+        :regex,
+        case Keyword.get(constraints, :match) do
+          match when is_struct(match, :re) ->
+            Regex.source(match)
+
+          _ ->
+            nil
+        end
+      )
+    end
+
     def json_write_schema(constraints) do
-      @base_scehma
-      |> apply_min_length(Keyword.get(constraints, :min_length))
-      |> apply_max_length(Keyword.get(constraints, :max_length))
-      |> apply_pattern(Keyword.get(constraints, :match))
-    end
-
-    defp apply_min_length(schema, nil), do: schema
-
-    defp apply_min_length(schema, value) when is_integer(value) and value >= 0 do
-      Map.put(schema, "minLength", value)
-    end
-
-    defp apply_max_length(schema, nil), do: schema
-
-    defp apply_max_length(schema, value) when is_integer(value) and value >= 0 do
-      Map.put(schema, "maxLength", value)
-    end
-
-    defp apply_pattern(schema, nil), do: schema
-
-    defp apply_pattern(schema, value) do
-      Map.put(schema, "pattern", Regex.source(value))
+      @base_schema
+      |> Map.put(:format, "fuck")
     end
   end
 end
