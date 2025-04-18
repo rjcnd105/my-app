@@ -21,3 +21,5 @@ _dutchpay_umbrella
 
 
 **/node_modules
+
+**/.elixir_ls

@@ -1,0 +1,20 @@
+.Button {
+  &[data-theme="none"] {
+    background: var(--color-primary);
+  }
+  &[data-theme="primiry"] {
+    /* @apply bg-primary text-white disabled:bg-gray100; */
+  }
+
+  &[data-theme="secondary"] {
+    /* @apply bg-sub; */
+  }
+
+  &[data-theme="gray"] {
+    /* @apply bg-lightgray100; */
+  }
+
+  &[data-selected] {
+    /* @apply bg-primary text-white pointer-events-none; */
+  }
+}

@@ -1,11 +1,13 @@
-[ui-layout~="main"] {
-  @apply px-5;
-}
+@layer base {
+  [ui-layout~="main"] {
+    @apply px-5;
+  }
 
-[ui-layout~="app_center"] {
-  @apply w-[100vw] max-w-130 mx-auto;
-}
+  [ui-layout~="app_center"] {
+    @apply w-[100vw] max-w-130 mx-auto;
+  }
 
-[ui-layout~="app"] {
-  @apply px-5 w-[100vw] max-w-130 mx-auto;
+  [ui-layout~="app"] {
+    @apply px-5 w-[100vw] max-w-130 mx-auto;
+  }
 }
