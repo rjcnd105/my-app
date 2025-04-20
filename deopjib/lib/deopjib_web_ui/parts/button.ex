@@ -5,7 +5,7 @@ defmodule DeopjibWebUI.Parts.Button do
 
   @theme_classes [
     none: "bg-none",
-    primary: "bg-primary text-white disabled:bg-gray100 ",
+    primary: "bg-primary text-white disabled:bg-gray100",
     sub: "bg-sub #{@selected_class}",
     gray: "bg-lightgray100 #{@selected_class}",
     warning: "bg-warning text-white disabled:bg-gray100 ",

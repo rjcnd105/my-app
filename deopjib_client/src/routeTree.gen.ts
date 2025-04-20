@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DevcomponentsImport } from './routes/dev__components'
 import { Route as PathlessLayoutImport } from './routes/_pathlessLayout'
 import { Route as DeferredImport } from './routes/_deferred'
 import { Route as IndexImport } from './routes/index'
@@ -23,6 +24,12 @@ import { Route as PathlessLayoutNestedLayoutRouteBImport } from './routes/_pathl
 import { Route as PathlessLayoutNestedLayoutRouteAImport } from './routes/_pathlessLayout/_nested-layout/route-a'
 
 // Create/Update Routes
+
+const DevcomponentsRoute = DevcomponentsImport.update({
+  id: '/dev__components',
+  path: '/dev__components',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const PathlessLayoutRoute = PathlessLayoutImport.update({
   id: '/_pathlessLayout',
@@ -108,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PathlessLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/dev__components': {
+      id: '/dev__components'
+      path: '/dev__components'
+      fullPath: '/dev__components'
+      preLoaderRoute: typeof DevcomponentsImport
       parentRoute: typeof rootRoute
     }
     '/$roomId/add_items': {
@@ -197,6 +211,7 @@ const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/dev__components': typeof DevcomponentsRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/room/create': typeof RoomCreateRoute
   '/room': typeof RoomIndexRoute
@@ -208,6 +223,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/dev__components': typeof DevcomponentsRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/room/create': typeof RoomCreateRoute
   '/room': typeof RoomIndexRoute
@@ -221,6 +237,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_deferred': typeof DeferredRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
+  '/dev__components': typeof DevcomponentsRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/room/create': typeof RoomCreateRoute
@@ -235,6 +252,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/dev__components'
     | '/$roomId/add_items'
     | '/room/create'
     | '/room'
@@ -245,6 +263,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
+    | '/dev__components'
     | '/$roomId/add_items'
     | '/room/create'
     | '/room'
@@ -256,6 +275,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_deferred'
     | '/_pathlessLayout'
+    | '/dev__components'
     | '/$roomId/add_items'
     | '/_pathlessLayout/_nested-layout'
     | '/room/create'
@@ -270,6 +290,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DeferredRoute: typeof DeferredRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
+  DevcomponentsRoute: typeof DevcomponentsRoute
   RoomIdAdditemsRoute: typeof RoomIdAdditemsRoute
   RoomCreateRoute: typeof RoomCreateRoute
   RoomIndexRoute: typeof RoomIndexRoute
@@ -280,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DeferredRoute: DeferredRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
+  DevcomponentsRoute: DevcomponentsRoute,
   RoomIdAdditemsRoute: RoomIdAdditemsRoute,
   RoomCreateRoute: RoomCreateRoute,
   RoomIndexRoute: RoomIndexRoute,
@@ -299,6 +321,7 @@ export const routeTree = rootRoute
         "/",
         "/_deferred",
         "/_pathlessLayout",
+        "/dev__components",
         "/$roomId/add_items",
         "/room/create",
         "/room/",
@@ -316,6 +339,9 @@ export const routeTree = rootRoute
       "children": [
         "/_pathlessLayout/_nested-layout"
       ]
+    },
+    "/dev__components": {
+      "filePath": "dev__components.tsx"
     },
     "/$roomId/add_items": {
       "filePath": "$roomId.add_items.tsx"

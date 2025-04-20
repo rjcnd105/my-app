@@ -3,7 +3,6 @@ import {
   Link,
   Outlet,
   Scripts,
-  createRootRoute,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
@@ -12,6 +11,7 @@ import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
+import { OverlayProvider } from "overlay-kit";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
@@ -42,6 +42,10 @@ export const Route = createRootRouteWithContext<{
       },
       {
         rel: "icon",
+        href: "icons/icon_sprite.svg?url",
+      },
+      {
+        rel: "icon",
         type: "image/png",
         sizes: "32x32",
         href: "/favicon-32x32.png",
@@ -69,9 +73,11 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <OverlayProvider>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </OverlayProvider>
   );
 }
 
