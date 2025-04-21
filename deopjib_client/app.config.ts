@@ -2,7 +2,7 @@ import { defineConfig } from "@tanstack/react-start/config";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { iconsSpritesheet } from "vite-plugin-icons-spritesheet";
 import tailwindcss from "@tailwindcss/vite";
-import { iconSpriteDir, iconSpriteFilename } from "./src/common/dev";
+import { iconSpriteDir, iconSpriteFilename } from "./src/constants/dev";
 
 export default defineConfig({
   tsr: {
