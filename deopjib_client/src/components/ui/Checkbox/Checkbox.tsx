@@ -4,14 +4,13 @@ import { Icon } from "../Icon/Icon";
 import { Checkbox as BaseCheckbox } from "@base-ui-components/react/checkbox";
 
 export function Checkbox({
-  name,
-  label,
+  labelClassName,
   className,
   children,
   ...rest
 }: Checkbox.Props) {
   return (
-    <label className={cn("size-fit block items-center", label?.className)}>
+    <label className={cn("size-fit block items-center", labelClassName)}>
       <BaseCheckbox.Root
         className={cn(
           "flex size-5 items-center justify-center rounded-full overflow-hidden focus-visible:ring-1 data-[unchecked]:bg-gray100 data-[checked]:bg-primary",
@@ -34,8 +33,6 @@ export function Checkbox({
 
 export namespace Checkbox {
   export interface Props extends PropsWithChildren, BaseCheckbox.Root.Props {
-    label: {
-      className?: string;
-    };
+    labelClassName?: String;
   }
 }

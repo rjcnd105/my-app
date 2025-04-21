@@ -1,13 +1,14 @@
-@layer properties theme, base, components, utilities;
+/* @layer properties theme, base, components, utilities; */
+
+/* @import "tailwindcss" source "../"; */
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@import "./theme.css" layer(theme);
+@import "./layouts.css" layer(base);
 
 @variant dark (&:where(.dark, .dark *));
 
-/* @import "tailwindcss" source "../"; */
-@import "tailwindcss/preflight.css" layer(base) source("../../src");
-@import "tailwindcss/utilities.css" layer(utilities) source("../../src");
-
-@import "./theme.css";
-@import "./layouts.css";
 @layer base {
   html {
     height: 100dvh;

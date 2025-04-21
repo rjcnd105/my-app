@@ -45,7 +45,7 @@ const themes = {
 const style = tva(null, {
   variants: {
     theme: {
-      none: "bg-none",
+      none: " bg-none",
       primary: "bg-primary text-white disabled:bg-gray100",
       sub: `bg-sub`,
       gray: `bg-lightgray100`,

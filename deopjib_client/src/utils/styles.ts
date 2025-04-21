@@ -4,7 +4,9 @@ import { twMerge } from "tailwind-merge";
 
 export const tva = <T>(...params: Parameters<typeof cva<T>>) => {
   const v = cva(...params);
-  const f: typeof v = (props) => twMerge(v(props));
+  type Props = Parameters<typeof v>[0];
+  const f: typeof v = (props: Props, ...rest: ClassValue[]) =>
+    cn(v(props), ...rest);
 
   return f;
 };
