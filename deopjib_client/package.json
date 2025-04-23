@@ -18,11 +18,11 @@
     "@hey-api/client-fetch": "^0.10.0",
     "@tanstack/react-form": "^1.6.3",
     "@tanstack/react-query": "^5.74.4",
-    "@tanstack/react-query-devtools": "^5.74.4",
+    "@tanstack/react-query-devtools": "^5.74.6",
     "@tanstack/react-router": "^1.116.0",
     "@tanstack/react-router-devtools": "^1.116.0",
     "@tanstack/react-router-with-query": "^1.116.0",
-    "@tanstack/react-start": "^1.116.2",
+    "@tanstack/react-start": "^1.116.3",
     "class-variance-authority": "^0.7.1",
     "es-toolkit": "^1.35.0",
     "overlay-kit": "^1.7.0",
@@ -40,8 +40,8 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
-    "@vitest/browser": "^3.1.1",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/browser": "^3.1.2",
+    "@vitest/coverage-v8": "^3.1.2",
     "autoprefixer": "^10.4.21",
     "browserslist": "^4.24.4",
     "tailwindcss": "^4.1.4",
@@ -49,6 +49,6 @@
     "vinxi": "^0.5.4",
     "vite-plugin-icons-spritesheet": "^3.0.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   }
 }
