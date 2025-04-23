@@ -1,0 +1,18 @@
+{
+  "lsp": {
+    "elixir-ls": {
+      "settings": {
+        "projectDir": "./deopjib"
+      }
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "experimental": {
+          "configFile": {
+            "deopjib_client/src/styles/app.css": "deopjib_client/**"
+          }
+        }
+      }
+    }
+  }
+}
