@@ -11,4 +11,4 @@ export const tva = <T>(...params: Parameters<typeof cva<T>>) => {
   return f;
 };
 
-export const cn = (...classes: ClassValue[]) => twMerge(cx(...classes));
+export const cn = cx;

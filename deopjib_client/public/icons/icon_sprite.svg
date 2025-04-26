@@ -49,8 +49,8 @@
 </defs>
 </symbol>
 <symbol viewBox="0 0 24 24" fill="none" id="cross">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M17.7142 17.7143L6.28564 6.28571L17.7142 17.7143Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M17.7142 6.28571L6.28564 17.7143" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.7142 17.7143L6.28564 6.28571L17.7142 17.7143Z" stroke="var(--icon-stroke-color, black)" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M17.7142 6.28571L6.28564 17.7143" stroke="var(--icon-stroke-color, black)" stroke-linecap="round" stroke-linejoin="round"></path>
 </symbol>
 <symbol viewBox="0 0 24 24" fill="none" id="create">
 <path d="M11.4286 5.14288H6.28571C5.02335 5.14288 4 6.16623 4 7.4286V17.7147C4 18.9771 5.02335 20.0004 6.28571 20.0004H17.7143C18.9767 20.0004 20 18.9771 20 17.7147V12.5715" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>

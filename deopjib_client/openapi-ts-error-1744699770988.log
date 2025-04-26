@@ -1,7 +1,0 @@
-Request failed with status 500: Internal Server Error
-Error: Request failed with status 500: Internal Server Error
-    at yo (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/dist/index.cjs:14:94432)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async Promise.all (index 0)
-    at async Tj (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/dist/index.cjs:1311:4503)
-    at async start (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/bin/index.cjs:131:21)

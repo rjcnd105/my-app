@@ -16,6 +16,8 @@ defmodule Deopjib.Settlement do
     end
   end
 
+
+
   resources do
     resource Room do
       # define :create_room, action: :create

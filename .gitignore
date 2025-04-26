@@ -9,7 +9,6 @@ devenv.local.nix
 .pre-commit-config.yaml
 
 .idea
-.zed
 .lexical
 .secret.env
 

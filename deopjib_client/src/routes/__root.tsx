@@ -9,9 +9,9 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
-import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { OverlayProvider } from "overlay-kit";
+import appCss from "~/styles/app.css?url";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
@@ -73,11 +73,9 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <OverlayProvider>
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
-    </OverlayProvider>
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
   );
 }
 
@@ -136,10 +134,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
         <hr />
-        {children}
+        <div>{children}</div>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />
+        <OverlayProvider></OverlayProvider>
       </body>
     </html>
   );

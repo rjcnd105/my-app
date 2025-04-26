@@ -1,24 +1,28 @@
+// app.config.ts
 import { defineConfig } from "@tanstack/react-start/config";
 import tsConfigPaths from "vite-tsconfig-paths";
-import tailwindcss from "@tailwindcss/vite";
 import { iconsSpritesheet } from "vite-plugin-icons-spritesheet";
-import { iconSpriteDir, iconSpriteFilename } from "./src/constants/dev";
 
-export default defineConfig({
+// src/constants/dev.ts
+var iconSpriteDir = "/icons";
+var iconSpriteFilename = "icon_sprite.svg";
+var iconSpriteHref = `${iconSpriteDir}/${iconSpriteFilename}`;
+
+// app.config.ts
+var app_config_default = defineConfig({
   tsr: {
-    appDirectory: "src",
+    appDirectory: "src"
   },
   vite: {
     plugins: [
       tsConfigPaths({
-        projects: ["./tsconfig.json"],
+        projects: ["./tsconfig.json"]
       }),
       iconsSpritesheet({
         // Defaults to false, should it generate TS types for you
         withTypes: true,
         // The path to the icon directory
         inputDir: "./src/icons",
-
         // Output path for the generated spritesheet and types
         outputDir: `./public${iconSpriteDir}`,
         // Output path for the generated type file, defaults to types.ts in outputDir
@@ -31,9 +35,12 @@ export default defineConfig({
         formatter: "biome",
         // Callback function that is called when the script is generating the icon name
         // This is useful if you want to modify the icon name before it is written to the file
-        iconNameTransformer: (iconName) => iconName,
+        iconNameTransformer: (iconName) => iconName
       }),
-      tailwindcss(),
-    ],
-  },
+      tailwindcss()
+    ]
+  }
 });
+export {
+  app_config_default as default
+};

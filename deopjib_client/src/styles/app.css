@@ -1,13 +1,16 @@
 /* @layer properties theme, base, components, utilities; */
 
-/* @import "tailwindcss" source "../"; */
+/* @import "tailwindcss"; */
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @import "./theme.css" layer(theme);
 @import "./layouts.css" layer(base);
 
-@variant dark (&:where(.dark, .dark *));
+@source not "./*.css";
+
+@variant dark
+  (&: where(.dark, .dark *));
 
 @layer base {
   html {
@@ -37,4 +40,8 @@
   [hidden] {
     display: none;
   }
+}
+
+@utility position-center {
+  @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
 }
