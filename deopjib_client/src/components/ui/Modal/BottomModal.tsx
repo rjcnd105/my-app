@@ -10,6 +10,7 @@ export function BottomModal({
   ...rest
 }: BottomModal.Props) {
   return (
+
     <Modal {...rest}>
       <Modal.Popup
         className={cn(

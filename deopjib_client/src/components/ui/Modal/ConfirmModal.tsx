@@ -9,7 +9,7 @@ export function ConfirmModal({
   ...rest
 }: ConfirmModal.Props) {
   return (
-    <Modal {...rest}>
+    <Modal.Root {...rest}>
       <Modal.Popup
         className={cn(
           Modal.commonPopupClass,
@@ -25,7 +25,7 @@ export function ConfirmModal({
         )}
         {children}
       </Modal.Popup>
-    </Modal>
+    </Modal.Root>
   );
 }
 

@@ -16,44 +16,64 @@ import {
   useDragControls,
 } from "motion/react";
 import { Handlebar } from "../Handlebar/Handlebar";
-import { Modal as MantainModal } from "@mantine/core";
+import { Modal as MantineModal } from "@mantine/core";
 import type { ModalProps, ModalRootProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Button } from "../Button/Button";
+import type { Button } from "../Button/Button";
 import type { ContextModalProps } from "@mantine/modals";
 
-export function ModalRoot({
+function ModalRoot({
   id,
   children,
   hasBackdrop = true,
   hasCloseButton = true,
+  ContentWrapper = MantineModal.Content,
+  contentClassName = "pt-4 pb-5 px-5",
+  title,
   context,
 }: Modal.Props) {
 
   return (
-    <MantainModal.Root opened={true} onClose={() => context.closeContextModal(id)}>
-      {children}
+    <MantineModal.Root opened={true} onClose={() => context.closeContextModal(id)}>
+      {hasBackdrop && <MantineModal.Overlay />}
+      <ContentWrapper>
+        {hasCloseButton && title && <MantineModal.Header className={cn("flex relative h-[28px] mb-2", title ? "justify-end" : "justify-between")}>
+          {title && <MantineModal.Title>{title}</MantineModal.Title>}
+          {hasCloseButton && <MantineModal.CloseButton className="size-[28px] flex justify-center items-center" onClick={() => context.closeContextModal(id)}>
+            <Modal.CrossCloseIcon />
+          </MantineModal.CloseButton>}
+        </MantineModal.Header>}
 
-      {hasCloseButton && <MantainModal.CloseButton className="size-6 flex justify-center items-center" onClick={() => context.closeContextModal(id)}>
-        <Modal.CrossCloseIcon />
-      </MantainModal.CloseButton>}
+        <MantineModal.Body>
+          {children}
+        </MantineModal.Body>
 
-    </MantainModal.Root>
+      </ContentWrapper>
+
+
+
+    </MantineModal.Root >
   );
 }
 
 export namespace Modal {
+  export const Root = ModalRoot;
   export interface Props extends ContextModalProps {
     hasCloseButton?: boolean;
+    closePosition: "left" | "right";
     hasBackdrop?: boolean;
     children?: React.ReactNode;
+    ContentWrapper?: typeof MantineModal.Content
+    contentClassName?: string
+    bodyClassName?: string
+    title?: string
   }
 
   export const focusAttrs = {
     "data-autofocus": true,
   }
 
-  const MotionPopup = motion.create(MantainModal.Content);
+  const MotionPopup = motion.create(MantineModal.Content);
   export function BottomSheetPopup({
     children,
     className,
@@ -128,6 +148,7 @@ export namespace Modal {
   }
 
   export function CrossCloseIcon({ className, ...props }: Button.Props) {
+
     return (
       <Icon
         name="cross"
