@@ -13,7 +13,7 @@ const preLogMiddleware = createMiddleware()
       },
     })
   })
-  .server(async (ctx) => {
+  .server(async (ctx) => { 
     const serverTime = new Date()
 
     return ctx.next({

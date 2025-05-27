@@ -1,4 +1,3 @@
-import { Dialog } from "@base-ui-components/react/dialog";
 import { Modal } from "./Modal";
 import { cn } from "~/utils/styles";
 

@@ -25,6 +25,7 @@ export const Route = createFileRoute("/dev__components")({
 });
 
 function RouteComponent() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="[&_h3]:text-title [&_h3]:mt-2 [&_h3]:mb-1 px-4">
       <h3>Buttons</h3>
@@ -49,7 +50,7 @@ function RouteComponent() {
         ))}
       </Wrapper>
       <h3>Checkbox</h3>
-      <Checkbox></Checkbox>
+      <Checkbox />
 
       <h3>Chip</h3>
       <Wrapper className="bg-lightgray200 p-2">
@@ -61,7 +62,8 @@ function RouteComponent() {
 
       <h3>modal</h3>
       <Wrapper>
-        <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
+
+        {/* <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
           <Modal.Popup className="fixed outline-transparent shadow-1 focus-visible:outline-blue300 outline-1 w-full top-0 bg-white">
             hihi
           </Modal.Popup>
@@ -78,11 +80,19 @@ function RouteComponent() {
         >
           <div className="w-full h-[300px]">hihi</div>
         </BottomModal>
-        <Modal TriggerSlot={<Modal.Trigger>bottom sheet</Modal.Trigger>}>
+        <Modal
+          TriggerSlot={<Modal.Trigger>bottom sheet</Modal.Trigger>}
+          onOpenChange={(open, event, reason) => {
+            console.log("!!open", open);
+            console.log("!!event", event);
+            console.log("!!reason", reason);
+            // setIsOpen(open);
+          }}
+        >
           <Modal.BottomSheetPopup className="w-full">
             <div className="h-80 pt-8 w-full">bottom sheet</div>
           </Modal.BottomSheetPopup>
-        </Modal>
+        </Modal> */}
       </Wrapper>
 
       <h3>input</h3>
@@ -94,10 +104,10 @@ function Wrapper({
   children,
   className,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn(`flex flex-wrap gap-4 p-2`, className)}>{children}</div>
+    <div className={cn("flex flex-wrap gap-4 p-2", className)}>{children}</div>
   );
 }

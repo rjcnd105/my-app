@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TestImport } from './routes/test'
 import { Route as DevcomponentsImport } from './routes/dev__components'
 import { Route as PathlessLayoutImport } from './routes/_pathlessLayout'
 import { Route as DeferredImport } from './routes/_deferred'
@@ -24,6 +25,12 @@ import { Route as PathlessLayoutNestedLayoutRouteBImport } from './routes/_pathl
 import { Route as PathlessLayoutNestedLayoutRouteAImport } from './routes/_pathlessLayout/_nested-layout/route-a'
 
 // Create/Update Routes
+
+const TestRoute = TestImport.update({
+  id: '/test',
+  path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const DevcomponentsRoute = DevcomponentsImport.update({
   id: '/dev__components',
@@ -124,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevcomponentsImport
       parentRoute: typeof rootRoute
     }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
+      parentRoute: typeof rootRoute
+    }
     '/$roomId/add_items': {
       id: '/$roomId/add_items'
       path: '/$roomId/add_items'
@@ -212,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/dev__components': typeof DevcomponentsRoute
+  '/test': typeof TestRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/room/create': typeof RoomCreateRoute
   '/room': typeof RoomIndexRoute
@@ -224,6 +239,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/dev__components': typeof DevcomponentsRoute
+  '/test': typeof TestRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/room/create': typeof RoomCreateRoute
   '/room': typeof RoomIndexRoute
@@ -238,6 +254,7 @@ export interface FileRoutesById {
   '/_deferred': typeof DeferredRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/dev__components': typeof DevcomponentsRoute
+  '/test': typeof TestRoute
   '/$roomId/add_items': typeof RoomIdAdditemsRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/room/create': typeof RoomCreateRoute
@@ -253,6 +270,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/dev__components'
+    | '/test'
     | '/$roomId/add_items'
     | '/room/create'
     | '/room'
@@ -264,6 +282,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/dev__components'
+    | '/test'
     | '/$roomId/add_items'
     | '/room/create'
     | '/room'
@@ -276,6 +295,7 @@ export interface FileRouteTypes {
     | '/_deferred'
     | '/_pathlessLayout'
     | '/dev__components'
+    | '/test'
     | '/$roomId/add_items'
     | '/_pathlessLayout/_nested-layout'
     | '/room/create'
@@ -291,6 +311,7 @@ export interface RootRouteChildren {
   DeferredRoute: typeof DeferredRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   DevcomponentsRoute: typeof DevcomponentsRoute
+  TestRoute: typeof TestRoute
   RoomIdAdditemsRoute: typeof RoomIdAdditemsRoute
   RoomCreateRoute: typeof RoomCreateRoute
   RoomIndexRoute: typeof RoomIndexRoute
@@ -302,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   DeferredRoute: DeferredRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   DevcomponentsRoute: DevcomponentsRoute,
+  TestRoute: TestRoute,
   RoomIdAdditemsRoute: RoomIdAdditemsRoute,
   RoomCreateRoute: RoomCreateRoute,
   RoomIndexRoute: RoomIndexRoute,
@@ -322,6 +344,7 @@ export const routeTree = rootRoute
         "/_deferred",
         "/_pathlessLayout",
         "/dev__components",
+        "/test",
         "/$roomId/add_items",
         "/room/create",
         "/room/",
@@ -342,6 +365,9 @@ export const routeTree = rootRoute
     },
     "/dev__components": {
       "filePath": "dev__components.tsx"
+    },
+    "/test": {
+      "filePath": "test.tsx"
     },
     "/$roomId/add_items": {
       "filePath": "$roomId.add_items.tsx"

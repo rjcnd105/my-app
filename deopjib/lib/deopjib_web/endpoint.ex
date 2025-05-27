@@ -12,6 +12,7 @@ defmodule DeopjibWeb.Endpoint do
     same_site: "Lax"
   ]
 
+
   socket("/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
@@ -28,6 +29,9 @@ defmodule DeopjibWeb.Endpoint do
     only: DeopjibWeb.static_paths()
   )
 
+  if Code.ensure_loaded?(Tidewave) do
+    plug Tidewave
+  end
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

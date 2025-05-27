@@ -6,7 +6,6 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import * as React from "react";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import { seo } from "~/utils/seo";
@@ -15,6 +14,8 @@ import appCss from "~/styles/app.css?url";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import { HeadlessMantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -30,7 +31,7 @@ export const Route = createRootRouteWithContext<{
       },
       ...seo({
         title: "덮집회의",
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        description: "TanStack Start is a type-safe, client-first, full-stack React framework.",
       }),
     ],
     links: [
@@ -81,7 +82,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="ko">
       <head>
         <HeadContent />
       </head>
@@ -134,11 +135,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
         <hr />
-        <div>{children}</div>
+        <HeadlessMantineProvider>
+          <ModalsProvider>
+            <div id="app-container">
+              {children}
+            </div>
+          </ModalsProvider>
+        </HeadlessMantineProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />
-        <OverlayProvider></OverlayProvider>
+
       </body>
     </html>
   );

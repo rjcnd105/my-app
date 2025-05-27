@@ -1,9 +1,6 @@
-import { Dialog } from "@base-ui-components/react/dialog";
-import type { OverlayControllerComponent } from "overlay-kit";
 import {
   useEffect,
   useRef,
-  useState,
   type ComponentProps,
   type PropsWithChildren,
 } from "react";
@@ -19,43 +16,44 @@ import {
   useDragControls,
 } from "motion/react";
 import { Handlebar } from "../Handlebar/Handlebar";
+import { Modal as MantainModal } from "@mantine/core";
+import type { ModalProps, ModalRootProps } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Button } from "../Button/Button";
+import type { ContextModalProps } from "@mantine/modals";
 
-export function Modal({
+export function ModalRoot({
+  id,
   children,
-  rootProps: _rootProps,
   hasBackdrop = true,
-  TriggerSlot,
-  keepMounted = false,
+  hasCloseButton = true,
+  context,
 }: Modal.Props) {
-  const { onOpenChange, ...rootProps } = _rootProps || {};
 
   return (
-    <Dialog.Root {...rootProps}>
-      {TriggerSlot}
-      <Dialog.Portal keepMounted={keepMounted}>
-        {hasBackdrop && (
-          <Dialog.Backdrop className="fixed inset-0 opacity-100 max-h-screen max-w-screen bg-dimm ease-in-out backdrop-blur-dimm transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"></Dialog.Backdrop>
-        )}
-        {children}
-      </Dialog.Portal>
-    </Dialog.Root>
+    <MantainModal.Root opened={true} onClose={() => context.closeContextModal(id)}>
+      {children}
+
+      {hasCloseButton && <MantainModal.CloseButton className="size-6 flex justify-center items-center" onClick={() => context.closeContextModal(id)}>
+        <Modal.CrossCloseIcon />
+      </MantainModal.CloseButton>}
+
+    </MantainModal.Root>
   );
 }
 
 export namespace Modal {
-  export interface Props extends PropsWithChildren {
-    rootProps?: Omit<Dialog.Root.Props, "children">;
-    TriggerSlot?: React.ReactNode;
+  export interface Props extends ContextModalProps {
+    hasCloseButton?: boolean;
     hasBackdrop?: boolean;
-    keepMounted?: Dialog.Portal.Props["keepMounted"];
+    children?: React.ReactNode;
   }
-  export const Trigger = Dialog.Trigger;
-  export const Popup = Dialog.Popup;
-  export const Close = Dialog.Close;
-  export const Title = Dialog.Title;
-  export const Description = Dialog.Description;
 
-  const MotionPopup = motion.create(Modal.Popup);
+  export const focusAttrs = {
+    "data-autofocus": true,
+  }
+
+  const MotionPopup = motion.create(MantainModal.Content);
   export function BottomSheetPopup({
     children,
     className,
@@ -67,7 +65,7 @@ export namespace Modal {
 
     useEffect(() => {
       if (scope.current) {
-        scope.current.style.transitionDuration = `${scope.current.getBoundingClientRect().height / 1.4}ms`;
+        scope.current.style.transitionDuration = `${50 + scope.current.getBoundingClientRect().height / 1.5}ms`;
       }
     }, [scope]);
 
@@ -120,7 +118,6 @@ export namespace Modal {
           }
         }}
       >
-        <Dialog.Close className="hidden" ref={closeRef} />
         <Handlebar
           controller={controller}
           className="absolute top-0 left-0 right-0"
@@ -130,22 +127,17 @@ export namespace Modal {
     );
   }
 
-  export function CrossClose({ className, ...props }: Dialog.Close.Props) {
+  export function CrossCloseIcon({ className, ...props }: Button.Props) {
     return (
-      <Modal.Close
-        className="size-6 flex justify-center items-center"
-        {...props}
-      >
-        <Icon
-          name="cross"
-          style={
-            {
-              "--icon-stroke-color": "var(--color-darkgray200)",
-            } as React.CSSProperties
-          }
-          className="size-full stroke-darkgray200"
-        ></Icon>
-      </Modal.Close>
+      <Icon
+        name="cross"
+        style={
+          {
+            "--icon-stroke-color": "var(--color-darkgray200)",
+          } as React.CSSProperties
+        }
+        className="size-full stroke-darkgray200"
+      />
     );
   }
 
@@ -164,3 +156,4 @@ export namespace Modal {
   });
   export type Style = VariantProps<typeof style>;
 }
+

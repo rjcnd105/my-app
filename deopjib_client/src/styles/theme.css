@@ -94,7 +94,7 @@
   --animate-wiggle: 0.2s var(--ease-spring-2) both wiggle;
   --animate-wiggle-reverse: 0.15s var(--ease-spring-2) both wiggle-reverse;
 
-  --shadow-1: 0px -4px 12px 0px rgba(0, 0, 0, 0.05);
+  --shadow-1: 0px -4px 8px 0px rgba(0, 0, 0, 0.05);
 
   @keyframes fade-in {
     0% {

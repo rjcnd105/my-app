@@ -34,6 +34,8 @@ defmodule Deopjib.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ash_events, "~> 0.2.0"},
+      {:tidewave, "~> 0.1", only: :dev},
       {:open_api_spex, "~> 3.0"},
       {:ash_json_api, "~> 1.0"},
       {:absinthe_phoenix, "~> 2.0"},
