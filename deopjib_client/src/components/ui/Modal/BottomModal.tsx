@@ -7,6 +7,7 @@ export function BottomModal({
   children,
   className,
   onClose,
+  isClickClose = true,
   ...rest
 }: BottomModal.Props) {
   return (
@@ -19,7 +20,7 @@ export function BottomModal({
       onClose={onClose}
       {...rest}
     >
-      <Modal.Overlay />
+      <Modal.Overlay className={cn(isClickClose ? "" : "pointer-events-none")} />
 
       <AnimatePresence>
         {rest.opened && <Modal.BottomSheetContent
@@ -39,7 +40,7 @@ export function BottomModal({
 }
 
 export namespace BottomModal {
-  export interface Props extends Modal.RootProps {
+  export interface Props extends Modal.RootProps, Modal.CommonOverlayProps {
     className?: string;
     hasCloseButton?: boolean;
   }

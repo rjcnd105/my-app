@@ -1,10 +1,16 @@
-import { Input as BUI_Input } from "@base-ui-components/react/input";
 import { cn } from "~/utils/styles";
+import { Input as BaseInput } from "@mantine/core";
+import type { InputProps, InputWrapperProps } from "@mantine/core";
 
-function Input({ className, ...props }: InputTextBox.Props) {
-  return <BUI_Input className={cn("", className)} {...props} />;
+function _Input({ className, ...props }: Input.Props) {
+  return <BaseInput className={cn("", className)} {...props} />;
 }
 
-export namespace InputTextBox {
-  export interface Props extends BUI_Input.Props {}
+function _Wrapper({ children, ...props }: Input.WrapperProps) {
+  return <BaseInput.Wrapper {...props}>{children}</BaseInput.Wrapper>;
+}
+
+export namespace Input {
+  export interface Props extends InputProps { }
+  export interface WrapperProps extends InputWrapperProps { }
 }

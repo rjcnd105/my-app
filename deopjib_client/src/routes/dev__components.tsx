@@ -1,4 +1,4 @@
-import { useModalsStack } from "@mantine/core";
+import { ModalStack, useModalsStack } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   motion,
@@ -65,14 +65,35 @@ function RouteComponent() {
       <h3>modal</h3>
       <Wrapper>
 
-        <Button onClick={() => stack.open('confirmModal')}>onModalOpen</Button>
+
+        <Button onClick={() => stack.open('confirmModal')}>confirmModal</Button>
+        <Button onClick={() => stack.open('bottomSheetModal')}>bottomSheetModal</Button>
+        <Button onClick={() => stack.open('customModal')}>customModal</Button>
+
         <ConfirmModal {...stack.register('confirmModal')} title="title" >
 
         </ConfirmModal>
-        <Button onClick={() => stack.open('bottomSheetModal')}>onModalOpen</Button>
-        <BottomModal {...stack.register('bottomSheetModal')} hasCloseButton={true}>
-          <div className="w-full h-[300px]">hihi</div>
+        <BottomModal {...stack.register('bottomSheetModal')} isClickClose={false} hasCloseButton={true}>
+          <div className="w-full h-[300px]">
+
+            <Button onClick={() => stack.open('confirmModal')}>confirmModal</Button>
+            <br />
+            <Button onClick={() => stack.open('customModal')}>customModal</Button>
+          </div>
+
         </BottomModal>
+        <Modal.Root {...stack.register('customModal')} lockScroll={false}>
+          {/* <Modal.Overlay /> */}
+          <Modal.Content contentClassName="fixed top-0 left-1/2 -translate-x-1/2 max-w-[480px] w-full bg-white -translate-y-full data-showing:translate-y-0">
+            <div className="flex justify-between p-2">
+              hihi
+
+              <Modal.CloseButton />
+
+            </div>
+          </Modal.Content>
+        </Modal.Root>
+
         {/* <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
           <Modal.Popup className="fixed outline-transparent shadow-1 focus-visible:outline-blue300 outline-1 w-full top-0 bg-white">
             hihi
@@ -106,7 +127,7 @@ function RouteComponent() {
       </Wrapper>
 
       <h3>input</h3>
-    </div>
+    </div >
   );
 }
 

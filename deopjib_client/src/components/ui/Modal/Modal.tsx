@@ -21,15 +21,19 @@ import {
   type MotionProps,
 } from "motion/react";
 import { Handlebar } from "../Handlebar/Handlebar";
-import { Modal as MantineModal, ModalBaseCloseButton, ModalBody, ModalContent, ModalHeader, ModalOverlay } from "@mantine/core";
-import type { ModalProps, ModalRootProps, ModalContentProps, ModalOverlayProps, OverlayProps } from "@mantine/core";
+import { Modal as MantineModal, ModalBaseCloseButton, ModalBody, ModalContent, ModalHeader, ModalOverlay, useModalStackContext } from "@mantine/core";
+import type { ModalProps, ModalRootProps, ModalContentProps, ModalOverlayProps, OverlayProps, ModalCloseButtonProps, CloseButton, ModalStackProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { Button } from "../Button/Button";
 import type { ContextModalProps as _ContextModalProps } from "@mantine/modals";
 import { ModalRoot } from "@mantine/core";
 
 
+const commonPopupClass =
+  "fixed outline-transparent focus-visible:outline-blue300 bg-white shadow-1";
 
+
+const commonZIndex = "calc(var(--mb-z-index) + var(--add-modal-stack))";
 
 function CrossCloseIcon({ className, ...props }: Button.Props) {
   return (
@@ -45,51 +49,93 @@ function CrossCloseIcon({ className, ...props }: Button.Props) {
   );
 }
 
+function _CloseButton({ className, ...props }: Modal.CloseButtonProps) {
+  return <ModalBaseCloseButton icon={<CrossCloseIcon />} className={cn("size-[28px] flex justify-center items-center", className)}  {...props} />
+}
 
 function _Content({
   children,
   hasBackdrop = true,
   hasCloseButton = true,
-  ContentWrapper = ModalContent,
   contentClassName,
   closePosition = "right",
   Title,
+  style,
+  ...props
 }: Modal.ContentProps) {
-  return <>
-
-    <ContentWrapper classNames={{
-      content: contentClassName
+  return <ModalContent classNames={{
+    content: contentClassName
+  }}
+    style={{
+      zIndex: commonZIndex,
+      ...style
     }}
-    >
-      {hasCloseButton && Title && <ModalHeader className={cn("flex relative h-[28px] mb-2", Title ? "justify-end" : "justify-between")}>
-        {closePosition === "left" && hasCloseButton && <ModalBaseCloseButton icon={<CrossCloseIcon />} className="size-[28px] flex justify-center items-center" />}
-        {Title}
-        {closePosition === "right" && hasCloseButton && <ModalBaseCloseButton icon={<CrossCloseIcon />} className="size-[28px] flex justify-center items-center" />}
-      </ModalHeader>}
+    {...props}
+  >
+    {hasCloseButton && Title && <ModalHeader className={cn("flex relative h-[28px] mb-2", Title ? "justify-end" : "justify-between")}>
+      {closePosition === "left" && hasCloseButton && <ModalBaseCloseButton icon={<CrossCloseIcon />} className="size-[28px] flex justify-center items-center" />}
+      {Title}
+      {closePosition === "right" && hasCloseButton && <ModalBaseCloseButton icon={<CrossCloseIcon />} className="size-[28px] flex justify-center items-center" />}
+    </ModalHeader>}
 
-      <ModalBody>
-        {children}
-      </ModalBody>
+    <ModalBody>
+      {children}
+    </ModalBody>
 
-    </ContentWrapper>
-  </>
+  </ModalContent>
 }
 
-function _Overlay({ className, ...props }: Modal.OverlayProps) {
+function _Overlay({ className, style, transitionProps, ...props }: Modal.OverlayProps) {
+
   return <ModalOverlay className={cn("fixed inset-0 bg-dimm backdrop-blur-dimm !ease-cubic-out", className)}
-    {...props}
+
+    style={{
+      zIndex: commonZIndex,
+      ...style,
+    }}
     transitionProps={{
       duration: 150,
-      ...props.transitionProps,
-    }} />
+      ...transitionProps,
+    }}
+
+    onClick={(e) => {
+      if (!props.isClickClose) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+      props.onClick?.(e);
+    }}
+    {...props}
+  />
 }
 
 
-function _Root({ children, transitionProps, ...props }: Modal.RootProps) {
+function _Root({ children, transitionProps, opened, lockScroll = true, ...props }: Modal.RootProps) {
   const ref = useRef<HTMLDivElement>(null);
 
+
+  useEffect(() => {
+    if (!lockScroll) return;
+    if (!(ref.current instanceof HTMLElement)) return
+    if (!opened) {
+      delete ref.current.dataset.overlayHidden
+      return
+    }
+    const scrollLocked = document.body.dataset.scrollLocked ?? "0"
+
+    const lockNum = Number(scrollLocked)
+
+    ref.current.style.setProperty("--add-modal-stack", String(lockNum))
+
+    return () => {
+      ref.current?.style.removeProperty("--add-modal-stack")
+    }
+
+  }, [opened, lockScroll])
+
   return (
-    <ModalRoot ref={ref} transitionProps={{
+    <ModalRoot ref={ref} opened={opened} lockScroll={lockScroll} transitionProps={{
+      duration: 300,
       transition: {
         in: {},
         out: {},
@@ -133,7 +179,15 @@ function _Root({ children, transitionProps, ...props }: Modal.RootProps) {
         }
       }
     }}
-      style={{}}
+      classNames={{
+        root: "mantine-Modal-root data-overlay-hidden:[&_.mantine-Modal-overlay]:!hidden",
+        overlay: "mantine-Modal-overlay",
+        inner: "mantine-Modal-inner",
+      }}
+      style={{
+        "--add-modal-stack": 0,
+        ...props.style,
+      }}
       {...props}
     >
       {children}
@@ -153,6 +207,8 @@ function _BottomSheetContent({
 
   const controller = useDragControls();
 
+
+
   return (
     <motion.div
       drag="y"
@@ -163,9 +219,9 @@ function _BottomSheetContent({
         paddingBottom: "80px",
         marginBottom: "-80px",
         backfaceVisibility: "hidden",
+        zIndex: commonZIndex,
         ...style
       }}
-
       initial={{
         y: "100%"
       }}
@@ -234,32 +290,38 @@ function _BottomSheetContent({
   );
 }
 
+export const Modal = {
+  Root: _Root,
+  Content: _Content,
+  Overlay: _Overlay,
+  CloseButton: _CloseButton,
+  BottomSheetContent: _BottomSheetContent,
+  focusAttrs: {
+    "data-autofocus": true,
+  },
+  commonPopupClass
+}
+
 
 export namespace Modal {
   export interface RootProps extends ModalRootProps { }
-  export interface ContentProps {
+  export interface CloseButtonProps extends ModalCloseButtonProps { }
+  export interface ContentProps extends ModalContentProps {
     hasCloseButton?: boolean;
     closePosition?: "left" | "right";
     hasBackdrop?: boolean;
     children?: React.ReactNode;
-    ContentWrapper?: ComponentType<ModalContentProps>
     contentClassName?: string
     bodyClassName?: string
     Title?: ReactNode
   }
-  export interface OverlayProps extends ModalOverlayProps { }
+  export interface CommonOverlayProps {
+    isClickClose?: boolean;
+  }
+  export interface OverlayProps extends ModalOverlayProps, CommonOverlayProps { }
 
 
   export type ContentWrapperProps = ModalContentProps;
-
-  export const Root = _Root
-  export const Content = _Content
-  export const Overlay = _Overlay
-  export const BottomSheetContent = _BottomSheetContent;
-
-  export const focusAttrs = {
-    "data-autofocus": true,
-  }
 
   export interface BottomSheetContentProps extends Omit<MotionProps, "children"> {
     children?: ReactNode;
@@ -271,8 +333,6 @@ export namespace Modal {
 
 
 
-  export const commonPopupClass =
-    "fixed outline-transparent focus-visible:outline-blue300 bg-white shadow-1";
 
 }
 

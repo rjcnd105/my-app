@@ -17,7 +17,7 @@ export function Handlebar({ className, controller }: Handlebar.Props) {
         e.stopPropagation();
       }}
       className={cn(
-        "touch-none select-none flex cursor-grab justify-center w-full pt-2.5 pb-5 px-4",
+        "touch-none select-none flex cursor-grab justify-center w-full pt-2.5 pb-4 px-4",
         className,
       )}
     >
