@@ -772,10 +772,6 @@ export type GetApiJsonRoomsByIdByIdData = {
             room?: string;
             [key: string]: unknown | string | undefined;
         };
-        /**
-         * id
-         */
-        id?: string;
     };
     url: '/api/json/rooms/by_id/{id}';
 };
@@ -824,10 +820,6 @@ export type GetApiJsonRoomsByShortIdByShortIdData = {
             room?: string;
             [key: string]: unknown | string | undefined;
         };
-        /**
-         * short_id
-         */
-        short_id?: string;
     };
     url: '/api/json/rooms/by_short_id/{short_id}';
 };

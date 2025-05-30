@@ -13,16 +13,15 @@ export function Handlebar({ className, controller }: Handlebar.Props) {
   return (
     <motion.div
       onPointerDown={(e) => {
-        console.log(e);
         controller.start(e);
         e.stopPropagation();
       }}
       className={cn(
-        "touch-none select-none flex cursor-grab justify-center w-full pt-2 pb-3 px-4",
+        "touch-none select-none flex cursor-grab justify-center w-full pt-2.5 pb-5 px-4",
         className,
       )}
     >
-      <div className="size-full max-w-6 h-0.5 rounded-[2px] overflow-hidden  bg-gray300"></div>
+      <div className="size-full max-w-6 h-0.5 rounded-[2px] overflow-hidden bg-gray300" />
     </motion.div>
   );
 }

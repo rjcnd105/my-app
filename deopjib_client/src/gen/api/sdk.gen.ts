@@ -25,8 +25,8 @@ export const getApiJsonPayItem = <ThrowOnError extends boolean = false>(options?
     return (options?.client ?? _heyApiClient).get<GetApiJsonPayItemResponse, GetApiJsonPayItemError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/pay_item',
@@ -41,8 +41,8 @@ export const postApiJsonPayItem = <ThrowOnError extends boolean = false>(options
     return (options?.client ?? _heyApiClient).post<PostApiJsonPayItemResponse, PostApiJsonPayItemError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/pay_item',
@@ -61,8 +61,8 @@ export const postApiJsonPayItemUpsertFromWords = <ThrowOnError extends boolean =
     return (options?.client ?? _heyApiClient).post<PostApiJsonPayItemUpsertFromWordsResponse, PostApiJsonPayItemUpsertFromWordsError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/pay_item/upsert_from_words',
@@ -81,8 +81,8 @@ export const getApiJsonPayers = <ThrowOnError extends boolean = false>(options?:
     return (options?.client ?? _heyApiClient).get<GetApiJsonPayersResponse, GetApiJsonPayersError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/payers',
@@ -97,8 +97,8 @@ export const getApiJsonRooms = <ThrowOnError extends boolean = false>(options?: 
     return (options?.client ?? _heyApiClient).get<GetApiJsonRoomsResponse, GetApiJsonRoomsError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms',
@@ -113,8 +113,8 @@ export const getApiJsonRoomsByIdById = <ThrowOnError extends boolean = false>(op
     return (options.client ?? _heyApiClient).get<GetApiJsonRoomsByIdByIdResponse, GetApiJsonRoomsByIdByIdError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms/by_id/{id}',
@@ -129,8 +129,8 @@ export const getApiJsonRoomsByShortIdByShortId = <ThrowOnError extends boolean =
     return (options.client ?? _heyApiClient).get<GetApiJsonRoomsByShortIdByShortIdResponse, GetApiJsonRoomsByShortIdByShortIdError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms/by_short_id/{short_id}',
@@ -145,8 +145,8 @@ export const patchApiJsonRoomsName = <ThrowOnError extends boolean = false>(opti
     return (options?.client ?? _heyApiClient).patch<PatchApiJsonRoomsNameResponse, PatchApiJsonRoomsNameError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms/name',
@@ -165,8 +165,8 @@ export const postApiJsonRoomsUpsertWithPayers = <ThrowOnError extends boolean = 
     return (options?.client ?? _heyApiClient).post<PostApiJsonRoomsUpsertWithPayersResponse, PostApiJsonRoomsUpsertWithPayersError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms/upsert_with_payers',
@@ -185,8 +185,8 @@ export const getApiJsonRoomsByIdPayers = <ThrowOnError extends boolean = false>(
     return (options.client ?? _heyApiClient).get<GetApiJsonRoomsByIdPayersResponse, GetApiJsonRoomsByIdPayersError, ThrowOnError>({
         security: [
             {
-                name: 'api_key',
-                type: 'apiKey'
+                scheme: 'bearer',
+                type: 'http'
             }
         ],
         url: '/api/json/rooms/{id}/payers',

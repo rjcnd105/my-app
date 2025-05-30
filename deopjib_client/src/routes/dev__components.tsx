@@ -1,4 +1,4 @@
-import { Dialog } from "@base-ui-components/react/dialog";
+import { useModalsStack } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   motion,
@@ -25,7 +25,9 @@ export const Route = createFileRoute("/dev__components")({
 });
 
 function RouteComponent() {
-  const [isOpen, setIsOpen] = useState(false);
+
+  const stack = useModalsStack(['confirmModal', 'customModal', 'bottomSheetModal']);
+  const [bottomModalOpen, setBottomModalOpen] = useState(false);
   return (
     <div className="[&_h3]:text-title [&_h3]:mt-2 [&_h3]:mb-1 px-4">
       <h3>Buttons</h3>
@@ -63,6 +65,14 @@ function RouteComponent() {
       <h3>modal</h3>
       <Wrapper>
 
+        <Button onClick={() => stack.open('confirmModal')}>onModalOpen</Button>
+        <ConfirmModal {...stack.register('confirmModal')} title="title" >
+
+        </ConfirmModal>
+        <Button onClick={() => stack.open('bottomSheetModal')}>onModalOpen</Button>
+        <BottomModal {...stack.register('bottomSheetModal')} hasCloseButton={true}>
+          <div className="w-full h-[300px]">hihi</div>
+        </BottomModal>
         {/* <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
           <Modal.Popup className="fixed outline-transparent shadow-1 focus-visible:outline-blue300 outline-1 w-full top-0 bg-white">
             hihi

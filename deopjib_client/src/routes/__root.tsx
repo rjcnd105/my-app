@@ -14,7 +14,7 @@ import appCss from "~/styles/app.css?url";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { HeadlessMantineProvider } from "@mantine/core";
+import { ColorSchemeScript, createTheme, HeadlessMantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 
 export const Route = createRootRouteWithContext<{
@@ -85,6 +85,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="ko">
       <head>
         <HeadContent />
+
       </head>
       <body>
         <div className="p-2 flex gap-2 text-lg">
@@ -136,6 +137,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </div>
         <hr />
         <HeadlessMantineProvider>
+          <OverlayProvider />
           <ModalsProvider>
             <div id="app-container">
               {children}

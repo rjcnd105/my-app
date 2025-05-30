@@ -9,6 +9,6 @@ export default defineConfig({
 			runtimeConfigPath: "../src/gen/clientConfig.ts",
 		},
 		"@tanstack/react-query",
-		// "valibot",
+		"valibot",
 	],
 });

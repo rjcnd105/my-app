@@ -38,6 +38,9 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
 
 export const getApiJsonPayItemQueryKey = (options?: Options<GetApiJsonPayItemData>) => createQueryKey('getApiJsonPayItem', options);
 
+/**
+ * /pay_item operation on pay_item resource
+ */
 export const getApiJsonPayItemOptions = (options?: Options<GetApiJsonPayItemData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -84,6 +87,9 @@ const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'hea
 
 export const getApiJsonPayItemInfiniteQueryKey = (options?: Options<GetApiJsonPayItemData>): QueryKey<Options<GetApiJsonPayItemData>> => createQueryKey('getApiJsonPayItem', options, true);
 
+/**
+ * /pay_item operation on pay_item resource
+ */
 export const getApiJsonPayItemInfiniteOptions = (options?: Options<GetApiJsonPayItemData>) => {
     return infiniteQueryOptions<GetApiJsonPayItemResponse, GetApiJsonPayItemError, InfiniteData<GetApiJsonPayItemResponse>, QueryKey<Options<GetApiJsonPayItemData>>, {
     after?: string;
@@ -116,6 +122,9 @@ export const getApiJsonPayItemInfiniteOptions = (options?: Options<GetApiJsonPay
 
 export const postApiJsonPayItemQueryKey = (options?: Options<PostApiJsonPayItemData>) => createQueryKey('postApiJsonPayItem', options);
 
+/**
+ * /pay_item operation on pay_item resource
+ */
 export const postApiJsonPayItemOptions = (options?: Options<PostApiJsonPayItemData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -131,6 +140,9 @@ export const postApiJsonPayItemOptions = (options?: Options<PostApiJsonPayItemDa
     });
 };
 
+/**
+ * /pay_item operation on pay_item resource
+ */
 export const postApiJsonPayItemMutation = (options?: Partial<Options<PostApiJsonPayItemData>>): UseMutationOptions<PostApiJsonPayItemResponse, PostApiJsonPayItemError, Options<PostApiJsonPayItemData>> => {
     const mutationOptions: UseMutationOptions<PostApiJsonPayItemResponse, PostApiJsonPayItemError, Options<PostApiJsonPayItemData>> = {
         mutationFn: async (localOptions) => {
@@ -147,6 +159,9 @@ export const postApiJsonPayItemMutation = (options?: Partial<Options<PostApiJson
 
 export const postApiJsonPayItemUpsertFromWordsQueryKey = (options?: Options<PostApiJsonPayItemUpsertFromWordsData>) => createQueryKey('postApiJsonPayItemUpsertFromWords', options);
 
+/**
+ * /pay_item/upsert_from_words operation on pay_item resource
+ */
 export const postApiJsonPayItemUpsertFromWordsOptions = (options?: Options<PostApiJsonPayItemUpsertFromWordsData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -162,6 +177,9 @@ export const postApiJsonPayItemUpsertFromWordsOptions = (options?: Options<PostA
     });
 };
 
+/**
+ * /pay_item/upsert_from_words operation on pay_item resource
+ */
 export const postApiJsonPayItemUpsertFromWordsMutation = (options?: Partial<Options<PostApiJsonPayItemUpsertFromWordsData>>): UseMutationOptions<PostApiJsonPayItemUpsertFromWordsResponse, PostApiJsonPayItemUpsertFromWordsError, Options<PostApiJsonPayItemUpsertFromWordsData>> => {
     const mutationOptions: UseMutationOptions<PostApiJsonPayItemUpsertFromWordsResponse, PostApiJsonPayItemUpsertFromWordsError, Options<PostApiJsonPayItemUpsertFromWordsData>> = {
         mutationFn: async (localOptions) => {
@@ -178,6 +196,9 @@ export const postApiJsonPayItemUpsertFromWordsMutation = (options?: Partial<Opti
 
 export const getApiJsonPayersQueryKey = (options?: Options<GetApiJsonPayersData>) => createQueryKey('getApiJsonPayers', options);
 
+/**
+ * /payers operation on payer resource
+ */
 export const getApiJsonPayersOptions = (options?: Options<GetApiJsonPayersData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -195,6 +216,9 @@ export const getApiJsonPayersOptions = (options?: Options<GetApiJsonPayersData>)
 
 export const getApiJsonPayersInfiniteQueryKey = (options?: Options<GetApiJsonPayersData>): QueryKey<Options<GetApiJsonPayersData>> => createQueryKey('getApiJsonPayers', options, true);
 
+/**
+ * /payers operation on payer resource
+ */
 export const getApiJsonPayersInfiniteOptions = (options?: Options<GetApiJsonPayersData>) => {
     return infiniteQueryOptions<GetApiJsonPayersResponse, GetApiJsonPayersError, InfiniteData<GetApiJsonPayersResponse>, QueryKey<Options<GetApiJsonPayersData>>, {
     after?: string;
@@ -227,6 +251,9 @@ export const getApiJsonPayersInfiniteOptions = (options?: Options<GetApiJsonPaye
 
 export const getApiJsonRoomsQueryKey = (options?: Options<GetApiJsonRoomsData>) => createQueryKey('getApiJsonRooms', options);
 
+/**
+ * /rooms operation on room resource
+ */
 export const getApiJsonRoomsOptions = (options?: Options<GetApiJsonRoomsData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -244,6 +271,9 @@ export const getApiJsonRoomsOptions = (options?: Options<GetApiJsonRoomsData>) =
 
 export const getApiJsonRoomsByIdByIdQueryKey = (options: Options<GetApiJsonRoomsByIdByIdData>) => createQueryKey('getApiJsonRoomsByIdById', options);
 
+/**
+ * /rooms/by_id/:id operation on room resource
+ */
 export const getApiJsonRoomsByIdByIdOptions = (options: Options<GetApiJsonRoomsByIdByIdData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -261,6 +291,9 @@ export const getApiJsonRoomsByIdByIdOptions = (options: Options<GetApiJsonRoomsB
 
 export const getApiJsonRoomsByShortIdByShortIdQueryKey = (options: Options<GetApiJsonRoomsByShortIdByShortIdData>) => createQueryKey('getApiJsonRoomsByShortIdByShortId', options);
 
+/**
+ * /rooms/by_short_id/:short_id operation on room resource
+ */
 export const getApiJsonRoomsByShortIdByShortIdOptions = (options: Options<GetApiJsonRoomsByShortIdByShortIdData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -276,6 +309,9 @@ export const getApiJsonRoomsByShortIdByShortIdOptions = (options: Options<GetApi
     });
 };
 
+/**
+ * /rooms/name operation on room resource
+ */
 export const patchApiJsonRoomsNameMutation = (options?: Partial<Options<PatchApiJsonRoomsNameData>>): UseMutationOptions<PatchApiJsonRoomsNameResponse, PatchApiJsonRoomsNameError, Options<PatchApiJsonRoomsNameData>> => {
     const mutationOptions: UseMutationOptions<PatchApiJsonRoomsNameResponse, PatchApiJsonRoomsNameError, Options<PatchApiJsonRoomsNameData>> = {
         mutationFn: async (localOptions) => {
@@ -292,6 +328,9 @@ export const patchApiJsonRoomsNameMutation = (options?: Partial<Options<PatchApi
 
 export const postApiJsonRoomsUpsertWithPayersQueryKey = (options?: Options<PostApiJsonRoomsUpsertWithPayersData>) => createQueryKey('postApiJsonRoomsUpsertWithPayers', options);
 
+/**
+ * /rooms/upsert_with_payers operation on room resource
+ */
 export const postApiJsonRoomsUpsertWithPayersOptions = (options?: Options<PostApiJsonRoomsUpsertWithPayersData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
@@ -307,6 +346,9 @@ export const postApiJsonRoomsUpsertWithPayersOptions = (options?: Options<PostAp
     });
 };
 
+/**
+ * /rooms/upsert_with_payers operation on room resource
+ */
 export const postApiJsonRoomsUpsertWithPayersMutation = (options?: Partial<Options<PostApiJsonRoomsUpsertWithPayersData>>): UseMutationOptions<PostApiJsonRoomsUpsertWithPayersResponse, PostApiJsonRoomsUpsertWithPayersError, Options<PostApiJsonRoomsUpsertWithPayersData>> => {
     const mutationOptions: UseMutationOptions<PostApiJsonRoomsUpsertWithPayersResponse, PostApiJsonRoomsUpsertWithPayersError, Options<PostApiJsonRoomsUpsertWithPayersData>> = {
         mutationFn: async (localOptions) => {
@@ -323,6 +365,9 @@ export const postApiJsonRoomsUpsertWithPayersMutation = (options?: Partial<Optio
 
 export const getApiJsonRoomsByIdPayersQueryKey = (options: Options<GetApiJsonRoomsByIdPayersData>) => createQueryKey('getApiJsonRoomsByIdPayers', options);
 
+/**
+ * /rooms/:id/payers operation on payer resource
+ */
 export const getApiJsonRoomsByIdPayersOptions = (options: Options<GetApiJsonRoomsByIdPayersData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {

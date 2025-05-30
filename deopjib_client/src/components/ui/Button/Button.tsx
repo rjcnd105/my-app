@@ -1,10 +1,7 @@
 import type {
   ComponentProps,
   ComponentType,
-  FunctionComponentElement,
   PropsWithChildren,
-  ReactComponentElement,
-  ReactElement,
 } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { tva } from "~/utils/styles";
@@ -16,15 +13,15 @@ export function Button({ theme, selected, size, ...rest }: Button.Props) {
       className={style({ theme, selected, size })}
       data-selected={selected}
       {...rest}
-    ></button>
+    />
   );
 }
 
 const themeClasses = {
   none: "bg-none",
   primary: "bg-primary text-white disabled:bg-gray100",
-  sub: `bg-sub`,
-  gray: `bg-lightgray100`,
+  sub: "bg-sub",
+  gray: "bg-lightgray100",
   warning: "bg-warning text-white disabled:bg-gray100 ",
   dark: "bg-darkgray200 text-white disabled:bg-gray100",
   ghost:
@@ -71,8 +68,8 @@ export namespace Button {
 
   export interface Props
     extends StyleProps,
-      PropsWithChildren,
-      ComponentProps<"button"> {}
+    PropsWithChildren,
+    ComponentProps<"button"> { }
 
   export const themes = objKeyToEnum(themeClasses);
   export const sizes = objKeyToEnum(sizeClasses);
