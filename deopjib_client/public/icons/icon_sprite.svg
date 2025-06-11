@@ -34,7 +34,7 @@
 <path       d="M7.50026 7.5L16.5002 16.5"
       stroke="white"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      stroke-linejoin="round"1
     ></path>
 <path       d="M16.5002 7.5L7.50026 16.5"
       stroke="white"

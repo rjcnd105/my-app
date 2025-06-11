@@ -6,15 +6,19 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
-import { NotFound } from "~/components/NotFound";
-import { seo } from "~/utils/seo";
+import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
+import { NotFound } from "@/components/NotFound";
+import { seo } from "@/utils/seo";
 import { OverlayProvider } from "overlay-kit";
-import appCss from "~/styles/app.css?url";
+import appCss from "../styles/app.css?url";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { ColorSchemeScript, createTheme, HeadlessMantineProvider } from "@mantine/core";
+import {
+  ColorSchemeScript,
+  createTheme,
+  HeadlessMantineProvider,
+} from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 
 export const Route = createRootRouteWithContext<{
@@ -31,7 +35,8 @@ export const Route = createRootRouteWithContext<{
       },
       ...seo({
         title: "덮집회의",
-        description: "TanStack Start is a type-safe, client-first, full-stack React framework.",
+        description:
+          "TanStack Start is a type-safe, client-first, full-stack React framework.",
       }),
     ],
     links: [
@@ -85,7 +90,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="ko">
       <head>
         <HeadContent />
-
       </head>
       <body>
         <div className="p-2 flex gap-2 text-lg">
@@ -139,15 +143,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadlessMantineProvider>
           <OverlayProvider />
           <ModalsProvider>
-            <div id="app-container">
-              {children}
-            </div>
+            <div id="app-container">{children}</div>
           </ModalsProvider>
         </HeadlessMantineProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />
-
       </body>
     </html>
   );

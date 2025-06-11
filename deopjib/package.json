@@ -22,6 +22,9 @@
     "tailwind": "bunx tailwindcss -i ./assets/css/app.css -o ./priv/static/assets/app.css"
   },
   "dependencies": {
+    "@tanstack/react-router": "^1.121.0-alpha.27",
+    "@tanstack/react-router-devtools": "^1.121.0-alpha.27",
+    "@tanstack/react-start": "^1.121.0-alpha.27",
     "es-toolkit": "^1.34.1",
     "lit": "^3.2.1",
     "nanostores": "^0.11.4",
@@ -29,6 +32,7 @@
     "phoenix_html": "workspace:*",
     "phoenix_live_view": "workspace:*",
     "phx-live-state": "^0.12.1",
-    "valibot": "^1.0.0"
+    "valibot": "^1.0.0",
+    "vite": "^6.3.5"
   }
 }

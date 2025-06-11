@@ -64,13 +64,7 @@ const context = createContext<Section>(defaultValue);
 function RouteComponent() {
   return (
     <div>
-      <video
-        muted
-        autoPlay
-        playsInline
-        controls={false}
-        src="/videos/t1.mov"
-      ></video>
+      <video muted autoPlay playsInline controls={false} src="/videos/t1.mov" />
     </div>
   );
 }
