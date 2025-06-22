@@ -1,13 +1,20 @@
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { iconsSpritesheet } from "vite-plugin-icons-spritesheet";
 import { iconSpriteDir, iconSpriteFilename } from "./src/constants/dev";
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
+    }),
+    tanstackStart({
+      tsr: {
+        routesDirectory: "src/routes", // Defaults to "src/routes"
+      },
     }),
     iconsSpritesheet({
       // Defaults to false, should it generate TS types for you
@@ -29,6 +36,5 @@ export default defineConfig({
       // This is useful if you want to modify the icon name before it is written to the file
       iconNameTransformer: (iconName) => iconName,
     }),
-    tailwindcss(),
   ],
 });

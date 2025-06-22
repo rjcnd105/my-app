@@ -1,11 +1,6 @@
-import {
-  createFileRoute,
-  createRootRoute,
-  Link,
-  Outlet,
-} from "@tanstack/react-router";
+import { createRootRoute, Outlet, createFileRoute } from "@tanstack/react-router"
 
-export const Route = createRootRoute({
+export const Route = createRootRoute("/room/")({
   component: RouteComponent,
 });
 

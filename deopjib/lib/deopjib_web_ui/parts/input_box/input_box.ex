@@ -2,7 +2,6 @@ defmodule DeopjibWebUI.Parts.InputBox do
   use DeopjibWeb, :html
   alias DeopjibWebUI.Parts.Icon
   alias DeopjibWebUI.Parts.Button
-
   # 추후 Input 컴포넌트 따로 분리
 
   @theme_classes none: "h-7 border-none",

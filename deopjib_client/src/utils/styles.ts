@@ -1,6 +1,5 @@
 import { cva, cx } from "class-variance-authority";
 import type { ClassValue } from "class-variance-authority/types";
-import { twMerge } from "tailwind-merge";
 
 export const tva = <T>(...params: Parameters<typeof cva<T>>) => {
   const v = cva(...params);

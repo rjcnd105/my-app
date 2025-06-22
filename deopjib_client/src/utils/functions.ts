@@ -1,4 +1,4 @@
-import type { extend } from "es-toolkit/compat";
+
 
 /**
  * 데카르트곱 형식의 mapping

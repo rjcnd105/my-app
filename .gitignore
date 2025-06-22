@@ -25,3 +25,5 @@ _dutchpay_umbrella
 **/.elixir_ls
 
 **/_assets
+
+.history

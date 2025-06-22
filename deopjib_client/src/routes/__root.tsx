@@ -1,25 +1,20 @@
+import { HeadlessMantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
+  createRootRouteWithContext,
   HeadContent,
   Link,
   Outlet,
   Scripts,
-  createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { OverlayProvider } from "overlay-kit";
 import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
 import { NotFound } from "@/components/NotFound";
 import { seo } from "@/utils/seo";
-import { OverlayProvider } from "overlay-kit";
 import appCss from "../styles/app.css?url";
-
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import type { QueryClient } from "@tanstack/react-query";
-import {
-  ColorSchemeScript,
-  createTheme,
-  HeadlessMantineProvider,
-} from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;

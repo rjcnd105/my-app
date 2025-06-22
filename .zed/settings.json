@@ -5,6 +5,11 @@
         "projectDir": "./deopjib"
       }
     },
+    "biome": {
+      "settings": {
+        "configuration_path": "./deopjib_client/biome.json"
+      }
+    },
     "tailwindcss-language-server": {
       "settings": {
         "experimental": {

@@ -1,12 +1,7 @@
-import { tva } from "~/utils/styles";
+import type { ComponentProps, PropsWithChildren } from "react";
+import { tva } from "@/utils/styles";
+import type { ValueOf } from "@/utils/types";
 import { Icon } from "../Icon/Icon";
-import type {
-  Component,
-  ComponentProps,
-  ComponentType,
-  PropsWithChildren,
-} from "react";
-import type { ValueOf } from "~/utils/types";
 
 export function Chip({ children, theme, className, ...rest }: Chip.Props) {
   return (
@@ -14,7 +9,7 @@ export function Chip({ children, theme, className, ...rest }: Chip.Props) {
       {children}
 
       <button className="flex justify-center items-center w-6 h-full" {...rest}>
-        <Icon className={iconStyle({ theme })} name="cross_circle"></Icon>
+        <Icon className={iconStyle({ theme })} name="cross_circle" />
       </button>
     </div>
   );

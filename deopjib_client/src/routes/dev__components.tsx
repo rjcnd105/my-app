@@ -1,34 +1,30 @@
-import { ModalStack, useModalsStack } from "@mantine/core";
+import { useModalsStack } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  motion,
-  useAnimate,
-  useDragControls,
-  useMotionValue,
-  useTransform,
-} from "motion/react";
-import { useRef, useState } from "react";
-import { Button } from "~/components/ui/Button/Button";
-import { Checkbox } from "~/components/ui/Checkbox/Checkbox";
-import { Chip } from "~/components/ui/Chip/Chip";
-import { Icon } from "~/components/ui/Icon/Icon";
-import { TextInput } from "~/components/ui/Input/TextInput";
-import { BottomModal } from "~/components/ui/Modal/BottomModal";
-import { ConfirmModal } from "~/components/ui/Modal/ConfirmModal";
-import { Modal } from "~/components/ui/Modal/Modal";
-import { iconNames } from "~/icons/types.gen";
-import { joinMap } from "~/utils/functions";
-import { objKeys } from "~/utils/obj";
-import { cn } from "~/utils/styles";
+import { useState } from "react";
+import { Button } from "@/components/ui/Button/Button";
+import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
+import { Chip } from "@/components/ui/Chip/Chip";
+import { Icon } from "@/components/ui/Icon/Icon";
+import { TextInput } from "@/components/ui/Input/TextInput";
+import { BottomModal } from "@/components/ui/Modal/BottomModal";
+import { ConfirmModal } from "@/components/ui/Modal/ConfirmModal";
+import { Modal } from "@/components/ui/Modal/Modal";
+import { iconNames } from "@/icons/types.gen";
+import { joinMap } from "@/utils/functions";
+import { objKeys } from "@/utils/obj";
+import { cn } from "@/utils/styles";
 
 export const Route = createFileRoute("/dev__components")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-
-  const stack = useModalsStack(['confirmModal', 'customModal', 'bottomSheetModal']);
-  const [bottomModalOpen, setBottomModalOpen] = useState(false);
+  const stack = useModalsStack([
+    "confirmModal",
+    "customModal",
+    "bottomSheetModal",
+  ]);
+  const [_bottomModalOpen, _setBottomModalOpen] = useState(false);
   const [text, setText] = useState("");
   return (
     <div className="[&_h3]:text-title [&_h3]:mt-2 [&_h3]:mb-1 px-4">
@@ -66,32 +62,34 @@ function RouteComponent() {
 
       <h3>modal</h3>
       <Wrapper>
+        <Button onClick={() => stack.open("confirmModal")}>confirmModal</Button>
+        <Button onClick={() => stack.open("bottomSheetModal")}>
+          bottomSheetModal
+        </Button>
+        <Button onClick={() => stack.open("customModal")}>customModal</Button>
 
-
-        <Button onClick={() => stack.open('confirmModal')}>confirmModal</Button>
-        <Button onClick={() => stack.open('bottomSheetModal')}>bottomSheetModal</Button>
-        <Button onClick={() => stack.open('customModal')}>customModal</Button>
-
-        <ConfirmModal {...stack.register('confirmModal')} title="title" >
-
-        </ConfirmModal>
-        <BottomModal {...stack.register('bottomSheetModal')} isClickClose={false} hasCloseButton={true}>
+        <ConfirmModal {...stack.register("confirmModal")} title="title" />
+        <BottomModal
+          {...stack.register("bottomSheetModal")}
+          isClickClose={false}
+          hasCloseButton={true}
+        >
           <div className="w-full h-[300px]">
-
-            <Button onClick={() => stack.open('confirmModal')}>confirmModal</Button>
+            <Button onClick={() => stack.open("confirmModal")}>
+              confirmModal
+            </Button>
             <br />
-            <Button onClick={() => stack.open('customModal')}>customModal</Button>
+            <Button onClick={() => stack.open("customModal")}>
+              customModal
+            </Button>
           </div>
-
         </BottomModal>
-        <Modal.Root {...stack.register('customModal')} lockScroll={false}>
+        <Modal.Root {...stack.register("customModal")} lockScroll={false}>
           {/* <Modal.Overlay /> */}
           <Modal.Content contentClassName="fixed top-0 left-1/2 -translate-x-1/2 max-w-[480px] w-full bg-white -translate-y-full data-showing:translate-y-0">
             <div className="flex justify-between p-2">
               hihi
-
               <Modal.CloseButton />
-
             </div>
           </Modal.Content>
         </Modal.Root>
@@ -130,16 +128,22 @@ function RouteComponent() {
 
       <h3>input</h3>
       <Wrapper>
-        <TextInput label="Input label"
+        <TextInput
+          label="Input label"
           description="Input description"
           error="fuck"
           placeholder="Input placeholder"
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
-          rightSection={<Button theme="dark" size="md" disabled={text.length === 0}>hihi</Button>} />
+          rightSection={
+            <Button theme="dark" size="md" disabled={text.length === 0}>
+              hihi
+            </Button>
+          }
+        />
       </Wrapper>
-    </div >
+    </div>
   );
 }
 

@@ -292,7 +292,7 @@ export const vRoom = v.object({
         ])),
         expiration_at: v.optional(v.union([
             v.union([
-                v.pipe(v.string(), v.isoDateTime()),
+                v.pipe(v.string(), v.isoTimestamp()),
                 v.null()
             ]),
             v.unknown()
@@ -336,14 +336,14 @@ export const vRoomFilterCountsOfPayers = v.object({
 });
 
 export const vRoomFilterExpirationAt = v.object({
-    eq: v.optional(v.pipe(v.string(), v.isoDateTime())),
-    greater_than: v.optional(v.pipe(v.string(), v.isoDateTime())),
-    greater_than_or_equal: v.optional(v.pipe(v.string(), v.isoDateTime())),
-    in: v.optional(v.array(v.pipe(v.string(), v.isoDateTime()))),
+    eq: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+    greater_than: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+    greater_than_or_equal: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+    in: v.optional(v.array(v.pipe(v.string(), v.isoTimestamp()))),
     is_nil: v.optional(v.boolean()),
-    less_than: v.optional(v.pipe(v.string(), v.isoDateTime())),
-    less_than_or_equal: v.optional(v.pipe(v.string(), v.isoDateTime())),
-    not_eq: v.optional(v.pipe(v.string(), v.isoDateTime()))
+    less_than: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+    less_than_or_equal: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+    not_eq: v.optional(v.pipe(v.string(), v.isoTimestamp()))
 });
 
 export const vRoomFilterId = v.object({
@@ -383,12 +383,70 @@ export const vRoomFilterShortId = v.object({
 });
 
 /**
+ * Filters the query to results with attributes matching the given filter object
+ */
+export const vGetApiJsonPayItemParameterFilter = vPayItemFilter;
+
+/**
+ * Sort order to apply to the results
+ */
+export const vGetApiJsonPayItemParameterSort = v.pipe(v.string(), v.regex(/^(id|-id|\+\+id|--id|name|-name|\+\+name|--name|amount|-amount|\+\+amount|--amount|room_id|-room_id|\+\+room_id|--room_id|settled_id|-settled_id|\+\+settled_id|--settled_id)(,(id|-id|\+\+id|--id|name|-name|\+\+name|--name|amount|-amount|\+\+amount|--amount|room_id|-room_id|\+\+room_id|--room_id|settled_id|-settled_id|\+\+settled_id|--settled_id))*$/));
+
+/**
+ * Paginates the response with the limit and offset or keyset pagination.
+ */
+export const vGetApiJsonPayItemParameterPage = v.object({
+    after: v.optional(v.string()),
+    before: v.optional(v.string()),
+    count: v.optional(v.boolean(), false),
+    limit: v.optional(v.pipe(v.number(), v.integer(), v.minValue(1))),
+    offset: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0)))
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonPayItemParameterInclude = v.pipe(v.string(), v.regex(/^(settler|excluded_payers)(,(settler|excluded_payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonPayItemParameterFields = v.object({
+    pay_item: v.optional(v.string())
+});
+
+/**
  * Success
  */
 export const vGetApiJsonPayItemResponse = v.object({
     data: v.optional(v.array(vPayItem)),
     included: v.optional(v.array(vPayer)),
     meta: v.optional(v.object({}))
+});
+
+/**
+ * Request body for the /pay_item operation on pay_item resource
+ */
+export const vPostApiJsonPayItemData = v.object({
+    data: v.object({
+        attributes: v.optional(v.object({})),
+        relationships: v.optional(v.object({})),
+        type: v.optional(v.picklist([
+            'pay_item'
+        ]))
+    })
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vPostApiJsonPayItemParameterInclude = v.pipe(v.string(), v.regex(/^(settler|excluded_payers)(,(settler|excluded_payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vPostApiJsonPayItemParameterFields = v.object({
+    pay_item: v.optional(v.string())
 });
 
 /**
@@ -401,12 +459,75 @@ export const vPostApiJsonPayItemResponse = v.object({
 });
 
 /**
+ * Request body for the /pay_item/upsert_from_words operation on pay_item resource
+ */
+export const vPostApiJsonPayItemUpsertFromWordsData = v.object({
+    data: v.object({
+        attributes: v.optional(v.object({
+            words: v.optional(v.union([
+                v.string(),
+                v.unknown()
+            ]))
+        })),
+        relationships: v.optional(v.object({})),
+        type: v.optional(v.picklist([
+            'pay_item'
+        ]))
+    })
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vPostApiJsonPayItemUpsertFromWordsParameterInclude = v.pipe(v.string(), v.regex(/^(settler|excluded_payers)(,(settler|excluded_payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vPostApiJsonPayItemUpsertFromWordsParameterFields = v.object({
+    pay_item: v.optional(v.string())
+});
+
+/**
  * Success
  */
 export const vPostApiJsonPayItemUpsertFromWordsResponse = v.object({
     data: v.optional(vPayItem),
     included: v.optional(v.array(vPayer)),
     meta: v.optional(v.object({}))
+});
+
+/**
+ * Filters the query to results with attributes matching the given filter object
+ */
+export const vGetApiJsonPayersParameterFilter = vPayerFilter;
+
+/**
+ * Sort order to apply to the results
+ */
+export const vGetApiJsonPayersParameterSort = v.pipe(v.string(), v.regex(/^(id|-id|\+\+id|--id|name|-name|\+\+name|--name|banc_account|-banc_account|\+\+banc_account|--banc_account|room_id|-room_id|\+\+room_id|--room_id)(,(id|-id|\+\+id|--id|name|-name|\+\+name|--name|banc_account|-banc_account|\+\+banc_account|--banc_account|room_id|-room_id|\+\+room_id|--room_id))*$/));
+
+/**
+ * Paginates the response with the limit and offset or keyset pagination.
+ */
+export const vGetApiJsonPayersParameterPage = v.object({
+    after: v.optional(v.string()),
+    before: v.optional(v.string()),
+    count: v.optional(v.boolean(), false),
+    limit: v.optional(v.pipe(v.number(), v.integer(), v.minValue(1))),
+    offset: v.optional(v.pipe(v.number(), v.integer(), v.minValue(0)))
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonPayersParameterInclude = v.pipe(v.string(), v.regex(/^(room|settled_items)(,(room|settled_items))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonPayersParameterFields = v.object({
+    payer: v.optional(v.string())
 });
 
 /**
@@ -419,12 +540,48 @@ export const vGetApiJsonPayersResponse = v.object({
 });
 
 /**
+ * Filters the query to results with attributes matching the given filter object
+ */
+export const vGetApiJsonRoomsParameterFilter = vRoomFilter;
+
+/**
+ * Sort order to apply to the results
+ */
+export const vGetApiJsonRoomsParameterSort = v.pipe(v.string(), v.regex(/^(id|-id|\+\+id|--id|short_id|-short_id|\+\+short_id|--short_id|name|-name|\+\+name|--name|expiration_at|-expiration_at|\+\+expiration_at|--expiration_at|counts_of_payers|-counts_of_payers|\+\+counts_of_payers|--counts_of_payers)(,(id|-id|\+\+id|--id|short_id|-short_id|\+\+short_id|--short_id|name|-name|\+\+name|--name|expiration_at|-expiration_at|\+\+expiration_at|--expiration_at|counts_of_payers|-counts_of_payers|\+\+counts_of_payers|--counts_of_payers))*$/));
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonRoomsParameterInclude = v.pipe(v.string(), v.regex(/^(payers)(,(payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonRoomsParameterFields = v.object({
+    room: v.optional(v.string())
+});
+
+/**
  * Success
  */
 export const vGetApiJsonRoomsResponse = v.object({
     data: v.optional(v.array(vRoom)),
     included: v.optional(v.array(vPayer)),
     meta: v.optional(v.object({}))
+});
+
+export const vGetApiJsonRoomsByIdByIdParameterId = v.pipe(v.string(), v.uuid());
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonRoomsByIdByIdParameterInclude = v.pipe(v.string(), v.regex(/^(payers)(,(payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonRoomsByIdByIdParameterFields = v.object({
+    room: v.optional(v.string())
 });
 
 /**
@@ -434,6 +591,20 @@ export const vGetApiJsonRoomsByIdByIdResponse = v.object({
     data: v.optional(vRoom),
     included: v.optional(v.array(vPayer)),
     meta: v.optional(v.object({}))
+});
+
+export const vGetApiJsonRoomsByShortIdByShortIdParameterShortId = v.string();
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonRoomsByShortIdByShortIdParameterInclude = v.pipe(v.string(), v.regex(/^(payers)(,(payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonRoomsByShortIdByShortIdParameterFields = v.object({
+    room: v.optional(v.string())
 });
 
 /**
@@ -446,6 +617,37 @@ export const vGetApiJsonRoomsByShortIdByShortIdResponse = v.object({
 });
 
 /**
+ * Request body for the /rooms/name operation on room resource
+ */
+export const vPatchApiJsonRoomsNameData = v.object({
+    data: v.object({
+        attributes: v.optional(v.object({
+            name: v.optional(v.union([
+                v.string(),
+                v.unknown()
+            ]))
+        })),
+        id: v.string(),
+        relationships: v.optional(v.object({})),
+        type: v.optional(v.picklist([
+            'room'
+        ]))
+    })
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vPatchApiJsonRoomsNameParameterInclude = v.pipe(v.string(), v.regex(/^(payers)(,(payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vPatchApiJsonRoomsNameParameterFields = v.object({
+    room: v.optional(v.string())
+});
+
+/**
  * Success
  */
 export const vPatchApiJsonRoomsNameResponse = v.object({
@@ -455,12 +657,65 @@ export const vPatchApiJsonRoomsNameResponse = v.object({
 });
 
 /**
+ * Request body for the /rooms/upsert_with_payers operation on room resource
+ */
+export const vPostApiJsonRoomsUpsertWithPayersData = v.object({
+    data: v.object({
+        attributes: v.optional(v.object({
+            id: v.optional(v.union([
+                v.pipe(v.string(), v.uuid()),
+                v.unknown()
+            ]))
+        })),
+        relationships: v.optional(v.object({
+            payers: v.optional(v.object({
+                data: v.optional(v.array(v.object({
+                    id: v.string(),
+                    meta: v.optional(v.object({})),
+                    type: v.string()
+                }))),
+                links: v.optional(v.object({}))
+            }))
+        })),
+        type: v.optional(v.picklist([
+            'room'
+        ]))
+    })
+});
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vPostApiJsonRoomsUpsertWithPayersParameterInclude = v.pipe(v.string(), v.regex(/^(payers)(,(payers))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vPostApiJsonRoomsUpsertWithPayersParameterFields = v.object({
+    room: v.optional(v.string())
+});
+
+/**
  * Success
  */
 export const vPostApiJsonRoomsUpsertWithPayersResponse = v.object({
     data: v.optional(vRoom),
     included: v.optional(v.array(vPayer)),
     meta: v.optional(v.object({}))
+});
+
+export const vGetApiJsonRoomsByIdPayersParameterId = v.string();
+
+/**
+ * Relationship paths to include in the response
+ */
+export const vGetApiJsonRoomsByIdPayersParameterInclude = v.pipe(v.string(), v.regex(/^(room|settled_items)(,(room|settled_items))*$/));
+
+/**
+ * Limits the response fields to only those listed for each type
+ */
+export const vGetApiJsonRoomsByIdPayersParameterFields = v.object({
+    payer: v.optional(v.string())
 });
 
 /**

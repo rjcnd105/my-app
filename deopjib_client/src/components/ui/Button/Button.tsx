@@ -1,13 +1,15 @@
-import type {
-  ComponentProps,
-  ComponentType,
-  PropsWithChildren,
-} from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { tva } from "~/utils/styles";
-import { objKeyToEnum } from "~/utils/obj";
+import type { VariantProps } from "class-variance-authority";
+import type { ComponentProps, PropsWithChildren } from "react";
+import { objKeyToEnum } from "@/utils/obj";
+import { tva } from "@/utils/styles";
 
-export function Button({ theme, selected, size, className, ...rest }: Button.Props) {
+export function Button({
+  theme,
+  selected,
+  size,
+  className,
+  ...rest
+}: Button.Props) {
   return (
     <button
       className={style({ theme, selected, size }, disabledClass, className)}
@@ -41,7 +43,6 @@ const selectedClass = "bg-primary text-white pointer-events-none";
 
 Button.disabledClass = disabledClass;
 
-
 const style = tva(null, {
   variants: {
     theme: themeClasses,
@@ -72,8 +73,8 @@ export namespace Button {
 
   export interface Props
     extends StyleProps,
-    PropsWithChildren,
-    ComponentProps<"button"> { }
+      PropsWithChildren,
+      ComponentProps<"button"> {}
 
   export const themes = objKeyToEnum(themeClasses);
   export const sizes = objKeyToEnum(sizeClasses);

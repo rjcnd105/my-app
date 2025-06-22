@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createContext, use, useContext, useReducer, useState } from "react";
+import { createContext, useContext, } from "react";
 
 export const Route = createFileRoute("/test")({
   component: RouteComponent,
@@ -33,7 +33,7 @@ const items = [
   },
 ] as const satisfies Item[];
 
-const groupMeta = {
+const _groupMeta = {
   aa: {
     type: "video-item",
   },
@@ -69,12 +69,12 @@ function RouteComponent() {
   );
 }
 
-function Provider({ children }: { children: React.ReactNode }) {
+function _Provider({ children }: { children: React.ReactNode }) {
   // const value = useReducer(reducer, defaultValue);
 
   return <context.Provider value={defaultValue}>{children}</context.Provider>;
 }
 
-function useProvider() {
+function _useProvider() {
   return useContext(context);
 }

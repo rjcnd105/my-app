@@ -1,13 +1,5 @@
-import {
-  DragControls,
-  motion,
-  useDragControls,
-  useMotionTemplate,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "motion/react";
-import { cn } from "~/utils/styles";
+import { type DragControls, motion } from "motion/react";
+import { cn } from "@/utils/styles";
 
 export function Handlebar({ className, controller }: Handlebar.Props) {
   return (

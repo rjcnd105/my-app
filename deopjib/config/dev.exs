@@ -26,11 +26,11 @@ config :deopjib, DeopjibWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "/c9BvQdaOfntQLTOw2YFBJzjNY+NqplXGP1vJ5sNKcI23ewgM13VgyYGuGxvNbob",
   watchers: [
-    bun: [
-      "run",
-      "dev",
-      cd: "../deopjib_client"
-    ]
+    # bun: [
+    #   "run",
+    #   "dev",
+    #   cd: "../deopjib_client"
+    # ]
     # bun: [
     #   "run",
     #   "codegen",
