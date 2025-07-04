@@ -7,9 +7,9 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { iconSpriteDir, iconSpriteFilename } from "./src/constants/dev";
 
 export default defineConfig({
-  build: {
-    cssMinify: "lightningcss"
-  },
+  // build: {
+  //   cssMinify: "lightningcss"
+  // },
 
   css: {
     // preprocessorOptions: {
@@ -18,7 +18,7 @@ export default defineConfig({
     //     sourceMapIncludeSources: true,
     //   }
     // },
-    // devSourcemap: true,
+    devSourcemap: true,
 
     // transformer: "lightningcss",
     // lightningcss: {
