@@ -1,13 +1,17 @@
-import type { SVGProps } from "react";
-import { iconSpriteHref } from "@/constants/dev";
-import type { IconName } from "@/icons/types.gen";
+import { type SVGProps } from "react";
+import { useIconComponent } from "./useIcon";
+import type { IconName } from "./IconMap.gen";
 
-export function Icon({ name, className = "size-6", ...props }: Icon.Props) {
-  return (
-    <svg {...props} className={className}>
-      <use href={`${iconSpriteHref}#${name}`} />
-    </svg>
-  );
+// SVG 컴포넌트로 렌더링
+export function Icon({ name, ...props }: Icon.Props) {
+  const IconComponent = useIconComponent(name);
+
+  if (!IconComponent) {
+    console.warn(`Icon "${name}" not found`);
+    return null;
+  }
+
+  return <IconComponent {...props} />;
 }
 
 export namespace Icon {

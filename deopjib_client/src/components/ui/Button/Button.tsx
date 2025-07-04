@@ -43,7 +43,7 @@ const selectedClass = "bg-primary text-white pointer-events-none";
 
 Button.disabledClass = disabledClass;
 
-const style = tva(null, {
+const style = tva("my-button", {
   variants: {
     theme: themeClasses,
     selected: {

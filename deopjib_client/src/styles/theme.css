@@ -70,6 +70,11 @@
 
   --blur-dimm: 10px;
 
+  /* 768px */
+  --breakpoint-md: 48rem;
+  /* 1024px */
+  --breakpoint-lg: 64rem;
+
   --ease-spring-2: linear(
     0,
     0.036 2%,
@@ -182,4 +187,6 @@
     "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     sans-serif;
+
+
 }

@@ -14,7 +14,7 @@ import { OverlayProvider } from "overlay-kit";
 import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
 import { NotFound } from "@/components/NotFound";
 import { seo } from "@/utils/seo";
-import appCss from "../styles/app.css?url";
+import "../styles/app.css";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -35,16 +35,16 @@ export const Route = createRootRouteWithContext<{
       }),
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
+      // { rel: "stylesheet", href: appCss },
       {
         rel: "apple-touch-icon",
         sizes: "180x180",
         href: "/apple-touch-icon.png",
       },
-      {
-        rel: "icon",
-        href: "icons/icon_sprite.svg?url",
-      },
+      // {
+      //   rel: "icon",
+      //   href: "icons/icon_sprite.svg?url",
+      // },
       {
         rel: "icon",
         type: "image/png",
@@ -84,6 +84,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <head>
+        <link href="/src/styles/app.css" rel="stylesheet" />
         <HeadContent />
       </head>
       <body>

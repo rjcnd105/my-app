@@ -11,6 +11,7 @@
     :ash,
     :ecto,
     :ecto_sql,
+    :orddict,
     :phoenix
   ],
   subdirectories: ["priv/*/migrations"],

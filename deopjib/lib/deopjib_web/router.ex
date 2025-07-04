@@ -19,16 +19,20 @@ defmodule DeopjibWeb.Router do
     plug(:accepts, ["json"])
     plug(:load_from_bearer)
     plug(:set_actor, :user)
-    plug(OpenApiSpex.Plug.PutApiSpec, module: DeopjibWeb.AshJsonApiRouter)
+    # plug(OpenApiSpex.Plug.PutApiSpec, module: DeopjibWeb.AshJsonApiRouter)
+    plug(Osakit.Plugs.SpecProvider,
+      spec: DeopjibWeb.ApiSpec,
+      module: DeopjibWeb.AshJsonApiRouter
+    )
   end
 
   scope "/api/json" do
     pipe_through([:api])
 
-    forward("/swaggerui", OpenApiSpex.Plug.SwaggerUI,
-      path: "/api/json/open_api",
-      default_model_expand_depth: 4
-    )
+    # forward("/swaggerui", OpenApiSpex.Plug.SwaggerUI,
+    #   path: "/api/json/open_api",
+    #   default_model_expand_depth: 4
+    # )
 
     forward("/scalarui", Scalar.Plug.ScalarUI,
       url: "/api/json/open_api",

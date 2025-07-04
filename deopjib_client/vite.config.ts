@@ -1,40 +1,77 @@
-import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { defineConfig } from "vite";
 import { iconsSpritesheet } from "vite-plugin-icons-spritesheet";
+import magicalSvg from "vite-plugin-magical-svg";
+import tsConfigPaths from "vite-tsconfig-paths";
 import { iconSpriteDir, iconSpriteFilename } from "./src/constants/dev";
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    tsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
-    tanstackStart({
-      tsr: {
-        routesDirectory: "src/routes", // Defaults to "src/routes"
-      },
-    }),
-    iconsSpritesheet({
-      // Defaults to false, should it generate TS types for you
-      withTypes: true,
-      // The path to the icon directory
-      inputDir: "./src/icons",
+  build: {
+    cssMinify: "lightningcss"
+  },
 
-      // Output path for the generated spritesheet and types
-      outputDir: `./public${iconSpriteDir}`,
-      // Output path for the generated type file, defaults to types.ts in outputDir
-      typesOutputFile: "./src/icons/types.gen.ts",
-      // The name of the generated spritesheet, defaults to sprite.svg
-      fileName: iconSpriteFilename,
-      // The cwd, defaults to process.cwd()
-      cwd: process.cwd(),
-      // What formatter to use to format the generated files, prettier or biome, defaults to no formatter
-      formatter: "biome",
-      // Callback function that is called when the script is generating the icon name
-      // This is useful if you want to modify the icon name before it is written to the file
-      iconNameTransformer: (iconName) => iconName,
-    }),
-  ],
+  css: {
+    // preprocessorOptions: {
+
+    //   scss: {
+    //     sourceMapIncludeSources: true,
+    //   }
+    // },
+    // devSourcemap: true,
+
+    // transformer: "lightningcss",
+    // lightningcss: {
+    //   cssModules: true,
+    //   drafts: {
+    //     customMedia: true
+
+    //   },
+    // }
+  },
+	plugins: [
+		tsConfigPaths({
+			projects: ["./tsconfig.json"],
+		}),
+		tanstackStart({
+
+			tsr: {
+
+			  autoCodeSplitting: true,
+				// Specifies the directory TanStack Router uses for your routes.
+				routesDirectory: "src/routes", // Defaults to "src/routes"
+
+			},
+
+		}),
+		magicalSvg({
+			// By default, the output will be a dom element (the <svg> you can use inside the webpage).
+			// You can also change the output to react (or any supported target) to get a component you can use.
+			target: "react19-jsx",
+
+			// By default, the svgs are optimized with svgo. You can disable this by setting this to false.
+			svgo: false,
+
+			// By default, width and height set on SVGs are not preserved.
+			// Set to true to preserve `width` and `height` on the generated SVG.
+			preserveWidthHeight: true,
+
+			// *Experimental* - set the width and height on generated SVGs.
+			// If used with `preserveWidthHeight`, will only apply to SVGs without a width/height.
+			setWidthHeight: { width: "24", height: "24" },
+
+			// *Experimental* - replace all instances of `fill="..."` and `stroke="..."`.
+			// Set to `true` for 'currentColor`, or use a text value to set it to this value.
+			// When enabled, use query param ?skip-recolor to not alter colors.
+			// Disabled by default.
+			// setFillStrokeColor: true,
+
+			// *Experimental* - if a SVG comes with `width` and `height` set but no `viewBox`,
+			// assume the viewbox is `0 0 {width} {height}` and add it to the SVG.
+			// Disabled by default.
+			restoreMissingViewBox: true,
+		}),
+		tailwindcss(),
+
+	],
 });

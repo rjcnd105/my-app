@@ -42,6 +42,12 @@ defmodule DeopjibWeb do
         formats: [:html, :json],
         layouts: [html: DeopjibWebUI.Layouts]
 
+      # Add Oaskit controller macros
+      use Oaskit.Controller
+
+      # Add the validation plug
+      # plug(Oaskit.Plugs.ValidateRequest)
+
       use Gettext, backend: DeopjibWeb.Gettext
 
       import Plug.Conn

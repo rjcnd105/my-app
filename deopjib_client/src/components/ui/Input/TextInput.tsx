@@ -4,6 +4,7 @@ import type { MouseEventHandler } from "react";
 import { cn } from "@/utils/styles";
 import { Button } from "../Button/Button";
 import { Icon } from "../Icon/Icon";
+import classes from "./input.module.css";
 
 export function TextInput({
   className,
@@ -14,7 +15,8 @@ export function TextInput({
   return (
     <BaseTextInput
       classNames={{
-        error: "TextInput__error",
+        // error: "TextInput__error",
+        error: classes.error,
         section: "TextInput__section flex items-center h-full",
         root: "TextInput__root",
         description: "TextInput__description",
@@ -42,10 +44,10 @@ function InputClearButton() {
       className="group-has-placeholder-shown/TextInput:invisible px-2 w-7.5 h-full"
       onClick={inputClear}
     >
-      <Icon
+      {/* <Icon
         name="cross_circle"
         className="size-3.5 rounded-full in-focus-visible:fill-darkgray100 fill-gray100"
-      />
+      /> */}
     </Button>
   );
 }

@@ -5,9 +5,9 @@ defmodule DeopjibUtils.Ash.Type do
 
     use AshJsonApi.Type
 
-    @base_schema %OpenApiSpex.Schema{
-      type: :string
-    }
+    # @base_schema %OpenApiSpex.Schema{
+    #   type: :string
+    # }
 
     @impl AshJsonApi.Type
     def json_schema(constraints) do
