@@ -1,0 +1,5 @@
+[tools.bun]
+version = "latest"
+
+[hooks]
+preinstall = "touch mise.lock"

@@ -1,0 +1,2 @@
+[tasks.install-lock]
+run = "touch mise.lock && mise install"
