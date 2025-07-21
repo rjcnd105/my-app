@@ -6,20 +6,21 @@ RUN apt-get update \
 
 WORKDIR /usr/src/app
 
-FROM base AS mise
+FROM base AS mise-env
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV MISE_DATA_DIR="/mise"
 ENV MISE_CONFIG_DIR="/mise"
 ENV MISE_CACHE_DIR="/mise/cache"
 ENV MISE_INSTALL_PATH="/usr/local/bin/mise"
 ENV PATH="/mise/shims:$PATH"
+RUN curl https://mise.run | sh
+
+
 
 
 # install dependencies into temp directory
 # this will cache them and speed up future builds
 FROM base AS install-mise
-COPY mise.lock .
-RUN curl https://mise.run | sh
 RUN MISE_ENV=tools mise install
 RUN mkdir -p /temp/dev
 COPY package.json bun.lock /temp/dev/

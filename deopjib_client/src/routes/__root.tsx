@@ -99,12 +99,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Home
           </Link>{" "}
           <Link
-            to="/$roomId/add_items"
+            to="/room/$shortId/add_pay_items"
             activeProps={{
               className: "font-bold",
             }}
             params={{
-              roomId: "10",
+              shortId: "10",
+            }}
+            search={{
+              payer: "10",
             }}
           >
             room10
