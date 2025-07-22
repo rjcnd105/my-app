@@ -14,7 +14,9 @@
     "dev:gen-schema": "openapi-ts --file ./generator/openapi.dev.schema.ts",
     "dev:gen-api": "rm -rf ./src/gen && openapi-ts --file ./generator/openapi.dev.api.ts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -85,5 +87,6 @@
   },
   "trustedDependencies": [
     "@parcel/watcher"
-  ]
+  ],
+  "version": "1.0.0"
 }

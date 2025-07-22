@@ -1,13 +1,13 @@
 {
   "expo": {
     "jsEngine": "hermes",
-    "name": "deopjib_app",
-    "slug": "deopjib_app",
+    "name": "deopjib-app",
+    "slug": "deopjib-app",
     "version": "1.0.0",
 
     "orientation": "portrait",
     // "icon": "./assets/images/icon.png",
-    "scheme": "deopjib_app",
+    "scheme": "deopjib-app",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "plugins": [
@@ -40,7 +40,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.deiojib_app",
+      "bundleIdentifier": "com.anonymous.deiojibapp",
       "entitlements": {
         "aps-environment": "production"
       },
@@ -57,7 +57,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.deiojib_app"
+      "package": "com.anonymous.deiojibapp"
     },
     "web": {
       "bundler": "metro",
