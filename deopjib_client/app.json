@@ -4,8 +4,9 @@
     "name": "deopjib_app",
     "slug": "deopjib_app",
     "version": "1.0.0",
+
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    // "icon": "./assets/images/icon.png",
     "scheme": "deopjib_app",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -40,7 +41,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.deiojib_app",
-      "googleServicesFile": "./GoogleService-Info.plist",
       "entitlements": {
         "aps-environment": "production"
       },
@@ -53,20 +53,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        // "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./GoogleService-Info.plist",
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.deiojib_app"
     },
     "web": {
       "bundler": "metro",
       "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      // "favicon": "./assets/images/favicon.png"
     },
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
     }
   }
 }

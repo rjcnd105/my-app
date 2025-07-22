@@ -47,8 +47,7 @@ npx expo prebuild --clear
 JAVA_HOME = { value = "~/.local/share/mise/installs/java/temurin-24/Contents/Home", tools = true }
 ANDROID_HOME = { value = "/Users/{{env.USER}}/Library/Android/sdk", tools = true }
 _.path = [
-  "/usr/bin",
   "/Users/{{env.USER}}/Library/Android/sdk/tools",
   "/Users/{{env.USER}}/Library/Android/sdk/tools/bin",
-  "/Users/{{env.USER}}/Library/Android/sdk/platform-tools"
+  "/Users/{{env.USER}}/Library/Android/sdk/platform-tools",
 ]
