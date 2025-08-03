@@ -24,7 +24,10 @@ defmodule DeopjibWebUI.Parts.Overlay do
       phx-mounted={@show && JS.exec("phx-show", to: "##{@id}")}
       phx-show={show(@id)}
       phx-hide={@on_close_before |> hide(@id)}
-      class={["fixed inset-0 max-h-screen max-w-screen ease-in-out pointer-events-none duration-100 hidden group/overlay", @container_class]}
+      class={[
+        "fixed inset-0 max-h-screen max-w-screen ease-in-out pointer-events-none duration-100 hidden group/overlay",
+        @container_class
+      ]}
       data-view-state={@view_state}
     >
       <div
@@ -39,9 +42,11 @@ defmodule DeopjibWebUI.Parts.Overlay do
           class={["pointer-events-none", @wrap_class]}
           phx-key="escape"
           phx-window-keydown={JS.exec("phx-hide", to: "##{@id}")}
-          phx-click-away={if @is_close_on_click_away, do: JS.exec("phx-hide", to: "##{@id}"), else: nil}
+          phx-click-away={
+            if @is_close_on_click_away, do: JS.exec("phx-hide", to: "##{@id}"), else: nil
+          }
         >
-        {render_slot(@inner_block)}
+          {render_slot(@inner_block)}
         </.focus_wrap>
       </div>
     </div>

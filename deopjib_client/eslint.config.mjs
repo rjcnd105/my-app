@@ -2,6 +2,7 @@
 // import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 import { defineConfig, globalIgnores } from "eslint/config";
+import reactCompiler from "eslint-plugin-react-compiler";
 import expoConfig from "eslint-config-expo/flat.js";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import { configs, parser } from "typescript-eslint";
@@ -23,6 +24,7 @@ export default defineConfig([
   ]),
   expoConfig,
   eslintPluginPrettierRecommended,
+  reactCompiler.configs.recommended,
   {
     // plugins: {
     //   'simple-import-sort': simpleImportSort,

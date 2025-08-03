@@ -38,8 +38,6 @@ module.exports = (api) => {
           root: "src",
         },
       ],
-      // 맨 마지막에 위치해야함
-      "react-native-reanimated/plugin",
     ],
   };
 };

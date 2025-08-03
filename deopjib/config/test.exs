@@ -1,7 +1,7 @@
 import Config
-config :deopjib, Oban, testing: :manual
+# config :deopjib, Oban, testing: :manual
 config :deopjib, token_signing_secret: "js6fZJcq9D1CYc0IgurgDfmcgdfuZKFU"
-config :ash, disable_async?: true
+config :ash, disable_async?: true, policies: [show_policy_breakdowns?: true]
 
 # Configure your database
 #

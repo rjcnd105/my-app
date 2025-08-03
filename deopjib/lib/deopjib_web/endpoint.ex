@@ -1,6 +1,5 @@
 defmodule DeopjibWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :deopjib
-  use Absinthe.Phoenix.Endpoint
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -11,7 +10,6 @@ defmodule DeopjibWeb.Endpoint do
     signing_salt: "f1ssNBWb",
     same_site: "Lax"
   ]
-
 
   socket("/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
@@ -32,12 +30,16 @@ defmodule DeopjibWeb.Endpoint do
   if Code.ensure_loaded?(Tidewave) do
     plug Tidewave
   end
+
+
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
     plug(Phoenix.LiveReloader)
     plug(Phoenix.CodeReloader)
+    plug AshPhoenix.Plug.CheckCodegenStatus
     plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :deopjib)
   end
 
@@ -50,7 +52,7 @@ defmodule DeopjibWeb.Endpoint do
   plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
   plug(Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser, AshJsonApi.Plug.Parser],
+    parsers: [:urlencoded, :multipart, :json, AshJsonApi.Plug.Parser],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
   )

@@ -8,11 +8,11 @@ defmodule Deopjib.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Oban,
-       AshOban.config(
-         Application.fetch_env!(:deopjib, :ash_domains),
-         Application.fetch_env!(:deopjib, Oban)
-       )},
+      # {Oban,
+      #  AshOban.config(
+      #    Application.fetch_env!(:deopjib, :ash_domains),
+      #    Application.fetch_env!(:deopjib, Oban)
+      #  )},
       DeopjibWeb.Telemetry,
       Deopjib.Repo,
       {DNSCluster, query: Application.get_env(:deopjib, :dns_cluster_query) || :ignore},
@@ -24,7 +24,6 @@ defmodule Deopjib.Application do
       # Start to serve requests, typically the last entry
       DeopjibWeb.Endpoint,
       {AshAuthentication.Supervisor, [otp_app: :deopjib]},
-      {Absinthe.Subscription, DeopjibWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

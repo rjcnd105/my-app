@@ -55,12 +55,7 @@ defmodule DeopjibWebUI.Parts.Button do
       )
 
     ~H"""
-    <button
-      data-loading={@is_loading}
-      class={@classes}
-      {@rest}
-    >
-
+    <button data-loading={@is_loading} class={@classes} {@rest}>
       {render_slot(@inner_block)}
     </button>
     """

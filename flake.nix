@@ -4,7 +4,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
-
   };
   outputs =
     inputs@{
@@ -85,13 +84,13 @@
               services = {
                 postgres."pg" = {
                   enable = true;
-                  package = pkgs.postgresql_17;
+                  package = pkgs.postgresql_18;
                   listen_addresses = DB_LISTEN_ADDRESSES;
                   dataDir = "./data/pg";
                   port = DB_PORT;
                   initialScript = {
                     before = ''
-                       CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;
+                      CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;
                       CREATE DATABASE ${DB_NAME};
                     '';
                   };

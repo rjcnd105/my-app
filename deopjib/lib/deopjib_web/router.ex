@@ -121,19 +121,19 @@ defmodule DeopjibWeb.Router do
     import AshAdmin.Router
 
     scope "/admin" do
-      pipe_through(:browser)
+      pipe_through :browser
 
-      ash_admin("/")
+      ash_admin "/"
     end
   end
 
-  if Application.compile_env(:deopjib, :dev_routes) do
-    import Oban.Web.Router
+  # if Application.compile_env(:deopjib, :dev_routes) do
+  #   import Oban.Web.Router
 
-    scope "/" do
-      pipe_through(:browser)
+  #   scope "/" do
+  #     pipe_through(:browser)
 
-      oban_dashboard("/oban")
-    end
-  end
+  #     oban_dashboard("/oban")
+  #   end
+  # end
 end

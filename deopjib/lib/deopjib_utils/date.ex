@@ -1,5 +1,4 @@
 defmodule DeopjibUtils.Date do
-
   def simple_datetime_format(%DateTime{} = datetime) do
     yy = datetime.year |> Integer.mod(100) |> Integer.to_string()
     mm = datetime.month |> fill_zero()

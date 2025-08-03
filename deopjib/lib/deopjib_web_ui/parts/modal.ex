@@ -78,10 +78,12 @@ defmodule DeopjibWebUI.Parts.Modal do
       role="dialog"
       aria-modal="true"
       tabindex="0"
-    class={["shadow-1 max-h-[calc(100dvh - 2rem)] bg-white p-6 overflow-y-auto overflow-x-hidden rounded-lg justify-self-center focus-visible:outline-1 pointer-events-auto group-data-[view-state=open]/overlay:animate-modal-in group-data-[view-state=closed]/overlay:animate-modal-out", @class]}
+      class={[
+        "shadow-1 max-h-[calc(100dvh - 2rem)] bg-white p-6 overflow-y-auto overflow-x-hidden rounded-lg justify-self-center focus-visible:outline-1 pointer-events-auto group-data-[view-state=open]/overlay:animate-modal-in group-data-[view-state=closed]/overlay:animate-modal-out",
+        @class
+      ]}
       {@rest}
     >
-
       {render_slot(@inner_block)}
     </div>
     """
@@ -95,7 +97,7 @@ defmodule DeopjibWebUI.Parts.Modal do
   def default_content_wrapper(assigns) do
     ~H"""
     <div
-    role="dialog"
+      role="dialog"
       aria-modal="true"
       tabindex="0"
       class={["overflow-x-hidden pointer-events-auto", @class]}

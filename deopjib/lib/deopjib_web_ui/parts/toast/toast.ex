@@ -5,8 +5,8 @@ defmodule DeopjibWebUI.Parts.Toast do
 
   def render(assigns) do
     ~H"""
-      <.toast_container />
-      <.toast_template />
+    <.toast_container />
+    <.toast_template />
     """
   end
 
@@ -24,12 +24,11 @@ defmodule DeopjibWebUI.Parts.Toast do
       class="fixed bottom-4 left-4 z-50 flex flex-col gap-2"
       phx-update="ignore"
       ui_toast-container
-
       data-duration={@duration}
       data-max-count={@max_count}
       phx-hook="ToastHook"
     >
-       {render_slot(@inner_block)}
+      {render_slot(@inner_block)}
     </div>
     """
   end

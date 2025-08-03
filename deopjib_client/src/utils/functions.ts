@@ -1,10 +1,8 @@
-
-
 /**
  * 데카르트곱 형식의 mapping
  * @example joinMap([['a', 'b'], [1, 2]], (a, b) => `${a}-${b}`) // ['a-1', 'a-2', 'b-1', 'b-2']
  */
-export const joinMap = <const T extends ReadonlyArray<ReadonlyArray<unknown>>, R>(
+export const joinMap = <const T extends readonly (readonly unknown[])[], R>(
   arrays: T,
   fn: (...args: { [K in keyof T]: T[K][number] }) => R,
 ): R[] => {
@@ -35,7 +33,7 @@ export const joinMap = <const T extends ReadonlyArray<ReadonlyArray<unknown>>, R
       // or if arrays somehow contains undefined values despite its type.
       throw new Error(
         `Critical error in generateCombinations: arrays[${currentIndex}] is undefined. ` +
-        `currentIndex: ${currentIndex}, numArrays: ${numArrays}, arrays content: ${JSON.stringify(arrays)}`
+          `currentIndex: ${currentIndex}, numArrays: ${numArrays}, arrays content: ${JSON.stringify(arrays)}`,
       );
     }
     for (const element of currentArray) {

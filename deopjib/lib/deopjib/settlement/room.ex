@@ -13,28 +13,28 @@ defmodule Deopjib.Settlement.Room do
   @default_name "정산영수증"
 
   json_api do
-    type("room")
+    type "room"
 
     routes do
-      base("rooms")
+      base "rooms"
 
-      includes([:payers])
+      includes [:payers]
 
-      get(:by_id, route: "/by_id/:id")
-      get(:by_short_id, route: "/by_short_id/:short_id")
+      get :by_id, route: "/by_id/:id"
+      get :by_short_id, route: "/by_short_id/:short_id"
 
-      post(:upsert_with_payers) do
-        route("/upsert_with_payers")
-        relationship_arguments([:payers])
+      post :upsert_with_payers do
+        route "/upsert_with_payers"
+        relationship_arguments [:payers]
       end
 
-      patch(:update_name, route: "name")
+      patch :update_name, route: "name"
     end
   end
 
   postgres do
-    table("rooms")
-    repo(Deopjib.Repo)
+    table "rooms"
+    repo Deopjib.Repo
   end
 
   # code_interface do
@@ -44,112 +44,109 @@ defmodule Deopjib.Settlement.Room do
   # end
 
   actions do
-    defaults([:destroy])
+    defaults [:destroy]
 
     read :read do
-      primary?(true)
+      primary? true
     end
 
     read :by_id do
-      get_by(:id)
+      get_by :id
     end
 
     create :create do
-      accept([:name])
-      primary?(true)
+      accept [:name]
+      primary? true
     end
 
     read :by_short_id do
-      get_by(:short_id)
+      get_by :short_id
     end
 
     create :upsert_with_payers do
-      upsert?(true)
-      upsert_identity(true)
-      argument(:id, :uuid, allow_nil?: true)
-      argument(:payers, {:array, :map})
+      upsert? true
+      upsert_identity true
+      argument :id, :uuid, allow_nil?: true
+      argument :payers, {:array, :map}
 
-      change(set_attribute(:name, @default_name))
-      change(manage_relationship(:payers, type: :direct_control))
+      change set_attribute(:name, @default_name)
+      change manage_relationship(:payers, type: :direct_control)
     end
 
     update :update_name do
-      accept([:name])
-      require_atomic?(false)
+      accept [:name]
+      require_atomic? false
     end
 
     update :put_payers_in_room do
-      argument(:payers, {:array, :map})
-      require_atomic?(false)
+      argument :payers, {:array, :map}
+      require_atomic? false
 
-      change(manage_relationship(:payers, type: :direct_control))
+      change manage_relationship(:payers, type: :direct_control)
     end
   end
 
   changes do
     alias Deopjib.Settlement.Room.Change
-    change(Change.SetExpirationAt, on: :create)
-    change(set_new_attribute(:short_id, &ShortId.generate/0), on: :create)
+    change Change.SetExpirationAt, on: :create
+    change set_new_attribute(:short_id, &ShortId.generate/0), on: :create
   end
 
   validations do
     alias Deopjib.Settlement.Room.Validate
 
-    validate(string_length(:name, min: 1, max: 13))
+    validate string_length(:name, min: 1, max: 13)
 
-    validate({Validate.MinMaxPayerInRoom, [min: 1, max: 10]},
+    validate {Validate.MinMaxPayerInRoom, [min: 1, max: 10]},
       where: [action_is(:upsert_with_payers)]
-    )
 
-    validate(Validate.PayerUniqueNameInRoom, where: [action_is(:upsert_with_payers)])
+    validate Validate.PayerUniqueNameInRoom, where: [action_is(:upsert_with_payers)]
   end
 
   attributes do
-    uuid_primary_key(:id) do
-      public?(true)
+    uuid_primary_key :id do
+      public? true
     end
 
     attribute :short_id, :string do
-      allow_nil?(true)
-      public?(true)
+      allow_nil? true
+      public? true
     end
 
     attribute :name, DeopjibUtils.Ash.Type.String do
-      allow_nil?(false)
-      public?(true)
+      allow_nil? false
+      public? true
 
-      constraints(
-        max_length: 8,
-        min_length: 1,
-        match: DeopjibUtils.Regex.general_name(),
-        allow_empty?: false
-      )
+      constraints max_length: 8,
+                  min_length: 1,
+                  match: DeopjibUtils.Regex.general_name(),
+                  allow_empty?: false
     end
 
     attribute :expiration_at, :utc_datetime do
-      allow_nil?(true)
-      public?(true)
+      allow_nil? true
+      public? true
     end
 
-    create_timestamp(:inserted_at)
+    create_timestamp :inserted_at
 
-    update_timestamp(:updated_at) do
-      select_by_default?(false)
+    update_timestamp :updated_at do
+      select_by_default? false
     end
   end
 
   relationships do
     has_many :payers, Deopjib.Settlement.Payer do
-      source_attribute(:id)
-      destination_attribute(:room_id)
-      public?(true)
+      source_attribute :id
+      destination_attribute :room_id
+      public? true
     end
   end
 
   aggregates do
     count :counts_of_payers, :payers do
-      public?(true)
-      default(0)
+      public? true
+      default 0
     end
   end
 
@@ -161,6 +158,6 @@ defmodule Deopjib.Settlement.Room do
   end
 
   identities do
-    identity(:unique_short_id, keys: [:short_id])
+    identity :unique_short_id, keys: [:short_id]
   end
 end

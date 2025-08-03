@@ -9,29 +9,31 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
 
   def render(assigns) do
     ~H"""
-    <div
-      class="grid grid-rows-[--spacing(12)_--spacing(9)_1fr] h-full"
-    >
+    <div class="grid grid-rows-[--spacing(12)_--spacing(9)_1fr] h-full">
       <header ui-layout="app" class="sticky top-0">
-      <%= if @is_room_loading do %>
-        <.header_contents room={@room} room_name_form={@room_name_form} />
-      <% end %>
+        <%= if @is_room_loading do %>
+          <.header_contents room={@room} room_name_form={@room_name_form} />
+        <% end %>
       </header>
 
-      <ul ui-layout="app" class="flex gap-1 pl-5 pr-2" >
+      <ul ui-layout="app" class="flex gap-1 pl-5 pr-2">
         <li>
-          <Button.render theme={:ghost} size={:lg} is_rounded >
+          <Button.render theme={:ghost} size={:lg} is_rounded>
             <Icon.render name={:pen} class="stroke-blue300 size-6 stroke-2" />
           </Button.render>
         </li>
         <%= if @selected_payer do %>
           <li :for={payer <- @room.payers}>
-            <Button.render theme={:gray} size={:lg} is_rounded data-selected={payer.id == @selected_payer.id}>
+            <Button.render
+              theme={:gray}
+              size={:lg}
+              is_rounded
+              data-selected={payer.id == @selected_payer.id}
+            >
               {payer.name}
             </Button.render>
           </li>
         <% end %>
-
       </ul>
 
       <div class="flex flex-col flex-1 mt-2 bg-lightgray100">
@@ -42,28 +44,29 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
                 <strong class="h-13 text-heading font-bold">{@selected_payer.total_paid || 0}</strong>
                 <span class="ml-1 text-body1 font-bold">원</span>
               </div>
-                <Button.render class="flex items-center  h-5">
-                  <Icon.render name={:plus} class="size-3 stroke-gray300 stroke-2 border-gray300 border-1 rounded-[2px]" />
-                  <span class="ml-1.5 text-darkgray100 text-caption2">계좌 추가</span>
-                </Button.render>
+              <Button.render class="flex items-center  h-5">
+                <Icon.render
+                  name={:plus}
+                  class="size-3 stroke-gray300 stroke-2 border-gray300 border-1 rounded-[2px]"
+                />
+                <span class="ml-1.5 text-darkgray100 text-caption2">계좌 추가</span>
+              </Button.render>
             </div>
             <span class="text-darkgray100 text-caption3 text-right self-end">
-              마지막 업데이트<br/>
+              마지막 업데이트<br />
               {DeopjibUtils.Date.simple_datetime_format(@room.updated_at)}
             </span>
           </div>
           <div ui-layout="app">
             <hr class="bg-black mt-4 h-0.5 shrink-0" />
           </div>
-          <div
-            ui-layout="app"
-            class="flex flex-col flex-auto"
-          >
-
-          <span
-            :if={length(@selected_payer.settled_items) == 0}
-            class="flex flex-auto justify-center items-center pb-40 text-gray300 text-caption1"
-          >등록한 내역이 없어!</span>
+          <div ui-layout="app" class="flex flex-col flex-auto">
+            <span
+              :if={length(@selected_payer.settled_items) == 0}
+              class="flex flex-auto justify-center items-center pb-40 text-gray300 text-caption1"
+            >
+              등록한 내역이 없어!
+            </span>
           </div>
         <% end %>
       </div>
@@ -72,7 +75,7 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
     <%= if !is_nil(@selected_payer) do %>
       <Modal.draw id="add-pay-item-modal" wrap_class="item-start self-end" show>
         <:content_wrapper>
-          <Modal.default_content_wrapper  class="pt-3 pb-1 w-full px-3 bg-white ">
+          <Modal.default_content_wrapper class="pt-3 pb-1 w-full px-3 bg-white ">
             <.form
               ui-layout="app"
               class="flex flex-col w-full h-full gap-1 group/form"
@@ -90,12 +93,7 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
                 required={true}
               >
                 <:input_right>
-                  <Button.render
-                    theme={:dark}
-                    size={:md}
-                    class="ml-0.5"
-                    type="submit"
-                  >
+                  <Button.render theme={:dark} size={:md} class="ml-0.5" type="submit">
                     추가
                   </Button.render>
                 </:input_right>
@@ -108,7 +106,6 @@ defmodule DeopjibWeb.Live.PayItemByPayer do
         </:content_wrapper>
       </Modal.draw>
     <% end %>
-
     """
   end
 

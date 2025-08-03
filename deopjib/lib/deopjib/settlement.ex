@@ -3,20 +3,18 @@ defmodule Deopjib.Settlement do
 
   alias Deopjib.Settlement.{Room, Payer, PayItem, PayItemExcludedPayer}
 
-  admin do
-    show?(true)
-  end
-
   json_api do
     routes do
-      base_route("rooms", Room) do
-        index(:read)
-        related(:payers, :read)
+      base_route "rooms", Room do
+        index :read
+        related :payers, :read
       end
     end
   end
 
-
+  admin do
+    show? true
+  end
 
   resources do
     resource Room do

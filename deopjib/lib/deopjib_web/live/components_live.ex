@@ -6,14 +6,14 @@ defmodule DeopjibWeb.Live.ComponentsLive do
 
   def render(assigns) do
     ~H"""
-    <div class="p-4 bg-gray100" >
+    <div class="p-4 bg-gray100">
       <.h2>Parts</.h2>
       <.tmpl title="Buttons">
-      <%= for size <- Button.sizes(), theme <- Button.themes() do %>
-        <Button.render size={size} theme={theme} >{"#{theme} - #{size}"}</Button.render>
-      <% end %>
-        <.br/>
-        rounded: <Button.render theme={:ghost} size={:lg} is_rounded >rounded</Button.render>
+        <%= for size <- Button.sizes(), theme <- Button.themes() do %>
+          <Button.render size={size} theme={theme}>{"#{theme} - #{size}"}</Button.render>
+        <% end %>
+        <.br /> rounded:
+        <Button.render theme={:ghost} size={:lg} is_rounded>rounded</Button.render>
         icon button:
         <Button.render class="p-2">
           <Icon.render name={:trash} class="stroke-black size-5" />
@@ -21,54 +21,66 @@ defmodule DeopjibWeb.Live.ComponentsLive do
       </.tmpl>
 
       <.tmpl title="Icons" is_wrap={false}>
-      <%= for cls <- ["stroke-primary", "stroke-black stroke-2", "fill-primary stroke-white"] do %>
-        <p class="text-subtitle my-2"> {cls}</p>
-        <.flex>
-        <%= for icon <- Icon.icons() do %>
-          <%= if cls == "stroke-primary" do %>
-          {Atom.to_string(icon) <> ":"}
-          <% end %>
-          <Icon.render name={icon} class={cls} />
+        <%= for cls <- ["stroke-primary", "stroke-black stroke-2", "fill-primary stroke-white"] do %>
+          <p class="text-subtitle my-2">{cls}</p>
+          <.flex>
+            <%= for icon <- Icon.icons() do %>
+              <%= if cls == "stroke-primary" do %>
+                {Atom.to_string(icon) <> ":"}
+              <% end %>
+              <Icon.render name={icon} class={cls} />
+            <% end %>
+          </.flex>
         <% end %>
-
-        </.flex>
-      <% end %>
       </.tmpl>
       <.tmpl title="Checkbox" class="bg-white">
-        <Checkbox.render  />
-        <Checkbox.render checked />
-
-        disabled:
-        <Checkbox.render disabled />
+        <Checkbox.render />
+        <Checkbox.render checked /> disabled: <Checkbox.render disabled />
         <Checkbox.render checked disabled />
       </.tmpl>
       <.tmpl title="number">
-        <Number.render value={99242492}/>
+        <Number.render value={99_242_492} />
       </.tmpl>
-
 
       <.tmpl title="input_box">
-      <%= for theme <- InputBox.themes() do %>
-        {theme}:
-        <InputBox.render placeholder="Placeholder" theme={theme} id="n1" name="n1" />
-      <% end %>
+        <%= for theme <- InputBox.themes() do %>
+          {theme}: <InputBox.render placeholder="Placeholder" theme={theme} id="n1" name="n1" />
+        <% end %>
         with class:
-        <InputBox.render placeholder="Placeholder" class="text-center bg-white" id="n2" name="n2"/>
+        <InputBox.render placeholder="Placeholder" class="text-center bg-white" id="n2" name="n2" />
 
-        <.br />
-        valid:
-        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="valid" id="n3" name="n3"/>
-        invalid:
-        <InputBox.render placeholder="Placeholder" theme={:big_rounded_border} class="text-center bg-white" valid="invalid" id="n4"name="n4"/>
+        <.br /> valid:
+        <InputBox.render
+          placeholder="Placeholder"
+          theme={:big_rounded_border}
+          class="text-center bg-white"
+          valid="valid"
+          id="n3"
+          name="n3"
+        /> invalid:
+        <InputBox.render
+          placeholder="Placeholder"
+          theme={:big_rounded_border}
+          class="text-center bg-white"
+          valid="invalid"
+          id="n4"
+          name="n4"
+        />
       </.tmpl>
       <.tmpl title="Chips">
-      <%= for theme <- Chip.themes() do %>
-        <Chip.render theme={theme} >{"#{theme}"}</Chip.render>
-      <% end %>
+        <%= for theme <- Chip.themes() do %>
+          <Chip.render theme={theme}>{"#{theme}"}</Chip.render>
+        <% end %>
       </.tmpl>
 
       <.tmpl title="Toast">
-        <Button.render theme={:dark} size={:md} phx-click={Toast.toast(%{message: "마지막 사람은 삭제 할 수 없어요."})} >open toast</Button.render>
+        <Button.render
+          theme={:dark}
+          size={:md}
+          phx-click={Toast.toast(%{message: "마지막 사람은 삭제 할 수 없어요."})}
+        >
+          open toast
+        </Button.render>
       </.tmpl>
 
       <.tmpl title="modal">
@@ -76,44 +88,36 @@ defmodule DeopjibWeb.Live.ComponentsLive do
           Open modal
         </Button.render>
 
-
-        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal")} >
+        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal")}>
           custom modal
         </Button.render>
 
-        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal-bottom")} >
+        <Button.render theme={:dark} size={:md} phx-click={Overlay.show("my-wrap-modal-bottom")}>
           custom bottom modal
         </Button.render>
 
         <Modal.modal id="my-modal">
           <Modal.title>title</Modal.title>
           <div>
-          hihi
+            hihi
           </div>
         </Modal.modal>
 
         <Modal.modal id="my-wrap-modal" wrap_class="item-end justify-center">
           <:content_wrapper>
             <p class="custom-wrapper bg-red size-12 text-white">
-            hihi
+              hihi
             </p>
           </:content_wrapper>
         </Modal.modal>
         <Modal.modal id="my-wrap-modal-bottom" wrap_class="item-end self-end">
           <:content_wrapper>
             <p class="justify-self-center custom-wrapper bg-primary size-12 text-white ">
-            hihi
+              hihi
             </p>
           </:content_wrapper>
         </Modal.modal>
-
-
-
-
       </.tmpl>
-
-
-
     </div>
     """
   end
@@ -127,15 +131,14 @@ defmodule DeopjibWeb.Live.ComponentsLive do
   defp tmpl(assigns) do
     ~H"""
     <div class={"mb-8 #{@class}"}>
-
       <h3 class="text-title mb-2 font-semibold">{@title}</h3>
       <%= if assigns.is_wrap do %>
-      <div class="flex gap-2 flex-wrap w-full">
+        <div class="flex gap-2 flex-wrap w-full">
+          {render_slot(@inner_block)}
+        </div>
+      <% else %>
         {render_slot(@inner_block)}
-      </div>
-       <% else %>
-       {render_slot(@inner_block)}
-       <% end %>
+      <% end %>
     </div>
     """
   end
@@ -145,7 +148,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
   defp h2(assigns) do
     ~H"""
     <h2 class="text-heading mb-4">
-    {render_slot(@inner_block)}
+      {render_slot(@inner_block)}
     </h2>
     """
   end
@@ -155,7 +158,7 @@ defmodule DeopjibWeb.Live.ComponentsLive do
   defp flex(assigns) do
     ~H"""
     <div class="flex gap-2 flex-wrap">
-    {render_slot(@inner_block)}
+      {render_slot(@inner_block)}
     </div>
     """
   end
