@@ -22,8 +22,8 @@ defmodule Deopjib.Application do
       # Start a worker by calling: Deopjib.Worker.start_link(arg)
       # {Deopjib.Worker, arg},
       # Start to serve requests, typically the last entry
-      DeopjibWeb.Endpoint,
       {AshAuthentication.Supervisor, [otp_app: :deopjib]},
+      {DeopjibWeb.Endpoint, phoenix_sync: Phoenix.Sync.plug_opts()},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

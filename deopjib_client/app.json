@@ -4,9 +4,7 @@
     "name": "deopjib-app",
     "slug": "deopjib-app",
     "version": "1.0.0",
-
     "orientation": "portrait",
-    // "icon": "./assets/images/icon.png",
     "scheme": "deopjib-app",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -36,7 +34,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "ios": {
       "supportsTablet": true,
@@ -53,7 +52,6 @@
     },
     "android": {
       "adaptiveIcon": {
-        // "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -61,11 +59,10 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      // "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "experiments": {
-      "typedRoutes": true,
+      "typedRoutes": true
     }
   }
 }

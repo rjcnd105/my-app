@@ -1,4 +1,3 @@
-import * as v from "valibot";
 import { vRoom } from "@/gen/api/valibot.gen.ts";
 import type * as Gen from "../gen/api/types.gen.ts";
 
@@ -7,7 +6,7 @@ type RoomAttrT = RoomT["attributes"];
 
 const Name = vRoom.entries.attributes.wrapped.entries.name;
 
-const newSchema = v.object({
+const newSchema = z.object({
   name: Name,
 });
 

@@ -88,6 +88,9 @@
                   listen_addresses = DB_LISTEN_ADDRESSES;
                   dataDir = "./data/pg";
                   port = DB_PORT;
+                  settings = {
+                     wal_level = "logical";
+                  };
                   initialScript = {
                     before = ''
                       CREATE ROLE ${DB_USER} WITH LOGIN PASSWORD '${DB_PASSWORD}' SUPERUSER;

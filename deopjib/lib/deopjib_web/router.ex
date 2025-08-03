@@ -19,11 +19,8 @@ defmodule DeopjibWeb.Router do
     plug(:accepts, ["json"])
     plug(:load_from_bearer)
     plug(:set_actor, :user)
-    # plug(OpenApiSpex.Plug.PutApiSpec, module: DeopjibWeb.AshJsonApiRouter)
-    plug(Osakit.Plugs.SpecProvider,
-      spec: DeopjibWeb.ApiSpec,
-      module: DeopjibWeb.AshJsonApiRouter
-    )
+    plug(OpenApiSpex.Plug.PutApiSpec, module: DeopjibWeb.AshJsonApiRouter)
+
   end
 
   scope "/api/json" do
