@@ -10,7 +10,8 @@
     :ash,
     :ecto,
     :ecto_sql,
-    :phoenix
+    :phoenix,
+    :phoenix_sync,
   ],
   subdirectories: ["priv/*/migrations"],
   plugins: [Spark.Formatter, Phoenix.LiveView.HTMLFormatter],

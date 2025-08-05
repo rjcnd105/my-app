@@ -1,18 +1,33 @@
-import { vRoom } from "@/gen/api/valibot.gen.ts";
-import type * as Gen from "../gen/api/types.gen.ts";
+import { createCollection } from "@tanstack/react-db";
+import { electricCollectionOptions } from "@tanstack/electric-db-collection";
+import { z } from "zod";
 
-type RoomT = Gen.Room;
-type RoomAttrT = RoomT["attributes"];
-
-const Name = vRoom.entries.attributes.wrapped.entries.name;
-
-const newSchema = z.object({
-  name: Name,
+export const RoomSchema = z.object({
+  id: z.string(),
+  name: z.string().max(8).min(1),
+  short_id: z.string(),
+  updated_at: z.string(),
 });
 
-export namespace Room {
-  export const schema = {
-    new: newSchema,
-  };
-  export type New = v.InferInput<typeof newSchema>;
-}
+export const RoomInputSchema = RoomSchema.omit({
+  id: true,
+  updated_at: true,
+  short_id: true,
+});
+
+type Room = z.output<typeof RoomSchema>;
+type RoomInput = z.output<typeof RoomInputSchema>;
+
+export const roomCollection = createCollection(
+  electricCollectionOptions<Room>({
+    id: "rooms",
+    shapeOptions: {
+      url: `${process.env.BASE_SERVER_URL}/v1/shape`,
+      params: {
+        table: "Room",
+      },
+    },
+
+    getKey: (item) => item.id,
+  }),
+);

@@ -52,7 +52,9 @@ function InputClearButton() {
   );
 }
 const inputClear: MouseEventHandler<HTMLButtonElement> = (e) => {
-  const inputEl = e.currentTarget.closest(".TextInput__wrapper")?.querySelector("input");
+  const inputEl = e.currentTarget
+    .closest(".TextInput__wrapper")
+    ?.querySelector("input");
 
   if (inputEl instanceof HTMLInputElement) {
     inputEl.value = "";

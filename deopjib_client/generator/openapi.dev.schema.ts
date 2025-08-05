@@ -1,7 +1,13 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-  input: "http://localhost:4000/api/json/json_schema",
+  input: `${process.env.BASE_SERVER_URL}/api/json/json_schema`,
   output: "src/gen/schema",
-  plugins: ["@hey-api/client-fetch", "@tanstack/react-query"],
+  plugins: [
+    {
+      name: "@hey-api/client-fetch",
+      runtimeConfigPath: "../src/utils/genClientConfig.ts",
+    },
+    "zod",
+  ],
 });

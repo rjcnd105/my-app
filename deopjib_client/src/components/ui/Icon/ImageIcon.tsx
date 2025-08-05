@@ -11,17 +11,12 @@ export function ImageIcon({ name, alt, ...props }: ImageIcon.Props) {
     return null;
   }
 
-  return (
-    <img
-      src={iconUrl}
-      alt={alt || `${name} icon`}
-      {...props}
-    />
-  );
+  return <img src={iconUrl} alt={alt || `${name} icon`} {...props} />;
 }
 
 export namespace ImageIcon {
-  export interface Props extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+  export interface Props
+    extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> {
     name: IconName;
     alt?: string;
   }

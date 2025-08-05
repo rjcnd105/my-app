@@ -33,36 +33,39 @@ import CalendarFile from "@/icons/calendar.svg?file";
 import CrossFile from "@/icons/cross.svg?file";
 import MinusFile from "@/icons/minus.svg?file";
 
-export const iconComponents: Record<IconName, React.ComponentType<SVGProps<SVGSVGElement>>> = {
-  "create": CreateComponent,
-  "pen": PenComponent,
-  "arrow_left": ArrowLeftComponent,
-  "arrow_up": ArrowUpComponent,
-  "share1": Share1Component,
-  "arrow_right": ArrowRightComponent,
-  "plus": PlusComponent,
-  "check": CheckComponent,
-  "arrow_down": ArrowDownComponent,
-  "trash": TrashComponent,
-  "calendar": CalendarComponent,
-  "cross": CrossComponent,
-  "minus": MinusComponent,
+export const iconComponents: Record<
+  IconName,
+  React.ComponentType<SVGProps<SVGSVGElement>>
+> = {
+  create: CreateComponent,
+  pen: PenComponent,
+  arrow_left: ArrowLeftComponent,
+  arrow_up: ArrowUpComponent,
+  share1: Share1Component,
+  arrow_right: ArrowRightComponent,
+  plus: PlusComponent,
+  check: CheckComponent,
+  arrow_down: ArrowDownComponent,
+  trash: TrashComponent,
+  calendar: CalendarComponent,
+  cross: CrossComponent,
+  minus: MinusComponent,
 };
 
 export const iconFiles: Record<IconName, string> = {
-  "create": CreateFile,
-  "pen": PenFile,
-  "arrow_left": ArrowLeftFile,
-  "arrow_up": ArrowUpFile,
-  "share1": Share1File,
-  "arrow_right": ArrowRightFile,
-  "plus": PlusFile,
-  "check": CheckFile,
-  "arrow_down": ArrowDownFile,
-  "trash": TrashFile,
-  "calendar": CalendarFile,
-  "cross": CrossFile,
-  "minus": MinusFile,
+  create: CreateFile,
+  pen: PenFile,
+  arrow_left: ArrowLeftFile,
+  arrow_up: ArrowUpFile,
+  share1: Share1File,
+  arrow_right: ArrowRightFile,
+  plus: PlusFile,
+  check: CheckFile,
+  arrow_down: ArrowDownFile,
+  trash: TrashFile,
+  calendar: CalendarFile,
+  cross: CrossFile,
+  minus: MinusFile,
 };
 
 export function getIconComponent(name: IconName) {
@@ -74,5 +77,19 @@ export function getIconFile(name: IconName) {
 }
 
 // 모든 아이콘 이름 배열 (개발 도구용)
-export const iconNames = ["create", "pen", "arrow_left", "arrow_up", "share1", "arrow_right", "plus", "check", "arrow_down", "trash", "calendar", "cross", "minus"] as const;
-export type IconName = typeof iconNames[number];
+export const iconNames = [
+  "create",
+  "pen",
+  "arrow_left",
+  "arrow_up",
+  "share1",
+  "arrow_right",
+  "plus",
+  "check",
+  "arrow_down",
+  "trash",
+  "calendar",
+  "cross",
+  "minus",
+] as const;
+export type IconName = (typeof iconNames)[number];

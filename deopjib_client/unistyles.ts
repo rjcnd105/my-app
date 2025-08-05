@@ -1,58 +1,32 @@
+import {
+  breakpoints,
+  lightColors,
+  radius,
+  shadows,
+  typography,
+  utils,
+} from "@/styles/tokens";
 import { StyleSheet } from "react-native-unistyles";
 
 const lightTheme = {
-  colors: {
-    background: "#FCFAF8",
-    foreground: "#EDEAE6",
-    typography: "#1B140C",
-    dimmed: "#ECE8E4",
-    tint: "#9A734C",
-    activeTint: "#1B140C",
-    link: "#1E3799",
-    accents: {
-      banana: "#F6E58D",
-      pumpkin: "#FFBE76",
-      apple: "#FF7979",
-      grass: "#BADC58",
-      storm: "#686DE0",
-    },
-  },
-  gap: (v: number) => v * 8,
-} as const;
+  colors: lightColors,
+  typography,
+  ...utils,
+  shadows,
+  radius,
+};
 
-const darkTheme = {
-  colors: {
-    background: "#221A11",
-    foreground: "#332618",
-    typography: "#FFFFFF",
-    dimmed: "#A8A198",
-    tint: "#C9AD92",
-    activeTint: "#FFFFFF",
-    link: "#0C2461",
-    accents: {
-      banana: "#f9CA24",
-      pumpkin: "#F0932B",
-      apple: "#EB4D4B",
-      grass: "#6AB04C",
-      storm: "#4834D4",
-    },
-  },
-  gap: (v: number) => v * 8,
-} as const;
-
-const appThemes = {
+const themes = {
   light: lightTheme,
-  dark: darkTheme,
+  dark: lightTheme,
 };
 
-const breakpoints = {
-  xs: 0,
-  sm: 768,
-  lg: 1600,
-};
+const settings = {
+  initialTheme: "light",
+} as const;
 
 type AppBreakpoints = typeof breakpoints;
-type AppThemes = typeof appThemes;
+type AppThemes = typeof themes;
 
 declare module "react-native-unistyles" {
   export interface UnistylesThemes extends AppThemes {}
@@ -60,12 +34,7 @@ declare module "react-native-unistyles" {
 }
 
 StyleSheet.configure({
-  settings: {
-    adaptiveThemes: true,
-  },
-  themes: {
-    light: lightTheme,
-    dark: darkTheme,
-  },
+  settings,
+  themes,
   breakpoints,
 });

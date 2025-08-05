@@ -46,6 +46,7 @@ defmodule Deopjib.MixProject do
       {:json_xema, "~> 0.6"},
       {:electric, "~> 1.0.21"},
       {:phoenix_sync, "~> 0.4.4"},
+      {:open_api_spex, "~> 3.21"},
       {:ash_authentication_phoenix, "~> 2.0"},
       {:picosat_elixir, "~> 0.2.3"},
       {:ash_authentication, "~> 4.0"},

@@ -1,6 +1,6 @@
 export function objKeys<T extends Record<string, unknown>>(
   obj: T,
-): ReadonlyArray<keyof T> {
+): readonly (keyof T)[] {
   return Object.keys(obj);
 }
 

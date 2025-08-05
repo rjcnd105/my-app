@@ -1,29 +1,39 @@
-type Slot = 'body' | 'headers' | 'path' | 'query';
+type Slot = "body" | "headers" | "path" | "query";
 
 export type Field =
   | {
-      in: Exclude<Slot, 'body'>;
+      in: Exclude<Slot, "body">;
+      /**
+       * Field name. This is the name we want the user to see and use.
+       */
       key: string;
+      /**
+       * Field mapped name. This is the name we want to use in the request.
+       * If omitted, we use the same value as `key`.
+       */
       map?: string;
     }
   | {
-      in: Extract<Slot, 'body'>;
+      in: Extract<Slot, "body">;
+      /**
+       * Key isn't required for bodies.
+       */
       key?: string;
       map?: string;
     };
 
 export interface Fields {
   allowExtra?: Partial<Record<Slot, boolean>>;
-  args?: ReadonlyArray<Field>;
+  args?: readonly Field[];
 }
 
-export type FieldsConfig = ReadonlyArray<Field | Fields>;
+export type FieldsConfig = readonly (Field | Fields)[];
 
 const extraPrefixesMap: Record<string, Slot> = {
-  $body_: 'body',
-  $headers_: 'headers',
-  $path_: 'path',
-  $query_: 'query',
+  $body_: "body",
+  $headers_: "headers",
+  $path_: "path",
+  $query_: "query",
 };
 const extraPrefixes = Object.entries(extraPrefixesMap);
 
@@ -41,7 +51,7 @@ const buildKeyMap = (fields: FieldsConfig, map?: KeyMap): KeyMap => {
   }
 
   for (const config of fields) {
-    if ('in' in config) {
+    if ("in" in config) {
       if (config.key) {
         map.set(config.key, {
           in: config.in,
@@ -65,14 +75,14 @@ interface Params {
 
 const stripEmptySlots = (params: Params) => {
   for (const [slot, value] of Object.entries(params)) {
-    if (value && typeof value === 'object' && !Object.keys(value).length) {
+    if (value && typeof value === "object" && !Object.keys(value).length) {
       delete params[slot as Slot];
     }
   }
 };
 
 export const buildClientParams = (
-  args: ReadonlyArray<unknown>,
+  args: readonly unknown[],
   fields: FieldsConfig,
 ) => {
   const params: Params = {
@@ -95,7 +105,7 @@ export const buildClientParams = (
       continue;
     }
 
-    if ('in' in config) {
+    if ("in" in config) {
       if (config.key) {
         const field = map.get(config.key)!;
         const name = field.map || config.key;

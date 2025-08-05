@@ -7,6 +7,9 @@ import expoConfig from "eslint-config-expo/flat.js";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import { configs, parser } from "typescript-eslint";
 
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member, import/namespace
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
+
 export default defineConfig([
   globalIgnores([
     "dist/*",
@@ -21,15 +24,24 @@ export default defineConfig([
     "docs/",
     "cli/",
     "expo-env.d.ts",
+    "src/gen",
   ]),
   expoConfig,
   eslintPluginPrettierRecommended,
   reactCompiler.configs.recommended,
   {
-    // plugins: {
-    //   'simple-import-sort': simpleImportSort,
-    // },
+    plugins: {
+      // 'simple-import-sort': simpleImportSort,
+      unicorn: eslintPluginUnicorn,
+    },
     rules: {
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "kebabCase",
+          ignore: ["/android", "/ios"],
+        },
+      ],
       "max-params": ["error", 3],
       "react/display-name": "off",
       "react/no-inline-styles": "off",

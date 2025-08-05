@@ -1,9 +1,9 @@
 defmodule Deopjib.Settlement.Room do
   use Ash.Resource,
-    otp_app: :deopjib,
-    domain: Deopjib.Settlement,
-    data_layer: AshPostgres.DataLayer,
-    extensions: [AshJsonApi.Resource]
+  otp_app: :deopjib,
+  domain: Deopjib.Settlement,
+  data_layer: AshPostgres.DataLayer,
+  extensions: [AshJsonApi.Resource]
 
   alias Deopjib.Settlement.Room.ShortId
   alias Deopjib.Settlement
@@ -113,7 +113,7 @@ defmodule Deopjib.Settlement.Room do
       public? true
     end
 
-    attribute :name, DeopjibUtils.Ash.Type.String do
+    attribute :name, :string do
       allow_nil? false
       public? true
 
@@ -132,6 +132,7 @@ defmodule Deopjib.Settlement.Room do
 
     update_timestamp :updated_at do
       select_by_default? false
+      public? true
     end
   end
 
@@ -152,6 +153,22 @@ defmodule Deopjib.Settlement.Room do
 
   def max_payer(), do: @max_payer
   def add_expiration_at(), do: @add_expiration_at
+
+  # def read(conn, _) do
+  #   query = Room
+  #     |> Ash.Query.for_read(:read)
+  #     |> Ash.Query.data_layer_query()
+
+  #   with {:ok, query} <- query do
+  #     conn
+  #     |> sync_render(conn, query)
+  #   else
+  #     {:error, error} ->
+  #       conn
+  #       |> put_status(:internal_server_error)
+  #       |> json(%{error: error})
+  #   end
+  # end
 
   defmodule ShortId do
     use Puid, total: 1.0e12, risk: 1.0e15

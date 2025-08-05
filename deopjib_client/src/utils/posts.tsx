@@ -16,7 +16,7 @@ export const fetchPost = createServerFn({ method: "GET" })
       .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${data}`)
       .then((r) => r.data)
       .catch((err) => {
-        console.error(err); 
+        console.error(err);
         if (err.status === 404) {
           throw notFound();
         }
@@ -30,7 +30,7 @@ export const fetchPosts = createServerFn({ method: "GET" }).handler(
   async () => {
     console.info("Fetching posts...");
     return axios
-      .get<Array<PostType>>("https://jsonplaceholder.typicode.com/posts")
+      .get<PostType[]>("https://jsonplaceholder.typicode.com/posts")
       .then((r) => r.data.slice(0, 10));
   },
 );

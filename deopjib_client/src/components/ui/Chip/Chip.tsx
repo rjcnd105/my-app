@@ -10,7 +10,6 @@ export function Chip({ children, theme, className, ...rest }: Chip.Props) {
 
       <button className="flex justify-center items-center w-6 h-full" {...rest}>
         <div className={iconWrapStyle({ theme })}>
-
           <Icon name="cross" />
         </div>
       </button>
@@ -44,19 +43,22 @@ const wrapStyle = tva(
   },
 );
 
-const iconWrapStyle = tva("grid place-items-center size-3.5 rounded-full [&_svg]:size-3 stroke-white", {
-  variants: {
-    theme: {
-      [white]: "bg-gray200",
-      [secondary]: "bg-primary",
-      [primary]: "bg-blue500",
-      [gray]: "bg-gray200",
+const iconWrapStyle = tva(
+  "grid place-items-center size-3.5 rounded-full [&_svg]:size-3 stroke-white",
+  {
+    variants: {
+      theme: {
+        [white]: "bg-gray200",
+        [secondary]: "bg-primary",
+        [primary]: "bg-blue500",
+        [gray]: "bg-gray200",
+      },
+    },
+    defaultVariants: {
+      theme: white,
     },
   },
-  defaultVariants: {
-    theme: white,
-  },
-});
+);
 
 export namespace Chip {
   export const themes = chipThemes;
