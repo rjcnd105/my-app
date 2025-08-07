@@ -1,8 +1,8 @@
 [tools.erlang]
-version = "28"
+version = "latest"
 
 [tools.elixir]
-version = "1.19.0-rc.0-otp-28"
+version = "latest"
 
 [tools.just]
 version = "latest"
