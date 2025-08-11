@@ -1,7 +1,7 @@
 import {
+  createFileRoute,
   createRootRoute,
   Outlet,
-  createFileRoute,
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/room/")({

@@ -1,6 +1,0 @@
-@reference "../../../styles/app.css";
-
-.error {
-  @apply bg-warning;
-  /* background: var(--color-warning); */
-}

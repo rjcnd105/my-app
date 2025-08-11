@@ -34,6 +34,7 @@ defmodule Deopjib.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:usage_rules, "~> 0.1", only: [:dev]},
       {:ash_admin, "~> 0.13"},
       {:ash_cloak, "~> 0.1"},
       {:cloak, "~> 1.1"},

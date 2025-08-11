@@ -35,13 +35,13 @@ export default defineConfig([
       unicorn: eslintPluginUnicorn,
     },
     rules: {
-      "unicorn/filename-case": [
-        "error",
-        {
-          case: "kebabCase",
-          ignore: ["/android", "/ios"],
-        },
-      ],
+      // "unicorn/filename-case": [
+      //   "error",
+      //   {
+      //     case: "kebabCase",
+      //     ignore: ["/android", "/ios"],
+      //   },
+      // ],
       "max-params": ["error", 3],
       "react/display-name": "off",
       "react/no-inline-styles": "off",

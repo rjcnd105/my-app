@@ -38,6 +38,9 @@ module.exports = (api) => {
           root: "src",
         },
       ],
+
+      "react-native-reanimated/plugin",
+      "@babel/plugin-proposal-export-namespace-from",
     ],
   };
 };

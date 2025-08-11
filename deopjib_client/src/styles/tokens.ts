@@ -36,11 +36,24 @@ export const lightColors = {
   none: "transparent",
 
   // Semantic Colors
-  primary: "#4E67F8",
-  secondary: "#96A5FF",
-  sub: "#FFFFFF",
-  warning: "#FB6258",
-  success: "#2FB3FE",
+  get bg() {
+    return this.gray100;
+  },
+  get primary() {
+    return this.blue400;
+  },
+  get secondary() {
+    return this.blue300;
+  },
+  get sub() {
+    return this.white;
+  },
+  get warning() {
+    return this.red;
+  },
+  get success() {
+    return this.blue500;
+  },
   dimm: "rgba(0, 0, 0, 0.4)",
 } as const;
 
@@ -106,7 +119,7 @@ export const shadows = {
 } as const satisfies Record<string, BoxShadowValue>;
 
 export const utils = {
-  gap: (v: number) => v * 4,
+  gap: (v: number) => v * 2,
 } as const;
 
 export const breakpoints = {
@@ -114,4 +127,4 @@ export const breakpoints = {
   sm: 640,
   md: 1024,
   lg: 1600,
-};
+} as const;

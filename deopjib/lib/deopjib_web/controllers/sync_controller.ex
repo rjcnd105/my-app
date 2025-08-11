@@ -14,7 +14,7 @@ defmodule DeopjibWeb.SyncController do
 
     with {:ok, query} <- query do
       conn
-      |> sync_render(conn, query)
+      |> sync_render(query)
     else
       {:error, error} ->
         conn
@@ -23,6 +23,6 @@ defmodule DeopjibWeb.SyncController do
     end
 
     conn
-    |> sync_render(conn, query)
+    |> sync_render(query)
   end
 end
