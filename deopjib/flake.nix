@@ -110,7 +110,6 @@
                   environment.PGWEB_DATABASE_URL = pgcfg.connectionURI {
                     dbName = DB_NAME;
                   };
-                  port = 8432;
                 };
             };
 

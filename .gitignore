@@ -14,10 +14,7 @@ devenv.local.nix
 .local.env
 
 .vscode
-**/data/pg
-dutchpay_umbrella/deps
-
-_dutchpay_umbrella
+**/data/pg/*
 
 
 **/node_modules
