@@ -1,16 +1,5 @@
-[tools.erlang]
-version = "latest"
-
-[tools.elixir]
-version = "latest"
 
 [tools.just]
-version = "latest"
-
-[tools.age]
-version = "latest"
-
-[tools.elixir-ls]
 version = "latest"
 
 [tools.flyctl]

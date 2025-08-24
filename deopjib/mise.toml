@@ -1,0 +1,12 @@
+[tools.erlang]
+version = "latest"
+
+[tools.elixir]
+version = "latest"
+
+
+[tools.age]
+version = "latest"
+
+[tools.elixir-ls]
+version = "latest"
