@@ -14,7 +14,7 @@ devenv.local.nix
 .local.env
 
 .vscode
-data/pg
+**/data/pg
 dutchpay_umbrella/deps
 
 _dutchpay_umbrella
@@ -27,3 +27,5 @@ _dutchpay_umbrella
 **/_assets
 
 .history
+
+
