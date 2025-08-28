@@ -8,33 +8,56 @@
   };
 
   outputs =
-     let
-
-      unquote = s: builtins.replaceStrings [ "\"" ] [ "" ] s;
-
-      env = builtins.fromJSON (builtins.readFile ./.env-dev.json);
-
-    in
-
-
-    inputs@{
+     inputs@{
       self,
       nixpkgs,
       flake-parts,
       ...
     }:
+    let
+      unquote = s: builtins.replaceStrings [ "\"" ] [ "" ] s;
+      env = builtins.fromJSON (builtins.readFile ./.env-dev.json);
+    in
     flake-parts.lib.mkFlake { inherit inputs self;  } {
+      imports = [
+        inputs.process-compose-flake.flakeModule
+      ];
       systems = [
         "aarch64-darwin"
         "aarch64-linux"
         "x86_64-linux"
       ];
+
+      debug = true;
       perSystem =
         {
           self',
           system,
           lib,
-       }
-    }
+          ...
+        }:
+        let
+          pkgs = import nixpkgs {
+            system = system;
+            config = {
+              allowUnfreePredicate =
+                pkg:
+                  builtins.elem (lib.getName pkg) [
+                    "timescaledb"
+                  ];
+            };
+          };
+        in
+        {
 
+          _module.args.pkgs = pkgs;
+
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [ self'.process-compose.devShell ];
+            packages = with pkgs; [
+              just
+            ];
+          };
+        };
+    };
 }
