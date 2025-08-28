@@ -1,0 +1,5 @@
+{
+  // 파일명 jsonc -> json 변경 후 사용
+  // cachix 빌드 캐시 인증 토큰
+  "CACHIX_AUTH_TOKEN": ""
+}
