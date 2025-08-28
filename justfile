@@ -12,6 +12,8 @@
 
 @dev-up: (_shell-run "nix run .#app-services --impure")
 
+@db-up: (_shell-run "cd deopjib_devops && nix run .#app-services --impure")
+
 # @web-router: (_umbrella-run "mix phx.routes DutchpayWeb.Router")
 
 # @start: (_umbrella-run "mix phx.server")
@@ -20,4 +22,4 @@
 
 @psql: (_shell-run "psql -U postgres -h localhost")
 
-@read-postmaster-id: (_shell-run "cat /Users/hj/study_ex/my-backend/data/pg/postmaster.pid")
+# @read-postmaster-id: (_shell-run "cat /Users/hj/study_ex/my-backend/data/pg/postmaster.pid")
