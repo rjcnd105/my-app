@@ -61,10 +61,6 @@
             [ ]
             ++ lib.optionals pkgs.stdenv.isLinux [
               pkgs.inotify-tools
-            ]
-            ++ lib.optionals pkgs.stdenv.isDarwin [
-              pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-              pkgs.darwin.apple_sdk.frameworks.CoreServices
             ];
 
         in
