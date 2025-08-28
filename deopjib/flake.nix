@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs.follows = "nixpkgs";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
   };
@@ -26,7 +27,7 @@
 
     in
 
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    flake-parts.lib.mkFlake { inherit inputs self;  } {
       imports = [
         inputs.process-compose-flake.flakeModule
       ];
@@ -60,6 +61,10 @@
             [ ]
             ++ lib.optionals pkgs.stdenv.isLinux [
               pkgs.inotify-tools
+            ]
+            ++ lib.optionals pkgs.stdenv.isDarwin [
+              pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+              pkgs.darwin.apple_sdk.frameworks.CoreServices
             ];
 
         in
@@ -86,7 +91,7 @@
                   enable = true;
                   package = pkgs.postgresql_18;
                   listen_addresses = DB_LISTEN_ADDRESSES;
-                  dataDir = "./data/pg";
+                  dataDir = "./.data/pg";
                   port = DB_PORT;
                   settings = {
                      wal_level = "logical";

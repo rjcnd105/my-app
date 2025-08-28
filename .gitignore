@@ -14,7 +14,7 @@ devenv.local.nix
 .local.env
 
 .vscode
-**/data/pg/*
+**/.data/pg/*
 
 
 **/node_modules
