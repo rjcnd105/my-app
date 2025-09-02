@@ -3,11 +3,11 @@ config :ash, policies: [show_policy_breakdowns?: true]
 
 # Configure your database
 config :deopjib, Deopjib.Repo,
-  username: System.get_env("DB_USER"),
-  password: System.get_env("DB_PASSWORD"),
-  hostname: System.get_env("DB_HOST"),
-  port: System.get_env("DB_PORT") |> String.to_integer(),
-  database: System.get_env("DB_NAME"),
+  username: System.get_env("PGUSER"),
+  password: System.get_env("PGPASSWORD"),
+  hostname: System.get_env("PGHOSTADDR"),
+  port: System.get_env("PGPORT") |> String.to_integer(),
+  database: System.get_env("PGDATABASE"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
