@@ -15,6 +15,8 @@
     }:
     let
       env = builtins.fromJSON (builtins.readFile ../.env-dev.json);
+      PGDATA = builtins.getEnv "PGDATA";
+
     in
     flake-parts.lib.mkFlake { inherit inputs self;  } {
       imports = [
@@ -51,6 +53,7 @@
             ++ lib.optionals pkgs.stdenv.isLinux [
               pkgs.inotify-tools
             ];
+          DATA_DIR = PGDATA;
         in
         {
           _module.args.pkgs = pkgs;
@@ -66,7 +69,7 @@
                   enable = true;
                   package = pkgs.postgresql_18;
                   listen_addresses = env.PGHOSTADDR;
-                  dataDir = "${self}/.data/pg";
+                  dataDir = DATA_DIR;
 
                   port = env.PGPORT;
                   settings = {
