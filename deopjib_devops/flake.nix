@@ -68,7 +68,7 @@
                 postgres."pg" = {
                   enable = true;
                   package = pkgs.postgresql_18;
-                  listen_addresses = env.PGHOSTADDR;
+                  listen_addresses = env.PGHOST;
                   dataDir = DATA_DIR;
 
                   port = env.PGPORT;

@@ -5,7 +5,7 @@ config :ash, policies: [show_policy_breakdowns?: true]
 config :deopjib, Deopjib.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
-  hostname: System.get_env("PGHOSTADDR"),
+  hostname: System.get_env("PGHOST"),
   port: System.get_env("PGPORT") |> String.to_integer(),
   database: System.get_env("PGDATABASE"),
   stacktrace: true,
