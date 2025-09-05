@@ -77,7 +77,7 @@ config :phoenix_sync,
   repo: Deopjib.Repo
 
 
-config :phoenix_sync, Electric.Client, base_url: "http://localhost:3000"
+# config :phoenix_sync, Electric.Client, base_url: "http://localhost:3000"
 # Configures the endpoint
 config :deopjib, DeopjibWeb.Endpoint,
   url: [host: "localhost"],

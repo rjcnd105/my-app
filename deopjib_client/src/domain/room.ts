@@ -17,14 +17,3 @@ export const RoomInputSchema = RoomSchema.omit({
 
 type Room = z.output<typeof RoomSchema>;
 type RoomInput = z.output<typeof RoomInputSchema>;
-
-export const roomCollection = createCollection(
-  electricCollectionOptions<Room>({
-    id: "rooms",
-    shapeOptions: {
-      url: `${process.env.BASE_SERVER_URL}/v1/shape/room_read`,
-    },
-
-    getKey: (item) => item.id,
-  }),
-);
