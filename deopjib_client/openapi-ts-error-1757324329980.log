@@ -1,0 +1,8 @@
+[2025-09-08T09:38:49.981Z] Error: Request failed with status 200: 
+Stack:
+Error: Request failed with status 200: 
+    at ra (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/dist/index.cjs:54:8327)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.all (index 0)
+    at async TV (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/dist/index.cjs:1350:6572)
+    at async start (/Users/hj/study_ex/my-backend/deopjib_client/node_modules/@hey-api/openapi-ts/bin/index.cjs:139:21)

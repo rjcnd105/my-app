@@ -4,34 +4,34 @@
 import { type SVGProps } from "react";
 
 // React 컴포넌트로 import
-import CreateComponent from "@/icons/create.svg";
-import PenComponent from "@/icons/pen.svg";
-import ArrowLeftComponent from "@/icons/arrow_left.svg";
-import ArrowUpComponent from "@/icons/arrow_up.svg";
-import Share1Component from "@/icons/share1.svg";
-import ArrowRightComponent from "@/icons/arrow_right.svg";
-import PlusComponent from "@/icons/plus.svg";
-import CheckComponent from "@/icons/check.svg";
-import ArrowDownComponent from "@/icons/arrow_down.svg";
-import TrashComponent from "@/icons/trash.svg";
-import CalendarComponent from "@/icons/calendar.svg";
-import CrossComponent from "@/icons/cross.svg";
-import MinusComponent from "@/icons/minus.svg";
+import CreateComponent from "@/shared/ui/Icon/svgs/create.svg";
+import PenComponent from "@/shared/ui/Icon/svgs/pen.svg";
+import ArrowLeftComponent from "@/shared/ui/Icon/svgs/arrow_left.svg";
+import ArrowUpComponent from "@/shared/ui/Icon/svgs/arrow_up.svg";
+import Share1Component from "@/shared/ui/Icon/svgs/share1.svg";
+import ArrowRightComponent from "@/shared/ui/Icon/svgs/arrow_right.svg";
+import PlusComponent from "@/shared/ui/Icon/svgs/plus.svg";
+import CheckComponent from "@/shared/ui/Icon/svgs/check.svg";
+import ArrowDownComponent from "@/shared/ui/Icon/svgs/arrow_down.svg";
+import TrashComponent from "@/shared/ui/Icon/svgs/trash.svg";
+import CalendarComponent from "@/shared/ui/Icon/svgs/calendar.svg";
+import CrossComponent from "@/shared/ui/Icon/svgs/cross.svg";
+import MinusComponent from "@/shared/ui/Icon/svgs/minus.svg";
 
 // 파일 URL로 import
-import CreateFile from "@/icons/create.svg?file";
-import PenFile from "@/icons/pen.svg?file";
-import ArrowLeftFile from "@/icons/arrow_left.svg?file";
-import ArrowUpFile from "@/icons/arrow_up.svg?file";
-import Share1File from "@/icons/share1.svg?file";
-import ArrowRightFile from "@/icons/arrow_right.svg?file";
-import PlusFile from "@/icons/plus.svg?file";
-import CheckFile from "@/icons/check.svg?file";
-import ArrowDownFile from "@/icons/arrow_down.svg?file";
-import TrashFile from "@/icons/trash.svg?file";
-import CalendarFile from "@/icons/calendar.svg?file";
-import CrossFile from "@/icons/cross.svg?file";
-import MinusFile from "@/icons/minus.svg?file";
+import CreateFile from "@/shared/ui/Icon/svgs/create.svg?file";
+import PenFile from "@/shared/ui/Icon/svgs/pen.svg?file";
+import ArrowLeftFile from "@/shared/ui/Icon/svgs/arrow_left.svg?file";
+import ArrowUpFile from "@/shared/ui/Icon/svgs/arrow_up.svg?file";
+import Share1File from "@/shared/ui/Icon/svgs/share1.svg?file";
+import ArrowRightFile from "@/shared/ui/Icon/svgs/arrow_right.svg?file";
+import PlusFile from "@/shared/ui/Icon/svgs/plus.svg?file";
+import CheckFile from "@/shared/ui/Icon/svgs/check.svg?file";
+import ArrowDownFile from "@/shared/ui/Icon/svgs/arrow_down.svg?file";
+import TrashFile from "@/shared/ui/Icon/svgs/trash.svg?file";
+import CalendarFile from "@/shared/ui/Icon/svgs/calendar.svg?file";
+import CrossFile from "@/shared/ui/Icon/svgs/cross.svg?file";
+import MinusFile from "@/shared/ui/Icon/svgs/minus.svg?file";
 
 export const iconComponents: Record<IconName, React.ComponentType<SVGProps<SVGSVGElement>>> = {
   "create": CreateComponent,
@@ -74,5 +74,5 @@ export function getIconFile(name: IconName) {
 }
 
 // 모든 아이콘 이름 배열 (개발 도구용)
-export const iconNames = ["create", "pen", "arrow_left", "arrow_up", "share1", "arrow_right", "plus", "check", "arrow_down", "trash", "calendar", "cross", "minus"] as const;
-export type IconName = typeof iconNames[number];
+export const availableIcons = ["create", "pen", "arrow_left", "arrow_up", "share1", "arrow_right", "plus", "check", "arrow_down", "trash", "calendar", "cross", "minus"] as const;
+export type IconName = typeof availableIcons[number];

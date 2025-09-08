@@ -6,11 +6,12 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 const { plugins: _, ...reactHooksConfig } = reactHooks.configs["recommended-latest"];
 
 export default defineConfig({
-  ignores: ["dist", ".wrangler", ".vercel", ".netlify", ".output", "build/"],
+  ignores: ["dist", ".wrangler", ".vercel", ".netlify", ".output", "build/", "**/gen/**/*"],
   files: ["**/*.{ts,tsx}"],
   languageOptions: {
     parser: tseslint.parser,
@@ -31,9 +32,12 @@ export default defineConfig({
     ...pluginRouter.configs["flat/recommended"],
     reactHooksConfig,
     react.configs["recommended-type-checked"],
+    ...eslintPluginPrettierRecommended,
   ],
   rules: {
     // You can override any rules here
     "@typescript-eslint/no-deprecated": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-namespace": "off",
   },
 });

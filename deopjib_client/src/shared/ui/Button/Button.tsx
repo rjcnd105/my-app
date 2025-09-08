@@ -12,6 +12,7 @@ export function Button({
 }: Button.Props) {
   return (
     <button
+      type="button"
       className={style({ theme, selected, size }, disabledClass, className)}
       data-selected={selected}
       {...rest}
@@ -67,6 +68,7 @@ const style = tva("my-button", {
     theme: "none",
   },
 });
+
 
 export namespace Button {
   export type StyleProps = VariantProps<typeof style>;
