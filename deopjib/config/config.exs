@@ -71,10 +71,10 @@ config :deopjib,
   generators: [timestamp_type: :utc_datetime],
   ash_domains: [Deopjib.Accounts, Deopjib.Settlement]
 
-config :phoenix_sync,
-  env: config_env(),
-  mode: :embedded,
-  repo: Deopjib.Repo
+# config :phoenix_sync,
+#   env: config_env(),
+#   mode: :embedded,
+#   repo: Deopjib.Repo
 
 
 # config :phoenix_sync, Electric.Client, base_url: "http://localhost:3000"

@@ -4,7 +4,7 @@ defmodule DeopjibWeb.Router do
   use AshAuthentication.Phoenix.Router
 
   import AshAuthentication.Plug.Helpers
-  import Phoenix.Sync.Router
+  # import Phoenix.Sync.Router
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -42,12 +42,12 @@ defmodule DeopjibWeb.Router do
 
 
 
-  scope "/shapes" do
-    forward "/", Phoenix.Sync.Electric
-    # pipe_through :sync
+  # scope "/shapes" do
+  #   forward "/", Phoenix.Sync.Electric
+  #   pipe_through :sync
 
-    sync "/rooms", Deopjib.Settlement.Room
-  end
+  #   sync "/rooms", Deopjib.Settlement.Room
+  # end
 
   scope "/api", DeopjibWeb do
     pipe_through(:api)

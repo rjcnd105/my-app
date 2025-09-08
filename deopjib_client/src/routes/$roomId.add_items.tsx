@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NotFound } from "@/shared/ui/NotFound";
 import { PostErrorComponent } from "@/shared/ui/PostError";
-import { fetchPost } from "../shared/utils/posts";
 
 export const Route = createFileRoute("/$roomId/add_items")({
-  loader: ({ params: { roomId } }) => fetchPost({ data: roomId }),
   errorComponent: PostErrorComponent,
   component: PostComponent,
   notFoundComponent: () => {
@@ -13,12 +11,11 @@ export const Route = createFileRoute("/$roomId/add_items")({
 });
 
 function PostComponent() {
-  const post = Route.useLoaderData();
 
   return (
     <div className="space-y-2">
-      <h4 className="text-xl font-bold underline">{post.title}</h4>
-      <div className="text-sm">{post.body}</div>
+      {/* <h4 className="text-xl font-bold underline">{post.title}</h4>
+      <div className="text-sm">{post.body}</div> */}
       dd
     </div>
   );

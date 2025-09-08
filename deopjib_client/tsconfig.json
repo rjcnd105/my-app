@@ -20,6 +20,7 @@
     "verbatimModuleSyntax": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,
+    "exactOptionalPropertyTypes": true,
     "target": "ESNext",
     "rewriteRelativeImportExtensions": true,
     "allowJs": true,

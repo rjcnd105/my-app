@@ -26,3 +26,5 @@ devenv.local.nix
 .history
 
 
+**/.direnv
+

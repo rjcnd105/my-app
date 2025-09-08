@@ -23,7 +23,8 @@ defmodule Deopjib.Application do
       # {Deopjib.Worker, arg},
       # Start to serve requests, typically the last entry
       {AshAuthentication.Supervisor, [otp_app: :deopjib]},
-      {DeopjibWeb.Endpoint, phoenix_sync: Phoenix.Sync.plug_opts()},
+      {DeopjibWeb.Endpoint, []},
+      # {DeopjibWeb.Endpoint, phoenix_sync: Phoenix.Sync.plug_opts()},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

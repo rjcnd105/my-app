@@ -45,7 +45,7 @@ defmodule Deopjib.MixProject do
       {:puid, "~> 2.3"},
       {:ash_state_machine, "~> 0.2"},
       {:json_xema, "~> 0.6"},
-      {:phoenix_sync, "~> 0.5.0"},
+      # {:phoenix_sync, "~> 0.5.0"},
       {:open_api_spex, "~> 3.21"},
       {:ash_authentication_phoenix, "~> 2.0"},
       {:picosat_elixir, "~> 0.2.3"},
