@@ -1,5 +1,6 @@
 import { HeadlessMantineProvider } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
+
+
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -10,75 +11,21 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { OverlayProvider } from "overlay-kit";
-import { DefaultCatchBoundary } from "@/components/DefaultCatchBoundary";
-import { NotFound } from "@/components/NotFound";
-import { seo } from "@/utils/seo";
+import { DefaultCatchBoundary } from "@/shared/ui/DefaultCatchBoundary";
+import { NotFound } from "@/shared/ui/NotFound";
+import { seo } from "@/shared/utils/seo";
 import "../styles/app.css";
+const RootLayout = () => (
+  <>
+    <div id="modals-root" />
 
-export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-}>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      ...seo({
-        title: "덮집회의",
-        description:
-          "TanStack Start is a type-safe, client-first, full-stack React framework.",
-      }),
-    ],
-    links: [
-      // { rel: "stylesheet", href: appCss },
-      {
-        rel: "apple-touch-icon",
-        sizes: "180x180",
-        href: "/apple-touch-icon.png",
-      },
-      // {
-      //   rel: "icon",
-      //   href: "icons/icon_sprite.svg?url",
-      // },
-      {
-        rel: "icon",
-        type: "image/png",
-        sizes: "32x32",
-        href: "/favicon-32x32.png",
-      },
-      {
-        rel: "icon",
-        type: "image/png",
-        sizes: "16x16",
-        href: "/favicon-16x16.png",
-      },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
-      { rel: "icon", href: "/favicon.ico" },
-    ],
-  }),
-  errorComponent: (props) => {
-    return (
-      <RootDocument>
-        <DefaultCatchBoundary {...props} />
-      </RootDocument>
-    );
-  },
-  notFoundComponent: () => <NotFound />,
-  component: RootComponent,
-});
+    <Outlet />
+    <TanStackRouterDevtools position="bottom-right" />
+    <ReactQueryDevtools buttonPosition="bottom-left" />
+    <Scripts />
 
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
+  </>
+)
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -99,15 +46,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Home
           </Link>{" "}
           <Link
-            to="/room/$shortId/add_pay_items"
+            to="/$roomId/add_items"
             activeProps={{
               className: "font-bold",
             }}
             params={{
-              shortId: "10",
-            }}
-            search={{
-              payer: "10",
+              roomId: "10",
             }}
           >
             room10
@@ -139,15 +83,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
         <hr />
-        <HeadlessMantineProvider>
-          <OverlayProvider />
-          <ModalsProvider>
-            <div id="app-container">{children}</div>
-          </ModalsProvider>
-        </HeadlessMantineProvider>
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
-        <Scripts />
+
       </body>
     </html>
   );

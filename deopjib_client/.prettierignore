@@ -1,4 +1,22 @@
 **/build
 **/public
-pnpm-lock.yaml
 routeTree.gen.ts
+
+# lockfiles
+bun.lock
+package-lock.json
+yarn.lock
+bun.lock
+
+# misc
+routeTree.gen.ts
+.tanstack/
+drizzle/
+.drizzle/
+
+# build outputs
+.vercel
+.output
+.wrangler
+.netlify
+dist

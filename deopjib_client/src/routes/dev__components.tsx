@@ -1,105 +1,105 @@
 import { useModalsStack } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@/components/atom/Button/Button";
-import { Checkbox } from "@/components/atom/Checkbox/Checkbox";
-import { Chip } from "@/components/atom/Chip/Chip";
-import { Icon } from "@/components/atom/Icon/Icon";
-import { iconNames } from "@/components/atom/Icon/IconMap.gen";
-import { TextInput } from "@/components/atom/Input/TextInput";
-import { BottomModal } from "@/components/atom/Modal/BottomModal";
-import { ConfirmModal } from "@/components/atom/Modal/ConfirmModal";
-import { Modal } from "@/components/atom/Modal/Modal";
-import { joinMap } from "@/utils/functions";
-import { objKeys } from "@/utils/obj";
-import { cn } from "@/utils/styles";
+import { Button } from "@/shared/ui/Button/Button";
+import { Checkbox } from "@/shared/ui/Checkbox/Checkbox";
+import { Chip } from "@/shared/ui/Chip/Chip";
+import { Icon } from "@/shared/ui/Icon/Icon";
+import { iconNames } from "@/shared/ui/Icon/IconMap.gen";
+import { TextInput } from "@/shared/ui/Input/TextInput";
+import { BottomModal } from "@/shared/ui/Modal/BottomModal";
+import { ConfirmModal } from "@/shared/ui/Modal/ConfirmModal";
+import { Modal } from "@/shared/ui/Modal/Modal";
+import { joinMap } from "@/shared/utils/functions";
+import { objKeys } from "@/shared/utils/obj";
+import { cn } from "@/shared/utils/styles";
 
 export const Route = createFileRoute("/dev__components")({
-  component: RouteComponent,
+	component: RouteComponent,
 });
 
 function RouteComponent() {
-  const stack = useModalsStack([
-    "confirmModal",
-    "customModal",
-    "bottomSheetModal",
-  ]);
-  const [_bottomModalOpen, _setBottomModalOpen] = useState(false);
-  const [text, setText] = useState("");
-  return (
-    <div className="[&_h3]:text-title [&_h3]:mt-2 [&_h3]:mb-1 px-4">
-      <h3>Buttons</h3>
-      <Wrapper className="bg-gray100">
-        {joinMap(
-          [objKeys(Button.themes), objKeys(Button.sizes)],
-          (theme, size) => (
-            <Button key={`${theme}-${size}`} theme={theme} size={size}>
-              {theme}_{size}
-            </Button>
-          ),
-        )}
-      </Wrapper>
-      <h3>Icons</h3>
-      <Wrapper>
-        {iconNames.map((name) => (
-          <span className="flex items-center" key={name}>
-            <Icon name={name} />
-            &nbsp;
-            {name}
-          </span>
-        ))}
-      </Wrapper>
-      <h3>Checkbox</h3>
-      <Checkbox />
+	const stack = useModalsStack([
+		"confirmModal",
+		"customModal",
+		"bottomSheetModal",
+	]);
+	const [_bottomModalOpen, _setBottomModalOpen] = useState(false);
+	const [text, setText] = useState("");
+	return (
+		<div className="[&_h3]:text-title [&_h3]:mt-2 [&_h3]:mb-1 px-4">
+			<h3>Buttons</h3>
+			<Wrapper className="bg-gray100">
+				{joinMap(
+					[objKeys(Button.themes), objKeys(Button.sizes)],
+					(theme, size) => (
+						<Button key={`${theme}-${size}`} theme={theme} size={size}>
+							{theme}_{size}
+						</Button>
+					),
+				)}
+			</Wrapper>
+			<h3>Icons</h3>
+			<Wrapper>
+				{iconNames.map((name) => (
+					<span className="flex items-center" key={name}>
+						<Icon name={name} />
+						&nbsp;
+						{name}
+					</span>
+				))}
+			</Wrapper>
+			<h3>Checkbox</h3>
+			<Checkbox />
 
-      <h3>Chip</h3>
-      <Wrapper className="bg-lightgray200 p-2">
-        <Chip>깨비</Chip>
-        <Chip theme="gray">깨비</Chip>
-        <Chip theme="primary">깨비</Chip>
-        <Chip theme="secondary">깨비</Chip>
-      </Wrapper>
+			<h3>Chip</h3>
+			<Wrapper className="bg-lightgray200 p-2">
+				<Chip>깨비</Chip>
+				<Chip theme="gray">깨비</Chip>
+				<Chip theme="primary">깨비</Chip>
+				<Chip theme="secondary">깨비</Chip>
+			</Wrapper>
 
-      <h3>modal</h3>
-      <Wrapper>
-        <Button
-          className="text-caption2"
-          onClick={() => stack.open("confirmModal")}
-        >
-          confirmModal
-        </Button>
-        <Button onClick={() => stack.open("bottomSheetModal")}>
-          bottomSheetModal
-        </Button>
-        <Button onClick={() => stack.open("customModal")}>customModal</Button>
+			<h3>modal</h3>
+			<Wrapper>
+				<Button
+					className="text-caption2"
+					onClick={() => stack.open("confirmModal")}
+				>
+					confirmModal
+				</Button>
+				<Button onClick={() => stack.open("bottomSheetModal")}>
+					bottomSheetModal
+				</Button>
+				<Button onClick={() => stack.open("customModal")}>customModal</Button>
 
-        <ConfirmModal {...stack.register("confirmModal")} title="title" />
-        <BottomModal
-          {...stack.register("bottomSheetModal")}
-          isClickClose={false}
-          hasCloseButton={true}
-        >
-          <div className="w-full h-[300px]">
-            <Button onClick={() => stack.open("confirmModal")}>
-              confirmModal
-            </Button>
-            <br />
-            <Button onClick={() => stack.open("customModal")}>
-              customModal
-            </Button>
-          </div>
-        </BottomModal>
-        <Modal.Root {...stack.register("customModal")} lockScroll={false}>
-          {/* <Modal.Overlay /> */}
-          <Modal.Content contentClassName="fixed top-0 left-1/2 -translate-x-1/2 max-w-[480px] w-full bg-white -translate-y-full data-showing:translate-y-0">
-            <div className="flex justify-between p-2">
-              hihi
-              <Modal.CloseButton />
-            </div>
-          </Modal.Content>
-        </Modal.Root>
+				<ConfirmModal {...stack.register("confirmModal")} title="title" />
+				<BottomModal
+					{...stack.register("bottomSheetModal")}
+					isClickClose={false}
+					hasCloseButton={true}
+				>
+					<div className="w-full h-[300px]">
+						<Button onClick={() => stack.open("confirmModal")}>
+							confirmModal
+						</Button>
+						<br />
+						<Button onClick={() => stack.open("customModal")}>
+							customModal
+						</Button>
+					</div>
+				</BottomModal>
+				<Modal.Root {...stack.register("customModal")} lockScroll={false}>
+					{/* <Modal.Overlay /> */}
+					<Modal.Content contentClassName="fixed top-0 left-1/2 -translate-x-1/2 max-w-[480px] w-full bg-white -translate-y-full data-showing:translate-y-0">
+						<div className="flex justify-between p-2">
+							hihi
+							<Modal.CloseButton />
+						</div>
+					</Modal.Content>
+				</Modal.Root>
 
-        {/* <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
+				{/* <Modal TriggerSlot={<Modal.Trigger>custom modal</Modal.Trigger>}>
           <Modal.Popup className="fixed outline-transparent shadow-1 focus-visible:outline-blue300 outline-1 w-full top-0 bg-white">
             hihi
           </Modal.Popup>
@@ -129,48 +129,48 @@ function RouteComponent() {
             <div className="h-80 pt-8 w-full">bottom sheet</div>
           </Modal.BottomSheetPopup>
         </Modal> */}
-      </Wrapper>
+			</Wrapper>
 
-      <h3>input</h3>
-      <Wrapper>
-        <TextInput
-          label="Input label"
-          placeholder="Input placeholder"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          required
-          rightSection={
-            <Button theme="dark" size="md" disabled={text.length === 0}>
-              hihi
-            </Button>
-          }
-        />
-        <TextInput
-          label="Input label"
-          error="error!"
-          placeholder="Input placeholder"
-          // value={text}
-          // onChange={(e) => setText(e.target.value)}
-          required
-          rightSection={
-            <Button theme="dark" size="md">
-              hihi
-            </Button>
-          }
-        />
-      </Wrapper>
-    </div>
-  );
+			<h3>input</h3>
+			<Wrapper>
+				<TextInput
+					label="Input label"
+					placeholder="Input placeholder"
+					value={text}
+					onChange={(e) => setText(e.target.value)}
+					required
+					rightSection={
+						<Button theme="dark" size="md" disabled={text.length === 0}>
+							hihi
+						</Button>
+					}
+				/>
+				<TextInput
+					label="Input label"
+					error="error!"
+					placeholder="Input placeholder"
+					// value={text}
+					// onChange={(e) => setText(e.target.value)}
+					required
+					rightSection={
+						<Button theme="dark" size="md">
+							hihi
+						</Button>
+					}
+				/>
+			</Wrapper>
+		</div>
+	);
 }
 
 function Wrapper({
-  children,
-  className,
+	children,
+	className,
 }: {
-  children?: React.ReactNode;
-  className?: string;
+		children?: React.ReactNode;
+		className?: string;
 }) {
-  return (
-    <div className={cn("flex flex-wrap gap-4 p-2", className)}>{children}</div>
-  );
+	return (
+		<div className={cn("flex flex-wrap gap-4 p-2", className)}>{children}</div>
+	);
 }
