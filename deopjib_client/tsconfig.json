@@ -1,8 +1,11 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "src/global.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
+
   "compilerOptions": {
     "baseUrl": ".",
     "strict": true,
@@ -15,6 +18,7 @@
       "DOM.Iterable",
       "ESNext"
     ],
+
     "isolatedModules": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
@@ -29,21 +33,18 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "paths": {
-      "@/entities/*": [
+      "@entities/*": [
         "./src/entities/*"
       ],
-      "@/shared/*": [
+      "@shared/*": [
         "./src/shared/*"
       ],
-      "@/widgets/*": [
+      "@widgets/*": [
         "./src/widgets/*"
       ],
-      "@/app/*": [
+      "@app/*": [
         "./src/app/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ],
+      ]
     }
   }
 }

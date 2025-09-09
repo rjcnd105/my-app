@@ -1,6 +1,6 @@
 import type { ComponentProps, PropsWithChildren } from "react";
-import { tva } from "@/shared/utils/styles";
-import type { ValueOf } from "@/shared/utils/types";
+import { tva } from "@shared/utils/styles";
+import type { ValueOf } from "@shared/utils/types";
 import { Icon } from "../Icon/Icon";
 
 export function Chip({ children, theme, className, ...rest }: Chip.Props) {

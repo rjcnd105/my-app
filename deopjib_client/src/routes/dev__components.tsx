@@ -1,18 +1,18 @@
 import { useModalsStack } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@/shared/ui/Button/Button";
-import { Checkbox } from "@/shared/ui/Checkbox/Checkbox";
-import { Chip } from "@/shared/ui/Chip/Chip";
-import { Icon } from "@/shared/ui/Icon/Icon";
-import { iconNames } from "@/shared/ui/Icon/IconMap.gen";
-import { TextInput } from "@/shared/ui/Input/TextInput";
-import { BottomModal } from "@/shared/ui/Modal/BottomModal";
-import { ConfirmModal } from "@/shared/ui/Modal/ConfirmModal";
-import { Modal } from "@/shared/ui/Modal/Modal";
-import { joinMap } from "@/shared/utils/functions";
-import { objKeys } from "@/shared/utils/obj";
-import { cn } from "@/shared/utils/styles";
+import { Button } from "@shared/ui/Button/Button";
+import { Checkbox } from "@shared/ui/Checkbox/Checkbox";
+import { Chip } from "@shared/ui/Chip/Chip";
+import { Icon } from "@shared/ui/Icon/Icon";
+import { TextInput } from "@shared/ui/Input/TextInput";
+import { BottomModal } from "@shared/ui/Modal/BottomModal";
+import { ConfirmModal } from "@shared/ui/Modal/ConfirmModal";
+import { Modal } from "@shared/ui/Modal/Modal";
+import { joinMap } from "@shared/utils/functions";
+import { objKeys } from "@shared/utils/obj";
+import { cn } from "@shared/utils/styles";
+import { availableIcons } from "@shared/ui/Icon/IconMap.gen";
 
 export const Route = createFileRoute("/dev__components")({
 	component: RouteComponent,
@@ -41,7 +41,7 @@ function RouteComponent() {
 			</Wrapper>
 			<h3>Icons</h3>
 			<Wrapper>
-				{iconNames.map((name) => (
+        {availableIcons.map((name) => (
 					<span className="flex items-center" key={name}>
 						<Icon name={name} />
 						&nbsp;

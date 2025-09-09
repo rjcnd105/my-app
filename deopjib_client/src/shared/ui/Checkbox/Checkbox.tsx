@@ -1,5 +1,5 @@
 import { Checkbox as BaseCheckbox, type CheckboxProps } from "@mantine/core";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 import { Icon as CommonIcon } from "../Icon/Icon";
 
 export function Checkbox({

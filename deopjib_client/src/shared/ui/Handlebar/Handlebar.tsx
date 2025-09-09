@@ -1,5 +1,5 @@
 import { type DragControls, motion } from "motion/react";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 
 export function Handlebar({ className, controller }: Handlebar.Props) {
   return (

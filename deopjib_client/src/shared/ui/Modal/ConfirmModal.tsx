@@ -1,5 +1,5 @@
 import { ModalTitle } from "@mantine/core";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 import { Modal } from "./Modal";
 
 export function ConfirmModal({ children, title, ...rest }: ConfirmModal.Props) {

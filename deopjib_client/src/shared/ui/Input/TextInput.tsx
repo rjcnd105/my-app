@@ -1,7 +1,7 @@
 import type { TextInputProps } from "@mantine/core";
 import { TextInput as BaseTextInput } from "@mantine/core";
 import type { MouseEventHandler } from "react";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 import { Button } from "../Button/Button";
 import { Icon } from "../Icon/Icon";
 import classes from "./input.module.css";

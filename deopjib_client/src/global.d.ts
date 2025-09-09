@@ -7,8 +7,9 @@ declare module "*?url" {
 
 // Magical SVG plugin type declarations
 declare module "*.svg" {
+  import type { SVGProps } from "react";
   // Default import: React component
-  const ReactComponent: React.ComponentType<SVGProps<SVGSVGElement>>;
+  const ReactComponent: React.FC<SVGProps<SVGSVGElement>>;
   export default ReactComponent;
 }
 

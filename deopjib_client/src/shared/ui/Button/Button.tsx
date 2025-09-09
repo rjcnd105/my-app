@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type { ComponentProps, PropsWithChildren } from "react";
-import { objKeyToEnum } from "@/shared/utils/obj";
-import { tva } from "@/shared/utils/styles";
+import { objKeyToEnum } from "@shared/utils/obj";
+import { tva } from "@shared/utils/styles";
 
 export function Button({
   theme,

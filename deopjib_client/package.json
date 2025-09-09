@@ -13,12 +13,12 @@
     "dev:gen-api": "openapi-ts --file ./src/app/generator/openapi.dev.api.ts"
   },
   "dependencies": {
-    "@mantine/core": "^8.2.8",
-    "@mantine/hooks": "^8.2.8",
+    "@mantine/core": "^8.3.0",
+    "@mantine/hooks": "^8.3.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@tanstack/react-form": "^1.19.4",
     "@tanstack/react-query": "^5.87.1",
-    "@tanstack/react-query-devtools": "^5.87.1",
+    "@tanstack/react-query-devtools": "^5.87.3",
     "@tanstack/react-router": "^1.131.36",
     "@tanstack/react-router-devtools": "^1.131.36",
     "arktype": "^2.1.22",
@@ -28,7 +28,7 @@
     "react": "^19.1.1",
     "react-aria-components": "^1.12.1",
     "react-dom": "^19.1.1",
-    "remeda": "^2.30.0",
+    "remeda": "^2.31.0",
     "zod": "^4.1.5"
   },
   "devDependencies": {
@@ -40,6 +40,7 @@
     "@tanstack/eslint-plugin-query": "^5.86.0",
     "@tanstack/eslint-plugin-router": "^1.131.2",
     "@tanstack/router-plugin": "^1.131.36",
+    "@types/bun": "^1.2.21",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.2",
@@ -55,7 +56,7 @@
     "prettier-plugin-organize-imports": "^4.2.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.42.0",
+    "typescript-eslint": "^8.43.0",
     "vite": "^7.1.5",
     "vite-plugin-icons-spritesheet": "^3.0.1",
     "vite-plugin-magical-svg": "^1.8.0",

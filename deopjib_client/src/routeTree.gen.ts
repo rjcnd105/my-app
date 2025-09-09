@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestRouteImport } from './routes/test'
 import { Route as Dev__componentsRouteImport } from './routes/dev__components'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
-import { Route as DeferredRouteImport } from './routes/_deferred'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RoomIndexRouteImport } from './routes/room/index'
 import { Route as RoomCreateRouteImport } from './routes/room/create'
@@ -34,10 +33,6 @@ const Dev__componentsRoute = Dev__componentsRouteImport.update({
 } as any)
 const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
   id: '/_pathlessLayout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DeferredRoute = DeferredRouteImport.update({
-  id: '/_deferred',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -109,7 +104,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_deferred': typeof DeferredRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/dev__components': typeof Dev__componentsRoute
   '/test': typeof TestRoute
@@ -147,7 +141,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_deferred'
     | '/_pathlessLayout'
     | '/dev__components'
     | '/test'
@@ -162,7 +155,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DeferredRoute: typeof DeferredRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   Dev__componentsRoute: typeof Dev__componentsRoute
   TestRoute: typeof TestRoute
@@ -193,13 +185,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PathlessLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_deferred': {
-      id: '/_deferred'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof DeferredRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -293,7 +278,6 @@ const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DeferredRoute: DeferredRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   Dev__componentsRoute: Dev__componentsRoute,
   TestRoute: TestRoute,

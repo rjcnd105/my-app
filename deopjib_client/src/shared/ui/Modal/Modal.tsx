@@ -19,7 +19,7 @@ import {
   useDragControls,
 } from "motion/react";
 import { type ReactNode, useEffect, useRef } from "react";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 import type { Button } from "../Button/Button";
 import { Handlebar } from "../Handlebar/Handlebar";
 import { Icon } from "../Icon/Icon";

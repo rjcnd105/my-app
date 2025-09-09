@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import * as v from "valibot";
+import { type } from "arktype";
 
-const SearchParams = v.object({
-  payer: v.string(),
+const SearchParams = type({
+  payer: "string",
+  id: "string.numeric | number"
 });
 
-const parser = v.parser(SearchParams);
+type SearchParams = typeof SearchParams.infer;
 
 export const Route = createFileRoute("/room/$shortId/add_pay_items")({
   component: RouteComponent,
-  validateSearch: parser,
+  validateSearch: SearchParams,
 });
 
 function RouteComponent() {

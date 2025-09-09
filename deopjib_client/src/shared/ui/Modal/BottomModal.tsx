@@ -1,5 +1,5 @@
 import { AnimatePresence } from "motion/react";
-import { cn } from "@/shared/utils/styles";
+import { cn } from "@shared/utils/styles";
 import { Modal } from "./Modal";
 
 export function BottomModal({

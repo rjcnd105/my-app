@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { defineConfig } from "vite";
+import react from '@vitejs/plugin-react'
 import magicalSvg from "vite-plugin-magical-svg";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { iconSpriteDir, iconSpriteFilename } from "./src/shared/libs/dev";
@@ -13,6 +14,7 @@ export default defineConfig({
   css: {
     devSourcemap: true,
   },
+
 	plugins: [
 		tsConfigPaths({
 			projects: ["./tsconfig.json"],
@@ -21,13 +23,14 @@ export default defineConfig({
       target: 'react',
       autoCodeSplitting: true,
     }),
+    react(),
 		magicalSvg({
 			// By default, the output will be a dom element (the <svg> you can use inside the webpage).
 			// You can also change the output to react (or any supported target) to get a component you can use.
 			target: "react19-jsx",
 
 			// By default, the svgs are optimized with svgo. You can disable this by setting this to false.
-			svgo: false,
+			svgo: true,
 
 			// By default, width and height set on SVGs are not preserved.
 			// Set to true to preserve `width` and `height` on the generated SVG.

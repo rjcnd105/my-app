@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { NotFound } from "@/shared/ui/NotFound";
-import { PostErrorComponent } from "@/shared/ui/PostError";
+import { NotFound } from "@shared/ui/NotFound";
+import { PostErrorComponent } from "@shared/ui/PostError";
 
 export const Route = createFileRoute("/$roomId/add_items")({
   errorComponent: PostErrorComponent,
