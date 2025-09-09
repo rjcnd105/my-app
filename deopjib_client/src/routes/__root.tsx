@@ -16,6 +16,7 @@ import { DefaultCatchBoundary } from "@shared/ui/DefaultCatchBoundary";
 import { NotFound } from "@shared/ui/NotFound";
 import { seo } from "@shared/utils/seo";
 import "../shared/styles/app.css";
+import { View } from "@shared/ui/Templates/View";
 
 
 const RootLinks = () => (
@@ -57,10 +58,13 @@ const RootLinks = () => (
             Deferred
           </Link>{" "} */}
     <Link
-      // @ts-expect-error
+      // @ts-expect-error ts-expect-error
       to="/this-route-does-not-exist"
       activeProps={{
         className: "font-bold",
+      }}
+      viewTransition={{
+        types: ['slide-left'],
       }}
     >
       This Route Does Not Exist
@@ -83,10 +87,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   component: RootLayout,
   notFoundComponent: () => {
     return (
-      <div>
+      <View transitionName="main">
         <p>This is the notFoundComponent configured on root route</p>
-        <Link to="/">Start Over</Link>
-      </div>
+        <Link
+          to="/room/create"
+          viewTransition={{
+            types: ['slide-right'],
+          }}>Start Over</Link>
+      </View>
     )
   },
 })

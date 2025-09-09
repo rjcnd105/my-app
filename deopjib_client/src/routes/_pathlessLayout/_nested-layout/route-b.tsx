@@ -1,3 +1,4 @@
+import { View } from '@shared/ui/Templates/View'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_pathlessLayout/_nested-layout/route-b')(
@@ -7,5 +8,5 @@ export const Route = createFileRoute('/_pathlessLayout/_nested-layout/route-b')(
 )
 
 function LayoutBComponent() {
-  return <div>I'm B!</div>
+  return <View transitionName="main">I'm B!</View>
 }

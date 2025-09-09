@@ -14,6 +14,9 @@ function LayoutComponent() {
           activeProps={{
             className: 'font-bold',
           }}
+          viewTransition={{
+            types: ['blur'],
+          }}
         >
           Go to route A
         </Link>
@@ -21,6 +24,9 @@ function LayoutComponent() {
           to="/route-b"
           activeProps={{
             className: 'font-bold',
+          }}
+          viewTransition={{
+            types: ['blur'],
           }}
         >
           Go to route B

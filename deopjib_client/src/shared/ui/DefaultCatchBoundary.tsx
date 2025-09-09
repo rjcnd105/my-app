@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from '@tanstack/react-router'
 import {
   ErrorComponent,
   Link,
@@ -5,13 +6,12 @@ import {
   useMatch,
   useRouter,
 } from '@tanstack/react-router'
-import type { ErrorComponentProps } from '@tanstack/react-router'
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter()
   const isRoot = useMatch({
     strict: false,
-    select: (state) => state.id === rootRouteId,
+    select: state => state.id === rootRouteId,
   })
 
   console.error('DefaultCatchBoundary Error:', error)
@@ -23,31 +23,33 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
         <button
           type="button"
           onClick={() => {
-            router.invalidate()
+            void router.invalidate()
           }}
-          className={"px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"}
+          className="px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"
         >
           Try Again
         </button>
-        {isRoot ? (
-          <Link
-            to="/"
-            className={"px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"}
-          >
-            Home
-          </Link>
-        ) : (
-          <Link
-            to="/"
-            className={"px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"}
-            onClick={(e) => {
-              e.preventDefault()
-              window.history.back()
-            }}
-          >
-            Go Back
-          </Link>
-        )}
+        {isRoot
+          ? (
+            <Link
+              to="/"
+              className="px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"
+            >
+              Home
+            </Link>
+          )
+          : (
+            <Link
+              to="/"
+              className="px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded text-white uppercase font-extrabold"
+              onClick={(e) => {
+                e.preventDefault()
+                window.history.back()
+              }}
+            >
+              Go Back
+            </Link>
+          )}
       </div>
     </div>
   )

@@ -6,6 +6,7 @@
 
 @import "./theme.css" layer(theme);
 @import "./layouts.css" layer(base);
+@import "./viewTransitions.css";
 
 @source not "./*.css";
 

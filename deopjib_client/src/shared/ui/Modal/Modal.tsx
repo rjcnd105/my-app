@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import {
   type MotionProps,
+  type MotionStyle,
   motion,
   useAnimate,
   useDragControls,
@@ -369,7 +370,7 @@ export namespace Modal {
     extends Omit<MotionProps, "children"> {
     children?: ReactNode;
     className?: string;
-    style?: React.CSSProperties;
+    style?: MotionStyle;
     onClose?: () => void;
     contentClassName?: string;
   }

@@ -1,3 +1,4 @@
+import { View } from "@shared/ui/Templates/View";
 import { createFileRoute } from "@tanstack/react-router";
 import { type } from "arktype";
 
@@ -14,5 +15,5 @@ export const Route = createFileRoute("/room/$shortId/add_pay_items")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/room/addPayItems"!</div>;
+  return <View transitionName="main">Hello "/room/addPayItems"!</View>;
 }

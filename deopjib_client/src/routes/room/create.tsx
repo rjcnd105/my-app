@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@shared/ui/Button/Button";
+import { View } from "@shared/ui/Templates/View";
 
 export const Route = createFileRoute("/room/create")({
   component: RouteComponent,
@@ -7,9 +8,9 @@ export const Route = createFileRoute("/room/create")({
 
 function RouteComponent() {
   return (
-    <div>
-      <Button theme="primary">hihi</Button>
-      Hello "/room/create"!
-    </div>
+    <View transitionName="main">
+      <h2 className="text-title font-light">누구누구 정산할거야?</h2>
+
+    </View>
   );
 }
