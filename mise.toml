@@ -2,7 +2,11 @@
 [tools.just]
 version = "latest"
 
+[tools.elixir]
+version = "latest"
 
+[tools.elixir-ls]
+version = "latest"
 
 
 [env]
