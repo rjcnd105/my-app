@@ -1,2 +1,14 @@
-[tasks.install-lock]
-run = "touch mise.lock && mise install"
+
+
+[tools.bun]
+version = "latest"
+
+[tools.rclone]
+version = "latest"
+
+
+
+[tasks.sync_public_files]
+run = "rclone sync -v --config ./.rclone_config.conf public/ client_public:client/public/"
+# run = "rclone sync -v public/ deopjib_client_public/"
+

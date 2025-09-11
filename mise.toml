@@ -12,9 +12,8 @@ version = "latest"
 [env]
 _.file = [
   ".env-dev.json",
-  ".env.secret.json"
+  ".secreat-env.json"
 ]
 PROJECT_NAME = { value = "deopjib", tools = true }
 PROJECT_ENV = { value = "dev", tools = true }
 PROJECT_ROOT = { value = "{{config_root}}", tools = true }
-PGDATA = { value = "{{config_root}}/deopjib_devops/.data/pg", tools = true }
