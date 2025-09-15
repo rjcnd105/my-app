@@ -4,7 +4,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
-    nix2container.url = "github:nlewo/nix2container";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -12,7 +15,7 @@
       self,
       nixpkgs,
       flake-parts,
-      nix2container,
+      sops-nix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs self;  } {
@@ -41,7 +44,9 @@
               allowUnfreePredicate =
                 pkg:
                 builtins.elem (lib.getName pkg) [
-                  "timescaledb"
+                  # "timescaledb"
+                  "pg_stat_statements"
+                  "system_stats"
                 ];
             };
           };
@@ -50,64 +55,18 @@
             ++ lib.optionals pkgs.stdenv.isLinux [
               pkgs.inotify-tools
             ];
-
-
-          dockerDataDir = "/var/lib/postgresql/data";
-          # --- 공통 Docker 이미지 설정 함수 ---
-          buildDbImage = { pkgs, name, tag, user, password, dbName }:
-          let
-            postgresql = pkgs.postgresql_18;
-          in
-            pkgs.nix2container.buildImage {
-              inherit name tag;
-              copyToRoot = pkgs.buildEnv {
-                name = "image-root";
-                paths = [ postgresql ];
-                pathsToLink = [ "/bin" ];
-              };
-              config = {
-                Cmd = [ "${postgresql}/bin/postgres" "-D" dockerDataDir ];
-                Volumes = { "${dockerDataDir}" = { }; };
-                ExposedPorts = { "5432/tcp" = { }; };
-                User = "postgres";
-                # 환경 변수를 통해 DB 설정을 전달합니다. Dokploy에서 이 값들을 설정합니다.
-                Env = [
-                  "PGUSER=${user}"
-                  "PGPASSWORD=${password}"
-                  "PGDATABASE=${dbName}"
-                ];
-              };
-            };
+          postgresqlWithPackages = pkgs.postgresql_18.withPackages (p: [
+            p.pg_stat_statements
+            p.system_stats
+          ]);
         in
         {
           _module.args.pkgs = pkgs;
 
-          packages = {
-            # 개발용 이미지: 이전과 동일
-            dbImage-dev = buildDbImage {
-              pkgs = pkgs;
-              name = "deopjib-db-dev";
-              tag = "latest";
-              user = builtins.getEnv("POSTGRES_USER");
-              password = builtins.getEnv("POSTGRES_PASSWORD");
-              dbName = builtins.getEnv("POSTGRES_DB");
-            };
-
-            # 프로덕션용 이미지
-            dbImage-prd = buildDbImage {
-              pkgs = pkgs; # 안정적인 pkgs 사용
-              name = "deopjib-db-prd";
-              tag = "latest";
-              user = builtins.getEnv("POSTGRES_USER");
-              password = builtins.getEnv("POSTGRES_PASSWORD");
-              dbName = builtins.getEnv("POSTGRES_DB");
-            };
-          };
-
           process-compose."app-services" =
             { config, lib, ... }:
             let
-              env = builtins.fromJSON (builtins.readFile ../.env-dev.json);
+              env = builtins.fromJSON (builtins.readFile ../.env-local.json);
               devDataDir = "./.data/pg";
             in
             {
@@ -117,7 +76,7 @@
               services = {
                 postgres."pg" = {
                   enable = true;
-                  package = pkgs.postgresql_18;
+                  package = postgresqlWithPackages;
                   listen_addresses = env.PGHOST;
                   dataDir = devDataDir;
 
@@ -129,6 +88,10 @@
                     before = ''
                       CREATE ROLE ${env.PGUSER} WITH LOGIN PASSWORD '${env.PGPASSWORD}' SUPERUSER;
                       CREATE DATABASE ${env.PGDATABASE};
+                    '';
+                    after = ''
+                      psql -d ${env.PGDATABASE} -c 'CREATE EXTENSION IF NOT EXISTS pg_stat_statements;'
+                      psql -d ${env.PGDATABASE} -c 'CREATE EXTENSION IF NOT EXISTS system_stats;'
                     '';
                   };
                 };

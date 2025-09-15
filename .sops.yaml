@@ -1,0 +1,28 @@
+keys:
+  # 구성원 추가시 age public key 등록
+  - &hj_age age14c6z2hf8qr9lumph8smjh7yny25nd7v4xy9guc8n5r2pfrmhjfasrjmhz5
+
+creation_rules:
+  # 공통 secrets (모든 사용자가 접근)
+  - path_regex: secrets/shared/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *hj_age
+
+  # client 권한
+  - path_regex: secrets/client/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *hj_age
+
+  # server 권한
+  - path_regex: secrets/server/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *hj_age
+
+  # db 권한
+  - path_regex: secrets/db/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *hj_age
