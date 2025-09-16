@@ -1,9 +1,10 @@
 {
 
+
   inputs.nixpkgs.url = "github:nixos/nixpkgs/b599843bad24621dcaa5ab60dac98f9b0eb1cabe";
   inputs.sops-nix.url = "github:Mic92/sops-nix";
   inputs.sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-  flake-parts.url = "github:hercules-ci/flake-parts";
+  inputs.flake-parts.url = "github:hercules-ci/flake-parts";
 
 
   outputs = inputs@{
@@ -30,20 +31,35 @@
           pkgs = import nixpkgs {
             system = system;
           };
+          editor = builtins.getEnv "EDITOR";
+          visual = builtins.getEnv "VISUAL";
           commonPackages =  [ ]
           ++ lib.optionals pkgs.stdenv.isLinux [
             pkgs.inotify-tools
           ];
+          envPackages = [
+            pkgs.sops
+            pkgs.age
+            pkgs.ssh-to-age
+          ] ++ commonPackages;
         in
         {
+           packages = {
+            # 여기에 flake가 외부로 노출할 패키지들을 정의합니다.
+            # devShell에 있는 패키지들을 그대로 노출시켜 보겠습니다.
+            sops = pkgs.sops;
+            age = pkgs.age;
+            ssh-to-age = pkgs.ssh-to-age;
+          };
           devShells = {
-            env = pkgs.mkShellNoCC {
-              packages = [
-                pkgs.ssh-to-age
-              ] ++ commonPackages;
+            default = pkgs.mkShellNoCC {
+              packages = envPackages;
+              commands = [
 
+              ];
               shellHook = ''
-                eval "$(mise activate bash)"
+                export EDITOR=${lib.escapeShellArg editor}
+                export VISUAL=${lib.escapeShellArg visual}
               '';
             };
           };

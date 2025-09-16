@@ -25,3 +25,5 @@
 # @read-postmaster-id: (_shell-run "cat /Users/hj/study_ex/my-backend/data/pg/postmaster.pid")
 
 @vps: (_shell-run "ssh hjs@72.60.192.231 -p 2222")
+
+@env: (_shell-run "nix develop --impure")

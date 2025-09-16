@@ -1,9 +1,4 @@
 
-[tools.age]
-version = "latest"
-
-[tools.sops]
-version = "latest"
 
 [tools.just]
 version = "latest"
@@ -14,6 +9,11 @@ version = "latest"
 [tools.elixir-ls]
 version = "latest"
 
+# # nix flake의 패키지 사용
+# [tools]
+# age = "nix:age@."
+# sops = "nix:sops@."
+# ssh-to-age = "nix:ssh-to-age@."
 
 [env]
 _.file = [
@@ -24,3 +24,4 @@ _.file = [
 PROJECT_NAME = { value = "deopjib", tools = true }
 PROJECT_ENV = { value = "dev", tools = true }
 PROJECT_ROOT = { value = "{{config_root}}", tools = true }
+MISE_NIX_ALLOW_LOCAL_FLAKES = { value = true, tools = true }
