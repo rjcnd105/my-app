@@ -26,3 +26,9 @@ creation_rules:
     key_groups:
       - age:
           - *hj_age
+
+  # server, db
+  - path_regex: secrets/server_db/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *hj_age

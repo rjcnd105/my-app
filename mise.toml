@@ -1,4 +1,8 @@
+[tools.sops]
+version = "latest"
 
+[tools.age]
+version = "latest"
 
 [tools.just]
 version = "latest"

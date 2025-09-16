@@ -8,7 +8,19 @@ version = "latest"
 
 
 
-[tasks.sync_public_files]
-run = "rclone sync -v --config ./.rclone_config.conf public/ client_public:client/public/"
-# run = "rclone sync -v public/ deopjib_client_public/"
+# [tasks.sync_public_files]
+# run = "rclone sync -v --config ./.rclone_config.conf public/ client_public:client/public/"
+# # run = "rclone sync -v public/ deopjib_client_public/"
 
+
+[tasks.sync_public_files]
+run = '''
+  sops exec-env ../secrets/shared/secrets.yaml '
+    export RCLONE_CONFIG_CLIENT_PUBLIC_TYPE=s3
+    export RCLONE_CONFIG_CLIENT_PUBLIC_PROVIDER=Cloudflare
+    export RCLONE_CONFIG_CLIENT_PUBLIC_ACCESS_KEY_ID=$RESOURCE_R2_S3_ACCESS_KEY
+    export RCLONE_CONFIG_CLIENT_PUBLIC_SECRET_ACCESS_KEY=$RESOURCE_R2_S3_SECRET_KEY
+    export RCLONE_CONFIG_CLIENT_PUBLIC_ENDPOINT=$RESOURCE_R2_S3_ENDPOINT
+    rclone sync -v deopjib_client/public/ client_public:client/public/
+  '
+'''

@@ -33,6 +33,7 @@
           };
           editor = builtins.getEnv "EDITOR";
           visual = builtins.getEnv "VISUAL";
+          ageKeyFile = builtins.getEnv "SOPS_AGE_KEY_FILE";
           commonPackages =  [ ]
           ++ lib.optionals pkgs.stdenv.isLinux [
             pkgs.inotify-tools
@@ -46,7 +47,6 @@
         {
            packages = {
             # 여기에 flake가 외부로 노출할 패키지들을 정의합니다.
-            # devShell에 있는 패키지들을 그대로 노출시켜 보겠습니다.
             sops = pkgs.sops;
             age = pkgs.age;
             ssh-to-age = pkgs.ssh-to-age;
@@ -60,6 +60,7 @@
               shellHook = ''
                 export EDITOR=${lib.escapeShellArg editor}
                 export VISUAL=${lib.escapeShellArg visual}
+                export AGE_KEY_FILE=${lib.escapeShellArg ageKeyFile}
               '';
             };
           };
