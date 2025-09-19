@@ -22,11 +22,4 @@ version = "latest"
 [env]
 _.file = [
   ".env-local.json",
-  ".secreat-env.json"
 ]
-
-PROJECT_NAME = { value = "deopjib", tools = true }
-PROJECT_ENV = { value = "dev", tools = true }
-PROJECT_ROOT = { value = "{{config_root}}", tools = true }
-MISE_NIX_ALLOW_LOCAL_FLAKES = { value = true, tools = true }
-
