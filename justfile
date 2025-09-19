@@ -4,12 +4,6 @@
     set -euxo pipefail
     {{command}}
 
-# Umbrella 디렉토리에서 명령어 실행을 위한 레시피
-@_umbrella-run command:
-    #!/usr/bin/env sh
-    set -euxo pipefail
-    cd $PROJECT_NAME"_umbrella" && {{command}}
-
 @dev-up: (_shell-run "nix run .#app-services --impure")
 
 @db-up: (_shell-run "cd deopjib_db && nix run .#app-services --impure")
@@ -23,7 +17,6 @@
 @psql: (_shell-run "psql -U postgres -h localhost")
 
 # @read-postmaster-id: (_shell-run "cat /Users/hj/study_ex/my-backend/data/pg/postmaster.pid")
-
-@vps: (_shell-run "ssh hjs@72.60.192.231 -p 2222")
+@vps: (_shell-run "sops exec-env ./secrets/shared/secrets.yaml 'ssh $VPS_USER_NAME@$VPS_HOST -p $VPS_PORT'")
 
 @env: (_shell-run "nix develop --impure")
