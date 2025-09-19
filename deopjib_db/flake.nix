@@ -4,10 +4,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -15,7 +11,6 @@
       self,
       nixpkgs,
       flake-parts,
-      sops-nix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs self;  } {
@@ -59,6 +54,11 @@
             p.pg_stat_statements
             p.system_stats
           ]);
+          decryptedSecrets = pkgs.runCommand "secrets.json" {
+              nativeBuildInputs = [ pkgs.sops ];
+            } ''
+              ${pkgs.sops}/bin/sops -d ${../secrets/shared/secrets.yaml} > $out
+            '';
         in
         {
           _module.args.pkgs = pkgs;
@@ -67,12 +67,29 @@
             { config, lib, ... }:
             let
               env = builtins.fromJSON (builtins.readFile ../.env-local.json);
+              secrets = builtins.fromJSON (builtins.readFile decryptedSecrets);
               devDataDir = "./.data/pg";
             in
             {
               imports = [
                 inputs.services-flake.processComposeModules.default
               ];
+
+              settings =
+                let
+                  pgcfg = config.services.postgres.pg;
+                in
+                {
+                  environment = secrets // env;
+                  processes.pgweb = {
+                    command = pkgs.pgweb;
+                    depends_on."pg".condition = "process_healthy";
+                    environment.PGWEB_DATABASE_URL = pgcfg.connectionURI {
+                      dbName = env.PGDATABASE;
+                    };
+                  };
+                };
+
               services = {
                 postgres."pg" = {
                   enable = true;
@@ -97,20 +114,9 @@
                 };
 
               };
-              settings.processes.pgweb =
-                let
-                  pgcfg = config.services.postgres.pg;
-                in
-                {
-                  command = pkgs.pgweb;
-                  depends_on."pg".condition = "process_healthy";
-                  environment.PGWEB_DATABASE_URL = pgcfg.connectionURI {
-                    dbName = env.PGDATABASE;
-                  };
-                };
             };
 
-          devShells.default = pkgs.mkShell {
+          devShells.default = pkgs.mkShellNoCC {
             packages = [ ] ++ commonPackages;
             inputsFrom = [
               config.process-compose."app-services".services.outputs.devShell

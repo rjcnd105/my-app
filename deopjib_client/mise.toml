@@ -16,6 +16,7 @@ version = "latest"
 [tasks.sync_public_files]
 run = '''
   sops exec-env ../secrets/shared/secrets.yaml '
+    echo "TEST : $RESOURCE_R2_S3_ACCESS_KEY"
     export RCLONE_CONFIG_CLIENT_PUBLIC_TYPE=s3
     export RCLONE_CONFIG_CLIENT_PUBLIC_PROVIDER=Cloudflare
     export RCLONE_CONFIG_CLIENT_PUBLIC_ACCESS_KEY_ID=$RESOURCE_R2_S3_ACCESS_KEY
