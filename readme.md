@@ -1,6 +1,5 @@
-my phoenix app
 
+## License
 
-```sh
-nix flake new --template github:rjcnd105/hj-dotfiles#phoenix ./my-backend
-```
+This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+Please see the `LICENSE` file for more details.
